@@ -42,29 +42,6 @@ def find_open_around(world, pt, distance):
 
    return None
 
-
-def create_vein_action(world, entity, i_store):
-   def action(current_ticks):
-      entities.remove_pending_action(entity, action)
-
-      open_pt = find_open_around(world, entities.get_position(entity),
-         entities.get_resource_distance(entity))
-      if open_pt:
-         ore = create_ore(world,
-            "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
-            open_pt, current_ticks, i_store)
-         world.add_entity(ore)
-         tiles = [open_pt]
-      else:
-         tiles = []
-
-      schedule_action(world, entity,
-         create_vein_action(world, entity, i_store),
-         current_ticks + entities.get_rate(entity))
-      return tiles
-   return action
-
-
 def try_transform_miner_full(world, entity):
    new_entity = entities.MinerNotFull(
       entities.get_name(entity), entities.get_resource_limit(entity),
@@ -205,7 +182,7 @@ def create_vein(world, name, pt, ticks, i_store):
 
 
 def schedule_vein(world, vein, ticks, i_store):
-   schedule_action(world, vein, create_vein_action(world, vein, i_store),
+   schedule_action(world, vein, vein.create_vein_action(world, i_store),
       ticks + entities.get_rate(vein))
 
 

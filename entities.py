@@ -108,14 +108,35 @@ class MinerFull:
       return action
 
 class Vein:
-   def __init__(self, name, rate, position, imgs, resource_distance=1):
-      self.name = name
-      self.position = position
-      self.rate = rate
-      self.imgs = imgs
-      self.current_img = 0
-      self.resource_distance = resource_distance
-      self.pending_actions = []
+    def __init__(self, name, rate, position, imgs, resource_distance=1):
+        self.name = name
+        self.position = position
+        self.rate = rate
+        self.imgs = imgs
+        self.current_img = 0
+        self.resource_distance = resource_distance
+        self.pending_actions = []
+
+    def create_vein_action(self, world, i_store):
+        def action(current_ticks):
+            remove_pending_action(self, action)
+        
+            open_pt = actions.find_open_around(world, self.position,
+                self.resource_distance)
+            if open_pt:
+                ore = actions.create_ore(world,
+                "ore - " + self.name + " - " + str(current_ticks),
+                    open_pt, current_ticks, i_store)
+                world.add_entity(ore)
+                tiles = [open_pt]
+            else:
+                tiles = []
+                    
+            actions.schedule_action(world, self,
+                            self.create_vein_action(world, i_store),
+                            current_ticks + self.rate)
+            return tiles
+        return action
 
 class Ore:
    def __init__(self, name, position, imgs, rate=5000):

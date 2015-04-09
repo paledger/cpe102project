@@ -47,7 +47,6 @@ class WorldModel:
     def unschedule_action(self, action):
         self.action_queue.remove(action)
     
-    
     def update_on_time(self, ticks):
         tiles = []
         
