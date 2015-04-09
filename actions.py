@@ -42,6 +42,38 @@ def find_open_around(world, pt, distance):
 
    return None
 
+
+def create_vein_action(world, entity, i_store):
+   def action(current_ticks):
+      entities.remove_pending_action(entity, action)
+
+      open_pt = find_open_around(world, entities.get_position(entity),
+         entities.get_resource_distance(entity))
+      if open_pt:
+         ore = create_ore(world,
+            "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
+            open_pt, current_ticks, i_store)
+         worldmodel.add_entity(world, ore)
+         tiles = [open_pt]
+      else:
+         tiles = []
+
+      schedule_action(world, entity,
+         create_vein_action(world, entity, i_store),
+         current_ticks + entities.get_rate(entity))
+      return tiles
+   return action
+
+
+def try_transform_miner_full(world, entity):
+   new_entity = entities.MinerNotFull(
+      entities.get_name(entity), entities.get_resource_limit(entity),
+      entities.get_position(entity), entities.get_rate(entity),
+      entities.get_images(entity), entities.get_animation_rate(entity))
+
+   return new_entity
+
+
 def try_transform_miner_not_full(world, entity):
    if entity.resource_count < entity.resource_limit:
       return entity
@@ -52,11 +84,15 @@ def try_transform_miner_not_full(world, entity):
          entities.get_images(entity), entities.get_animation_rate(entity))
       return new_entity
 
-def try_transform_miner_full(world, entity):
-   new_entity = entities.MinerNotFull(
-      entities.get_name(entity),entities.get_resource_limit(entity),
-      entites.get_position(entity),entities.get_rate(entity),
-      entites.get_images(entity),entities.get_animation_rate(entity))
+
+def try_transform_miner(world, entity, transform):
+   new_entity = transform(world, entity)
+   if entity != new_entity:
+      clear_pending_actions(world, entity)
+      worldmodel.remove_entity_at(world, entities.get_position(entity))
+      worldmodel.add_entity(world, new_entity)
+      schedule_animation(world, new_entity)
+
    return new_entity
 
 
@@ -64,7 +100,7 @@ def create_miner_action(world, entity, image_store):
    if isinstance(entity, entities.MinerNotFull):
       return entity.create_miner_not_full_action(world,image_store)
    else:
-      return entity.create_miner_full_action(world,image_store)
+      return entity.create_miner_full_action(world, image_store)
 
 
 def create_animation_action(world, entity, repeat_count):
@@ -169,7 +205,7 @@ def create_vein(world, name, pt, ticks, i_store):
 
 
 def schedule_vein(world, vein, ticks, i_store):
-   schedule_action(world, vein, vein.create_vein_action(world, i_store),
+   schedule_action(world, vein, create_vein_action(world, vein, i_store),
       ticks + entities.get_rate(vein))
 
 
