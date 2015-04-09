@@ -41,6 +41,25 @@ class MinerNotFull:
          new_pt = entity_pt.next_position(world, ore_pt)
          return (worldmodel.move_entity(world, self, new_pt), False)
 
+   def create_miner_not_full_action(self, world, i_store):
+      def action(current_ticks):
+         remove_pending_action(self, action)
+
+         entity_pt = get_position(self)
+         ore = worldmodel.find_nearest(world, entity_pt,Ore)
+         (tiles, found) = self.miner_to_ore(world,ore)
+
+         new_entity = self
+         if found:
+            new_entity = actions.try_transform_miner(world, self,
+               actions.try_transform_miner_not_full)
+
+         actions.schedule_action(world, new_entity,
+            actions.create_miner_action(world, new_entity, i_store),
+            current_ticks + get_rate(new_entity))
+         return tiles
+      return action      
+
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
@@ -59,7 +78,7 @@ class MinerFull:
       if not smith:
          return ([entity_pt], False)
       smith_pt = get_position(smith)
-      if self.adjacent(smith_pt):
+      if entity_pt.adjacent(smith_pt):
          set_resource_count(smith,
             get_resource_count(smith) +
             get_resource_count(self))
