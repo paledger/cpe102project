@@ -31,45 +31,6 @@ def sign(x):
    else:
       return 0
 
-
-def blob_to_vein(world, entity, vein):
-   entity_pt = entities.get_position(entity)
-   if not vein:
-      return ([entity_pt], False)
-   vein_pt = entities.get_position(vein)
-   if entity_pt.adjacent(vein_pt):
-      remove_entity(world, vein)
-      return ([vein_pt], True)
-   else:
-      new_pt = entity.blob_next_position(world, vein_pt)
-      old_entity = worldmodel.get_tile_occupant(world, new_pt)
-      if isinstance(old_entity, entities.Ore):
-         remove_entity(world, old_entity)
-      return (worldmodel.move_entity(world, entity, new_pt), False)
-
-
-def create_ore_blob_action(world, entity, i_store):
-   def action(current_ticks):
-      entities.remove_pending_action(entity, action)
-
-      entity_pt = entities.get_position(entity)
-      vein = worldmodel.find_nearest(world, entity_pt, entities.Vein)
-      (tiles, found) = entity.blob_to_vein(world,vein)
-
-      next_time = current_ticks + entities.get_rate(entity)
-      if found:
-         quake = create_quake(world, tiles[0], current_ticks, i_store)
-         worldmodel.add_entity(world, quake)
-         next_time = current_ticks + entities.get_rate(entity) * 2
-
-      schedule_action(world, entity,
-         create_ore_blob_action(world, entity, i_store),
-         next_time)
-
-      return tiles
-   return action
-
-
 def find_open_around(world, pt, distance):
    for dy in range(-distance, distance + 1):
       for dx in range(-distance, distance + 1):

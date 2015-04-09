@@ -187,6 +187,28 @@ class OreBlob:
             actions.remove_entity(world, old_entity)
          return (worldmodel.move_entity(world, self, new_pt), False)
 
+   def create_ore_blob_action(self,world,i_store):
+      def action(current_ticks):
+         remove_pending_action(self, action)
+
+         entity_pt = get_position(self)
+         vein = worldmodel.find_nearest(world, entity_pt, Vein)
+         (tiles, found) = self.blob_to_vein(world,vein)
+
+         next_time = current_ticks + get_rate(self)
+         if found:
+            quake = actions.create_quake(world, tiles[0],
+                                         current_ticks, i_store)
+            worldmodel.add_entity(world, quake)
+            next_time = current_ticks + get_rate(self) * 2
+
+         actions.schedule_action(world, self,
+            self.create_ore_blob_action(world, self, i_store),
+            next_time)
+
+         return tiles
+      return action
+
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):
       self.name = name
