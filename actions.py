@@ -158,7 +158,7 @@ def create_miner_action(world, entity, image_store):
    if isinstance(entity, entities.MinerNotFull):
       return entity.create_miner_not_full_action(world,image_store)
    else:
-      return create_miner_full_action(world, entity, image_store)
+      return entity.create_miner_full_action(world, image_store)
 
 
 def create_animation_action(world, entity, repeat_count):

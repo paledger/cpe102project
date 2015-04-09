@@ -86,7 +86,26 @@ class MinerFull:
          return ([], True)
       else:
          new_pt = entity_pt.next_position(world,smith_pt)
-         return (worldmodel.move_entity(world, self, new_pt), False)      
+         return (worldmodel.move_entity(world, self, new_pt), False)
+
+   def create_miner_full_action(self,world, i_store):
+      def action(current_ticks):
+         remove_pending_action(self, action)
+
+         entity_pt = get_position(self)
+         smith = worldmodel.find_nearest(world, entity_pt,Blacksmith)
+         (tiles, found) = self.miner_to_smith(world,smith)
+
+         new_entity = self
+         if found:
+            new_entity = actions.try_transform_miner(world, self,
+               actions.try_transform_miner_full)
+
+         actions.schedule_action(world, new_entity,
+            actions.create_miner_action(world, new_entity, i_store),
+               current_ticks + get_rate(new_entity))
+         return tiles
+      return action
 
 class Vein:
    def __init__(self, name, rate, position, imgs, resource_distance=1):
