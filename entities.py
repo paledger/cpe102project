@@ -172,6 +172,20 @@ class OreBlob:
 
       return new_pt
 
+   def blob_to_vein(self,world, vein):
+      entity_pt = get_position(self)
+      if not vein:
+         return ([entity_pt], False)
+      vein_pt = get_position(vein)
+      if entity_pt.adjacent(vein_pt):
+         actions.remove_entity(world, vein)
+         return ([vein_pt], True)
+      else:
+         new_pt = self.blob_next_position(world, vein_pt)
+         old_entity = worldmodel.get_tile_occupant(world, new_pt)
+         if isinstance(old_entity,Ore):
+            actions.remove_entity(world, old_entity)
+         return (worldmodel.move_entity(world, self, new_pt), False)
 
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):
