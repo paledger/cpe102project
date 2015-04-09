@@ -54,6 +54,21 @@ class MinerFull:
       self.animation_rate = animation_rate
       self.pending_actions = []
 
+   def miner_to_smith(self, world, smith):
+      entity_pt = get_position(self)
+      if not smith:
+         return ([entity_pt], False)
+      smith_pt = get_position(smith)
+      if self.adjacent(smith_pt):
+         set_resource_count(smith,
+            get_resource_count(smith) +
+            get_resource_count(self))
+         set_resource_count(self, 0)
+         return ([], True)
+      else:
+         new_pt = entity_pt.next_position(world,smith_pt)
+         return (worldmodel.move_entity(world, self, new_pt), False)      
+
 class Vein:
    def __init__(self, name, rate, position, imgs, resource_distance=1):
       self.name = name
