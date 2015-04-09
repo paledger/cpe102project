@@ -12,7 +12,7 @@ class Point:
         self.x = x
         self.y = y
     
-    def within_bounds(self, world):
+    def within_bounds(self,world):
         return (self.x >= 0 and self.x < world.num_cols and
                 self.y >= 0 and self.y < world.num_rows)
     
@@ -30,12 +30,12 @@ class Point:
         horiz = actions.sign(dest_pt.x - self.x)
         new_pt = Point(self.x + horiz, self.y)
       
-        if horiz == 0 or worldmodel.is_occupied(world, new_pt):
+        if horiz == 0 or new_pt.is_occupied(world):
             vert = actions.sign(dest_pt.y - self.y)
             new_pt = Point(self.x, self.y + vert)
 
-        if vert == 0 or worldmodel.is_occupied(world, new_pt):
-            new_pt = Point(self.x, self.y)
+            if vert == 0 or new_pt.is_occupied(world):
+                new_pt = Point(self.x, self.y)
 
         return new_pt
      

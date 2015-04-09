@@ -36,8 +36,8 @@ def find_open_around(world, pt, distance):
       for dx in range(-distance, distance + 1):
          new_pt = point.Point(pt.x + dx, pt.y + dy)
 
-         if (worldmodel.within_bounds(world, new_pt) and
-            (not worldmodel.is_occupied(world, new_pt))):
+         if (new_pt.within_bounds(world) and
+            (not new_pt.is_occupied(world))):
             return new_pt
 
    return None
@@ -53,7 +53,7 @@ def create_vein_action(world, entity, i_store):
          ore = create_ore(world,
             "ore - " + entities.get_name(entity) + " - " + str(current_ticks),
             open_pt, current_ticks, i_store)
-         worldmodel.add_entity(world, ore)
+         world.add_entity(ore)
          tiles = [open_pt]
       else:
          tiles = []
@@ -89,8 +89,8 @@ def try_transform_miner(world, entity, transform):
    new_entity = transform(world, entity)
    if entity != new_entity:
       clear_pending_actions(world, entity)
-      worldmodel.remove_entity_at(world, entities.get_position(entity))
-      worldmodel.add_entity(world, new_entity)
+      world.remove_entity_at(entities.get_position(entity))
+      world.add_entity(new_entity)
       schedule_animation(world, new_entity)
 
    return new_entity
@@ -136,7 +136,7 @@ def create_ore_transform_action(world, entity, i_store):
          current_ticks, i_store)
 
       remove_entity(world, entity)
-      worldmodel.add_entity(world, blob)
+      world.add_entity(blob)
 
       return [entities.get_position(blob)]
    return action
@@ -144,9 +144,9 @@ def create_ore_transform_action(world, entity, i_store):
 
 def remove_entity(world, entity):
    for action in entities.get_pending_actions(entity):
-      worldmodel.unschedule_action(world, action)
+      world.unschedule_action(action)
    entities.clear_pending_actions(entity)
-   worldmodel.remove_entity(world, entity)
+   world.remove_entity(entity)
 
 
 def create_blob(world, name, pt, rate, ticks, i_store):
@@ -211,7 +211,7 @@ def schedule_vein(world, vein, ticks, i_store):
 
 def schedule_action(world, entity, action, time):
    entities.add_pending_action(entity, action)
-   worldmodel.schedule_action(world, action, time)
+   world.schedule_action(action, time)
 
 
 def schedule_animation(world, entity, repeat_count=0):
@@ -222,5 +222,5 @@ def schedule_animation(world, entity, repeat_count=0):
 
 def clear_pending_actions(world, entity):
    for action in entities.get_pending_actions(entity):
-      worldmodel.unschedule_action(world, action)
+      world.unschedule_action(action)
    entities.clear_pending_actions(entity)

@@ -39,14 +39,14 @@ class MinerNotFull:
          return ([ore_pt], True)
       else:
          new_pt = entity_pt.next_position(world, ore_pt)
-         return (worldmodel.move_entity(world, self, new_pt), False)
+         return (world.move_entity(self, new_pt), False)
 
    def create_miner_not_full_action(self, world, i_store):
       def action(current_ticks):
          remove_pending_action(self, action)
 
          entity_pt = get_position(self)
-         ore = worldmodel.find_nearest(world, entity_pt,Ore)
+         ore = world.find_nearest(entity_pt,Ore)
          (tiles, found) = self.miner_to_ore(world,ore)
 
          new_entity = self
@@ -86,14 +86,14 @@ class MinerFull:
          return ([], True)
       else:
          new_pt = entity_pt.next_position(world,smith_pt)
-         return (worldmodel.move_entity(world, self, new_pt), False)
+         return (world.move_entity(self, new_pt), False)
 
    def create_miner_full_action(self,world, i_store):
       def action(current_ticks):
          remove_pending_action(self, action)
 
          entity_pt = get_position(self)
-         smith = worldmodel.find_nearest(world, entity_pt,Blacksmith)
+         smith = world.find_nearest(entity_pt,Blacksmith)
          (tiles, found) = self.miner_to_smith(world,smith)
 
          new_entity = self
@@ -160,14 +160,14 @@ class OreBlob:
       horiz = actions.sign(dest_pt.x - self.position.x)
       new_pt = point.Point(self.position.x + horiz, self.position.y)
 
-      if horiz == 0 or (worldmodel.is_occupied(world, new_pt) and
-         not isinstance(worldmodel.get_tile_occupant(world, new_pt),
+      if horiz == 0 or (new_pt.is_occupied(world) and
+         not isinstance(world.get_tile_occupant(new_pt),
          Ore)):
          vert = actions.sign(dest_pt.y - self.position.y)
          new_pt = point.Point(self.position.x, self.position.y + vert)
 
-         if vert == 0 or (worldmodel.is_occupied(world, new_pt) and
-            not isinstance(worldmodel.get_tile_occupant(world, new_pt),Ore)):
+         if vert == 0 or (new_pt.is_occupied(world) and
+            not isinstance(world.get_tile_occupant(new_pt),Ore)):
             new_pt = point.Point(self.position.x, self.position.y)
 
       return new_pt
@@ -182,24 +182,24 @@ class OreBlob:
          return ([vein_pt], True)
       else:
          new_pt = self.blob_next_position(world, vein_pt)
-         old_entity = worldmodel.get_tile_occupant(world, new_pt)
+         old_entity = world.get_tile_occupant(new_pt)
          if isinstance(old_entity,Ore):
             actions.remove_entity(world, old_entity)
-         return (worldmodel.move_entity(world, self, new_pt), False)
+         return (world.move_entity(self, new_pt), False)
 
    def create_ore_blob_action(self,world,i_store):
       def action(current_ticks):
          remove_pending_action(self, action)
 
          entity_pt = get_position(self)
-         vein = worldmodel.find_nearest(world, entity_pt, Vein)
+         vein = world.find_nearest(entity_pt, Vein)
          (tiles, found) = self.blob_to_vein(world,vein)
 
          next_time = current_ticks + get_rate(self)
          if found:
             quake = actions.create_quake(world, tiles[0],
                                          current_ticks, i_store)
-            worldmodel.add_entity(world, quake)
+            world.add_entity(quake)
             next_time = current_ticks + get_rate(self) * 2
 
          actions.schedule_action(world, self,

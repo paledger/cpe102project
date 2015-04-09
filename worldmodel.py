@@ -20,15 +20,6 @@ class WorldModel:
                   
         return nearest_entity(oftype)
     
-    def add_entity(self, entity):
-        pt = entities.get_position(entity)
-        if pt.within_bounds(self):
-            old_entity = occ_grid.get_cell(self.occupancy, pt)
-            if old_entity != None:
-                entities.clear_pending_actions(old_entity)
-            occ_grid.set_cell(self.occupancy, pt, entity)
-            self.entities.append(entity)
-    
     def move_entity(self, entity, pt):
         tiles = []
         if pt.within_bounds(self):
@@ -52,9 +43,6 @@ class WorldModel:
             self.entities.remove(entity)
             occ_grid.set_cell(self.occupancy, pt, None)
     
-    def schedule_action(self, action, time):
-        self.action_queue.insert(action, time)
-    
     
     def unschedule_action(self, action):
         self.action_queue.remove(action)
@@ -70,7 +58,9 @@ class WorldModel:
             next = self.action_queue.head()
         
         return tiles
-    
+            
+    def schedule_action(self, action, time):
+        self.action_queue.insert(action, time)
     
     def get_background_image(self, pt):
         if pt.within_bounds(self):
@@ -94,6 +84,15 @@ class WorldModel:
     
     def get_entities(self):
         return self.entities
+    
+    def add_entity(self, entity):
+        pt = entities.get_position(entity)
+        if pt.within_bounds(self):
+            old_entity = occ_grid.get_cell(self.occupancy, pt)
+            if old_entity != None:
+                entities.clear_pending_actions(old_entity)
+            occ_grid.set_cell(self.occupancy, pt, entity)
+            self.entities.append(entity)
 
 
 def nearest_entity(entity_dists):
@@ -107,5 +106,3 @@ def nearest_entity(entity_dists):
         nearest = None
     
     return nearest
-
-
