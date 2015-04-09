@@ -98,14 +98,31 @@ class MinerFull:
 
          new_entity = self
          if found:
-            new_entity = actions.try_transform_miner(world, self,
-               actions.try_transform_miner_full)
+            new_entity = self.try_transform_miner(world,
+               self.try_transform_miner_full)
 
          actions.schedule_action(world, new_entity,
             actions.create_miner_action(world, new_entity, i_store),
                current_ticks + get_rate(new_entity))
          return tiles
       return action
+
+   def try_transform_miner(self,world,transform):
+      new_entity = transform(world)
+      if self != new_entity:
+         actions.clear_pending_actions(world, self)
+         world.remove_entity_at(self.position)
+         world.add_entity(new_entity)
+         actions.schedule_animation(world, new_entity)
+
+      return new_entity
+
+   def try_transform_miner_full(self, world):
+      new_entity = MinerNotFull(self.name,
+        self.resource_limit,self.position,self.rate,get_images(self),
+            self.animation_rate)
+                                       
+      return new_entity
 
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):

@@ -42,15 +42,6 @@ def find_open_around(world, pt, distance):
 
    return None
 
-def try_transform_miner_full(world, entity):
-   new_entity = entities.MinerNotFull(
-      entities.get_name(entity), entities.get_resource_limit(entity),
-      entities.get_position(entity), entities.get_rate(entity),
-      entities.get_images(entity), entities.get_animation_rate(entity))
-
-   return new_entity
-
-
 def try_transform_miner_not_full(world, entity):
    if entity.resource_count < entity.resource_limit:
       return entity
