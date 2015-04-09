@@ -1,4 +1,11 @@
+import worldmodel
+import pygame
+import math
+import random
 import point
+import image_store
+import actions
+
 
 class Background:
    def __init__(self, name, imgs):
@@ -19,6 +26,20 @@ class MinerNotFull:
       self.resource_count = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
+      
+   def miner_to_ore(self,world,ore):
+      entity_pt = get_position(self)
+      if not ore:
+         return ([entity_pt], False)
+      ore_pt = get_position(ore)
+      if entity_pt.adjacent(ore_pt):
+         set_resource_count(self,
+            1 + get_resource_count(self))
+         actions.remove_entity(world, ore)
+         return ([ore_pt], True)
+      else:
+         new_pt = entity_pt.next_position(world, ore_pt)
+         return (worldmodel.move_entity(world, self, new_pt), False)
 
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -81,6 +102,23 @@ class OreBlob:
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
+
+   def blob_next_position(self, world, dest_pt):
+      horiz = actions.sign(dest_pt.x - self.position.x)
+      new_pt = point.Point(self.position.x + horiz, self.position.y)
+
+      if horiz == 0 or (worldmodel.is_occupied(world, new_pt) and
+         not isinstance(worldmodel.get_tile_occupant(world, new_pt),
+         Ore)):
+         vert = actions.sign(dest_pt.y - self.position.y)
+         new_pt = point.Point(self.position.x, self.position.y + vert)
+
+         if vert == 0 or (worldmodel.is_occupied(world, new_pt) and
+            not isinstance(worldmodel.get_tile_occupant(world, new_pt),Ore)):
+            new_pt = point.Point(self.position.x, self.position.y)
+
+      return new_pt
+
 
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):

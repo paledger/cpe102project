@@ -31,23 +31,6 @@ def sign(x):
    else:
       return 0
 
-def blob_next_position(world, entity_pt, dest_pt):
-   horiz = sign(dest_pt.x - entity_pt.x)
-   new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
-
-   if horiz == 0 or (worldmodel.is_occupied(world, new_pt) and
-      not isinstance(worldmodel.get_tile_occupant(world, new_pt),
-      entities.Ore)):
-      vert = sign(dest_pt.y - entity_pt.y)
-      new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
-
-      if vert == 0 or (worldmodel.is_occupied(world, new_pt) and
-         not isinstance(worldmodel.get_tile_occupant(world, new_pt),
-         entities.Ore)):
-         new_pt = point.Point(entity_pt.x, entity_pt.y)
-
-   return new_pt
-
 
 def miner_to_ore(world, entity, ore):
    entity_pt = entities.get_position(entity)
@@ -86,7 +69,7 @@ def create_miner_not_full_action(world, entity, i_store):
 
       entity_pt = entities.get_position(entity)
       ore = worldmodel.find_nearest(world, entity_pt, entities.Ore)
-      (tiles, found) = miner_to_ore(world, entity, ore)
+      (tiles, found) = entity.miner_to_ore(world,ore)
 
       new_entity = entity
       if found:
@@ -129,7 +112,7 @@ def blob_to_vein(world, entity, vein):
       remove_entity(world, vein)
       return ([vein_pt], True)
    else:
-      new_pt = blob_next_position(world, entity_pt, vein_pt)
+      new_pt = entity.blob_next_position(world, vein_pt)
       old_entity = worldmodel.get_tile_occupant(world, new_pt)
       if isinstance(old_entity, entities.Ore):
          remove_entity(world, old_entity)
