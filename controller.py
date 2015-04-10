@@ -27,12 +27,6 @@ def handle_timer_event(world, view):
     rects = world.update_on_time(pygame.time.get_ticks())
     view.update_view_tiles(rects)
 
-
-def handle_mouse_motion(view, event):
-    mouse_pt = mouse_to_tile(event.pos, view.tile_width, view.tile_height)
-    view.mouse_move(mouse_pt)
-
-
 def handle_keydown(view, event):
     view_delta = on_keydown(event)
     view.update_view(view_delta)
@@ -49,7 +43,7 @@ def activity_loop(view, world):
             elif event.type == pygame.USEREVENT:
                 handle_timer_event(world, view)
             elif event.type == pygame.MOUSEMOTION:
-                handle_mouse_motion(view, event)
+                view.handle_mouse_motion(event)
             elif event.type == pygame.KEYDOWN:
                 handle_keydown(view, event)
 
