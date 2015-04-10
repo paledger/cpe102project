@@ -72,13 +72,6 @@ def remove_entity(world, entity):
    world.remove_entity(entity)
 
 
-def create_quake(world, pt, ticks, i_store):
-   quake = entities.Quake("quake", pt,
-      image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-   quake.schedule_quake(world, ticks)
-   return quake
-
-
 def create_vein(world, name, pt, ticks, i_store):
    vein = entities.Vein("vein" + name,
       random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
