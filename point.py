@@ -38,4 +38,14 @@ class Point:
                 new_pt = Point(self.x, self.y)
 
         return new_pt
-     
+
+    def find_open_around(self, world, distance):
+        for dy in range(-distance, distance + 1):
+            for dx in range(-distance, distance + 1):
+                new_pt = Point(self.x + dx, self.y + dy)
+
+                if (new_pt.within_bounds(world) and
+                    (not new_pt.is_occupied(world))):
+                    return new_pt
+        print "working"
+        return None
