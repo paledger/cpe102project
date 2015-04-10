@@ -71,11 +71,6 @@ def remove_entity(world, entity):
    entities.clear_pending_actions(entity)
    world.remove_entity(entity)
 
-def schedule_blob(world, blob, ticks, i_store):
-   schedule_action(world, blob, blob.create_ore_blob_action(world, i_store),
-      ticks + entities.get_rate(blob))
-   schedule_animation(world, blob)
-
 
 def schedule_miner(world, miner, ticks, i_store):
    schedule_action(world, miner, miner.create_miner_action(world, i_store),

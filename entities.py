@@ -228,7 +228,7 @@ class Ore:
          image_store.get_images(i_store, 'blob'),
          random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
          * BLOB_ANIMATION_RATE_SCALE)
-      actions.schedule_blob(world, blob, ticks, i_store)
+      blob.schedule_blob(world, ticks, i_store)
       return blob
 
 
@@ -314,6 +314,12 @@ class OreBlob:
 
          return tiles
       return action
+
+   def schedule_blob(self,world, ticks, i_store):
+      actions.schedule_action(world, self, self.create_ore_blob_action(world, i_store),
+         ticks + get_rate(self))
+      actions.schedule_animation(world, self)
+
 
 class Quake:
    def __init__(self, name, position, imgs, animation_rate):
