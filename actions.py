@@ -72,12 +72,6 @@ def remove_entity(world, entity):
    world.remove_entity(entity)
 
 
-def schedule_miner(world, miner, ticks, i_store):
-   schedule_action(world, miner, miner.create_miner_action(world, i_store),
-      ticks + entities.get_rate(miner))
-   schedule_animation(world, miner)
-
-
 def create_ore(world, name, pt, ticks, i_store):
    ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
       random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))

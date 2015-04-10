@@ -55,7 +55,13 @@ class MinerNotFull:
       else:
          new_pt = entity_pt.next_position(world, ore_pt)
          return (world.move_entity(self, new_pt), False)
-      
+
+   def schedule_miner(self,world, ticks, i_store):
+      actions.schedule_action(world, self,
+                              self.create_miner_action(world, i_store),
+                      ticks + self.rate)
+      actions.schedule_animation(world, self)
+   
    def try_transform_miner(self,world,transform):
       new_entity = transform(world)
       if self != new_entity:
@@ -112,7 +118,7 @@ class MinerFull:
       self.resource_limit = resource_limit
       self.resource_count = resource_limit
       self.animation_rate = animation_rate
-      self.pending_actions = []
+      self.pending_actions = []  
 
    def miner_to_smith(self, world, smith):
       entity_pt = get_position(self)
