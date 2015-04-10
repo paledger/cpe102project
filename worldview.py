@@ -2,6 +2,7 @@ import pygame
 import worldmodel
 import entities
 import point
+import builder_controller
 
 MOUSE_HOVER_ALPHA = 120
 MOUSE_HOVER_EMPTY_COLOR = (0, 255, 0)
@@ -127,6 +128,64 @@ class WorldView:
         pygame.display.update(rects)
 
 
+
+    #Paula: Functions below added from builder_controller.py to
+    # worldview.py/worldview class
+
+    def handle_mouse_motion(self, event):
+        mouse_pt = builder_controller.mouse_to_tile(event.pos, self.tile_width,\
+            self.tile_height)
+        self.mouse_move(mouse_pt)
+
+    def handle_keydown(self, event, i_store, world, entity_select):
+       (view_delta, entity_select) = on_keydown(event, world,\
+           entity_select, i_store)
+       self.update_view(view_delta,
+       image_store.get_images(i_store, entity_select)[0])
+
+       return entity_select
+
+    def handle_mouse_button(self, world, event, entity_select, i_store):
+       mouse_pt = builder_controller.mouse_to_tile(event.pos,\
+           self.tile_width, self.tile_height)
+       tile_view_pt = self.viewport_to_world(mouse_pt)
+       if event.button == mouse_buttons.LEFT and entity_select:
+           if builder_controller.is_background_tile(entity_select):
+               world.set_background(tile_view_pt,\
+                   entities.Background(entity_select,\
+                   image_store.get_images(i_store, entity_select)))
+               return [tile_view_pt]
+           else:
+               new_entity = builder_controller.create_new_entity(tile_view_pt,\
+                   entity_select, i_store)
+               if new_entity:
+                   world.remove_entity_at(tile_view_pt)
+                   world.add_entity(new_entity)
+                   return [tile_view_pt]
+       elif event.button == mouse_buttons.RIGHT:
+           world.remove_entity_at(tile_view_pt)
+           return [tile_view_pt]
+
+       return []
+
+
+    def activity_loop(self, world, i_store):
+        pygame.key.set_repeat(keys.KEY_DELAY, keys.KEY_INTERVAL)
+
+        entity_select = None
+        while 1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                elif event.type == pygame.MOUSEMOTION:
+                    self.handle_mouse_motion(event)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    tiles = self.handle_mouse_button(world, event,\
+                        entity_select, i_store)
+                    self.update_view_tiles(tiles)
+                elif event.type == pygame.KEYDOWN:
+                    entity_select = view.handle_keydown(event, i_store, world,\
+                        entity_select)
 
 def clamp(v, low, high):
     return min(high, max(v, low))
