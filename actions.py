@@ -42,23 +42,6 @@ def find_open_around(world, pt, distance):
 
    return None
 
-def try_transform_miner(world, entity, transform):
-   new_entity = transform(world, entity)
-   if entity != new_entity:
-      clear_pending_actions(world, entity)
-      world.remove_entity_at(entities.get_position(entity))
-      world.add_entity(new_entity)
-      schedule_animation(world, new_entity)
-
-   return new_entity
-
-
-def create_miner_action(world, entity, image_store):
-   if isinstance(entity, entities.MinerNotFull):
-      return entity.create_miner_not_full_action(world,image_store)
-   else:
-      return entity.create_miner_full_action(world, image_store)
-
 
 def create_animation_action(world, entity, repeat_count):
    def action(current_ticks):
@@ -122,7 +105,7 @@ def schedule_blob(world, blob, ticks, i_store):
 
 
 def schedule_miner(world, miner, ticks, i_store):
-   schedule_action(world, miner, create_miner_action(world, miner, i_store),
+   schedule_action(world, miner, miner.create_miner_action(world, i_store),
       ticks + entities.get_rate(miner))
    schedule_animation(world, miner)
 
