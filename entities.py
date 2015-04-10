@@ -186,15 +186,22 @@ class Vein:
         self.current_img = 0
         self.resource_distance = resource_distance
         self.pending_actions = []
+        
+    def create_ore(self,world, name, pt, ticks, i_store):
+        ore = Ore(name, pt, image_store.get_images(i_store, 'ore'),
+                  random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+        actions.schedule_ore(world, ore, ticks, i_store)
 
+        return ore
+     
     def create_vein_action(self, world, i_store):
-        def action(current_ticks):
+       def action(current_ticks):
             remove_pending_action(self, action)
         
             open_pt = actions.find_open_around(world, self.position,
                 self.resource_distance)
             if open_pt:
-                ore = actions.create_ore(world,
+                ore = self.create_ore(world,
                 "ore - " + self.name + " - " + str(current_ticks),
                     open_pt, current_ticks, i_store)
                 world.add_entity(ore)
@@ -206,7 +213,7 @@ class Vein:
                             self.create_vein_action(world, i_store),
                             current_ticks + self.rate)
             return tiles
-        return action
+       return action
 
 class Ore:
    def __init__(self, name, position, imgs, rate=5000):
