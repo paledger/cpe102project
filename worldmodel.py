@@ -50,8 +50,10 @@ class WorldModel:
         
         return tiles
     
-    def remove_entity(self, entity):
-        self.remove_entity_at(entities.get_position(entity))
+    #def remove_entity(self, entity):
+    #   self.remove_entity_at(entities.get_position(entity))
+    ##Allison: Moved the remove_entity from actions.py to here.
+    ##Added this functionality to that method instead.
     
     def remove_entity_at(self, pt):
         if (pt.within_bounds(self) and
@@ -110,6 +112,12 @@ class WorldModel:
                 entities.clear_pending_actions(old_entity)
             occ_grid.set_cell(self.occupancy, pt, entity)
             self.entities.append(entity)
+
+    def remove_entity(self, entity):
+        for action in entities.get_pending_actions(entity):
+            self.unschedule_action(action)
+        entities.clear_pending_actions(entity)
+        self.remove_entity_at(entities.get_position(entity))       
 
     def create_ore(self, name, pt, ticks, i_store):
         ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),

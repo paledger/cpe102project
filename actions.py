@@ -44,16 +44,9 @@ def create_entity_death_action(world, entity):
    def action(current_ticks):
       entities.remove_pending_action(entity, action)
       pt = entities.get_position(entity)
-      remove_entity(world, entity)
+      world.remove_entity(entity)
       return [pt]
    return action
-
-def remove_entity(world, entity):
-   for action in entities.get_pending_actions(entity):
-      world.unschedule_action(action)
-   entities.clear_pending_actions(entity)
-   world.remove_entity(entity)
-
 
 def schedule_action(world, entity, action, time):
    entities.add_pending_action(entity, action)

@@ -33,7 +33,7 @@ class MinerNotFull:
       if entity_pt.adjacent(ore_pt):
          set_resource_count(self,
             1 + get_resource_count(self))
-         actions.remove_entity(world, ore)
+         world.remove_entity(ore)
          return ([ore_pt], True)
       else:
          new_pt = entity_pt.next_position(world, ore_pt)
@@ -211,7 +211,7 @@ class Ore:
          blob = world.create_blob(self.name + " -- blob",
             self.position,self.rate//worldmodel.BLOB_RATE_SCALE,current_ticks, i_store)
 
-         actions.remove_entity(world,self)
+         world.remove_entity(self)
          world.add_entity(blob)
 
          return [blob.position]
@@ -275,13 +275,13 @@ class OreBlob:
          return ([entity_pt], False)
       vein_pt = get_position(vein)
       if entity_pt.adjacent(vein_pt):
-         actions.remove_entity(world, vein)
+         world.remove_entity(vein)
          return ([vein_pt], True)
       else:
          new_pt = self.blob_next_position(world, vein_pt)
          old_entity = world.get_tile_occupant(new_pt)
          if isinstance(old_entity,Ore):
-            actions.remove_entity(world, old_entity)
+            world.remove_entity(old_entity)
          return (world.move_entity(self, new_pt), False)
 
    def create_ore_blob_action(self,world,i_store):
