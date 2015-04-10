@@ -20,33 +20,32 @@ class WorldView:
         self.num_cols = world.num_cols
         self.mouse_img = mouse_img
 
+    def viewport_to_world(self, pt):
+        return point.Point(pt.x + self.viewport.left, pt.y + self.viewport.top)
 
-def viewport_to_world(viewport, pt):
-    return point.Point(pt.x + viewport.left, pt.y + viewport.top)
+    def world_to_viewport(self, pt):
+        return point.Point(pt.x - self.viewport.left, pt.y - self.viewport.top)
 
+    def create_shifted_viewport(self, delta):
+        new_x = clamp(self.viewport.left + delta[0], 0,\
+            self.num_cols - self.viewport.width)
+        new_y = clamp(self.viewport.top + delta[1], 0,\
+            self.num_rows - self.viewport.height)
+    
+        return pygame.Rect(new_x, new_y, self.viewport.width,\
+            self.viewport.height)
 
-def world_to_viewport(viewport, pt):
-    return point.Point(pt.x - viewport.left, pt.y - viewport.top)
+    def draw_background(self):
+        for y in range(0, self.viewport.height):
+            for x in range(0, self.viewport.width):
+                w_pt = self.viewport_to_world(self.viewport, point.Point(x, y))
+                img = self.world.get_background_image(w_pt)
+                self.screen.blit(img,\
+                    (x * self.tile_width, y * self.tile_height))
 
 
 def clamp(v, low, high):
     return min(high, max(v, low))
-
-
-def create_shifted_viewport(viewport, delta, num_rows, num_cols):
-    new_x = clamp(viewport.left + delta[0], 0, num_cols - viewport.width)
-    new_y = clamp(viewport.top + delta[1], 0, num_rows - viewport.height)
-    
-    return pygame.Rect(new_x, new_y, viewport.width, viewport.height)
-
-
-def draw_background(view):
-    for y in range(0, view.viewport.height):
-        for x in range(0, view.viewport.width):
-            w_pt = viewport_to_world(view.viewport, point.Point(x, y))
-            img = view.world.get_background_image(w_pt)
-            view.screen.blit(img, (x * view.tile_width, y * view.tile_height))
-
 
 def draw_entities(view):
     for entity in view.world.entities:
