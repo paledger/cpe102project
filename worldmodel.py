@@ -7,22 +7,6 @@ import point
 import image_store
 import random
 
-BLOB_RATE_SCALE = 4
-BLOB_ANIMATION_RATE_SCALE = 50
-BLOB_ANIMATION_MIN = 1
-BLOB_ANIMATION_MAX = 3
-
-ORE_CORRUPT_MIN = 20000
-ORE_CORRUPT_MAX = 30000
-
-QUAKE_STEPS = 10
-QUAKE_DURATION = 1100
-QUAKE_ANIMATION_RATE = 100
-
-VEIN_SPAWN_DELAY = 500
-VEIN_RATE_MIN = 8000
-VEIN_RATE_MAX = 17000
-
 class WorldModel:
     def __init__(self, num_rows, num_cols, background):
         self.background = occ_grid.Grid(num_cols, num_rows, background)
@@ -156,33 +140,6 @@ class WorldModel:
     
     def get_entities(self):
         return self.entities
-    
-    def create_ore(self, name, pt, ticks, i_store):
-        ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
-                  random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-        ore.schedule_ore(self, ticks, i_store)
-
-        return ore
-
-    def create_blob(self, name, pt, rate, ticks, i_store):
-      blob = entities.OreBlob(name, pt, rate,
-         image_store.get_images(i_store, 'blob'),
-         random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
-         * BLOB_ANIMATION_RATE_SCALE)
-      blob.schedule_blob(self, ticks, i_store)
-      return blob
-
-    def create_quake(self, pt, ticks, i_store):
-      quake = entities.Quake("quake", pt,
-         image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-      quake.schedule_quake(self, ticks)
-      return quake
-
-    def create_vein(self, name, pt, ticks, i_store):
-        vein = entities.Vein("vein" + name,
-                             random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
-                             pt, image_store.get_images(i_store, 'vein'))
-        return vein
 
 def nearest_entity(entity_dists):
     if len(entity_dists) > 0:
