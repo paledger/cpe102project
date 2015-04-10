@@ -94,6 +94,14 @@ class WorldModel:
         for action in entities.get_pending_actions(entity):
             self.unschedule_action(action)
         entities.clear_pending_actions(entity)
+
+    def create_entity_death_action(self, entity):
+        def action(current_ticks):
+            entities.remove_pending_action(entity, action)
+            pt = entities.get_position(entity)
+            self.remove_entity(entity)
+            return [pt]
+        return action
     
     def update_on_time(self, ticks):
         tiles = []

@@ -321,8 +321,8 @@ class Quake:
 
    def schedule_quake(self, world, ticks):
       actions.schedule_animation(world, self, worldmodel.QUAKE_STEPS)
-      world.schedule_action(self, actions.create_entity_death_action
-                              (world, self),
+      world.schedule_action(self, world.create_entity_death_action
+                              (self),
                       ticks + worldmodel.QUAKE_DURATION)
 
 def set_position(entity, point):
