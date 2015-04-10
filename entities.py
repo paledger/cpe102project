@@ -43,7 +43,7 @@ class MinerNotFull:
       world.schedule_action(self,
                               self.create_miner_action(world, i_store),
                       ticks + self.rate)
-      actions.schedule_animation(world, self)
+      world.schedule_animation(self)
    
    def try_transform_miner(self,world,transform):
       new_entity = transform(world)
@@ -51,7 +51,7 @@ class MinerNotFull:
          world.clear_pending_actions(self)
          world.remove_entity_at(self.position)
          world.add_entity(new_entity)
-         actions.schedule_animation(world, new_entity)
+         world.schedule_animation(new_entity)
 
       return new_entity
    
@@ -143,7 +143,7 @@ class MinerFull:
          world.clear_pending_actions(self)
          world.remove_entity_at(self.position)
          world.add_entity(new_entity)
-         actions.schedule_animation(world, new_entity)
+         world.schedule_animation(new_entity)
 
       return new_entity
 
@@ -306,7 +306,7 @@ class OreBlob:
    def schedule_blob(self,world, ticks, i_store):
       world.schedule_action(self, self.create_ore_blob_action(world, i_store),
          ticks + get_rate(self))
-      actions.schedule_animation(world, self)
+      world.schedule_animation(self)
 
 
 class Quake:
@@ -319,7 +319,7 @@ class Quake:
       self.pending_actions = []
 
    def schedule_quake(self, world, ticks):
-      actions.schedule_animation(world, self, worldmodel.QUAKE_STEPS)
+      world.schedule_animation(self, worldmodel.QUAKE_STEPS)
       world.schedule_action(self, world.create_entity_death_action
                               (self),
                       ticks + worldmodel.QUAKE_DURATION)

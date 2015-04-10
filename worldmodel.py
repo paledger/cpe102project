@@ -102,7 +102,27 @@ class WorldModel:
             self.remove_entity(entity)
             return [pt]
         return action
-    
+
+    def schedule_animation(self, entity, repeat_count=0):
+        self.schedule_action(entity,
+            self.create_animation_action(entity, repeat_count),
+                              entities.get_animation_rate(entity))
+
+    def create_animation_action(self, entity, repeat_count):
+        def action(current_ticks):
+            entities.remove_pending_action(entity, action)
+
+            entities.next_image(entity)
+
+            if repeat_count != 1:
+                self.schedule_action(entity,
+                    self.create_animation_action(entity,
+                    max(repeat_count - 1, 0)),
+                    current_ticks + entities.get_animation_rate(entity))
+
+            return [entities.get_position(entity)]
+        return action
+   
     def update_on_time(self, ticks):
         tiles = []
         
