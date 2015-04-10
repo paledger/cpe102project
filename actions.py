@@ -42,44 +42,6 @@ def find_open_around(world, pt, distance):
 
    return None
 
-def try_transform_miner_full(world, entity):
-   new_entity = entities.MinerNotFull(
-      entities.get_name(entity), entities.get_resource_limit(entity),
-      entities.get_position(entity), entities.get_rate(entity),
-      entities.get_images(entity), entities.get_animation_rate(entity))
-
-   return new_entity
-
-
-def try_transform_miner_not_full(world, entity):
-   if entity.resource_count < entity.resource_limit:
-      return entity
-   else:
-      new_entity = entities.MinerFull(
-         entities.get_name(entity), entities.get_resource_limit(entity),
-         entities.get_position(entity), entities.get_rate(entity),
-         entities.get_images(entity), entities.get_animation_rate(entity))
-      return new_entity
-
-
-def try_transform_miner(world, entity, transform):
-   new_entity = transform(world, entity)
-   if entity != new_entity:
-      clear_pending_actions(world, entity)
-      world.remove_entity_at(entities.get_position(entity))
-      world.add_entity(new_entity)
-      schedule_animation(world, new_entity)
-
-   return new_entity
-
-
-def create_miner_action(world, entity, image_store):
-   if isinstance(entity, entities.MinerNotFull):
-      return entity.create_miner_not_full_action(world,image_store)
-   else:
-      return entity.create_miner_full_action(world, image_store)
-
-
 def create_animation_action(world, entity, repeat_count):
    def action(current_ticks):
       entities.remove_pending_action(entity, action)
@@ -103,37 +65,11 @@ def create_entity_death_action(world, entity):
       return [pt]
    return action
 
-
-def create_ore_transform_action(world, entity, i_store):
-   def action(current_ticks):
-      entities.remove_pending_action(entity, action)
-      blob = create_blob(world, entities.get_name(entity) + " -- blob",
-         entities.get_position(entity),
-         entities.get_rate(entity) // BLOB_RATE_SCALE,
-         current_ticks, i_store)
-
-      remove_entity(world, entity)
-      world.add_entity(blob)
-
-      return [entities.get_position(blob)]
-   return action
-
-
 def remove_entity(world, entity):
    for action in entities.get_pending_actions(entity):
       world.unschedule_action(action)
    entities.clear_pending_actions(entity)
    world.remove_entity(entity)
-
-
-def create_blob(world, name, pt, rate, ticks, i_store):
-   blob = entities.OreBlob(name, pt, rate,
-      image_store.get_images(i_store, 'blob'),
-      random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
-      * BLOB_ANIMATION_RATE_SCALE)
-   schedule_blob(world, blob, ticks, i_store)
-   return blob
-
 
 def schedule_blob(world, blob, ticks, i_store):
    schedule_action(world, blob, blob.create_ore_blob_action(world, i_store),
@@ -142,7 +78,7 @@ def schedule_blob(world, blob, ticks, i_store):
 
 
 def schedule_miner(world, miner, ticks, i_store):
-   schedule_action(world, miner, create_miner_action(world, miner, i_store),
+   schedule_action(world, miner, miner.create_miner_action(world, i_store),
       ticks + entities.get_rate(miner))
    schedule_animation(world, miner)
 
@@ -157,7 +93,7 @@ def create_ore(world, name, pt, ticks, i_store):
 
 def schedule_ore(world, ore, ticks, i_store):
    schedule_action(world, ore,
-      create_ore_transform_action(world, ore, i_store),
+      ore.create_ore_transform_action(world,i_store),
       ticks + entities.get_rate(ore))
 
 

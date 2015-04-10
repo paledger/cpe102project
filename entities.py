@@ -6,6 +6,21 @@ import point
 import image_store
 import actions
 
+BLOB_RATE_SCALE = 4
+BLOB_ANIMATION_RATE_SCALE = 50
+BLOB_ANIMATION_MIN = 1
+BLOB_ANIMATION_MAX = 3
+
+ORE_CORRUPT_MIN = 20000
+ORE_CORRUPT_MAX = 30000
+
+QUAKE_STEPS = 10
+QUAKE_DURATION = 1100
+QUAKE_ANIMATION_RATE = 100
+
+VEIN_SPAWN_DELAY = 500
+VEIN_RATE_MIN = 8000
+VEIN_RATE_MAX = 17000
 
 class Background:
    def __init__(self, name, imgs):
@@ -40,6 +55,26 @@ class MinerNotFull:
       else:
          new_pt = entity_pt.next_position(world, ore_pt)
          return (world.move_entity(self, new_pt), False)
+      
+   def try_transform_miner(self,world,transform):
+      new_entity = transform(world)
+      if self != new_entity:
+         actions.clear_pending_actions(world, self)
+         world.remove_entity_at(self.position)
+         world.add_entity(new_entity)
+         actions.schedule_animation(world, new_entity)
+
+      return new_entity
+   
+   def try_transform_miner_not_full(self, world):
+      if self.resource_count < self.resource_limit:
+         return self
+      else:
+         new_entity = MinerFull(
+            self.name, self.resource_limit,
+            self.position, self.rate,
+            get_images(self), self.animation_rate)
+         return new_entity
 
    def create_miner_not_full_action(self, world, i_store):
       def action(current_ticks):
@@ -51,14 +86,20 @@ class MinerNotFull:
 
          new_entity = self
          if found:
-            new_entity = actions.try_transform_miner(world, self,
-               actions.try_transform_miner_not_full)
+            new_entity = self.try_transform_miner(world,
+               self.try_transform_miner_not_full)
 
          actions.schedule_action(world, new_entity,
-            actions.create_miner_action(world, new_entity, i_store),
+            new_entity.create_miner_action(world, i_store),
             current_ticks + get_rate(new_entity))
          return tiles
-      return action      
+      return action
+          
+   def create_miner_action(self, world, image_store):
+      if isinstance(self, MinerNotFull):
+         return self.create_miner_not_full_action(world,image_store)
+      else:
+         return self.create_miner_full_action(world, image_store)
 
 class MinerFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -98,14 +139,37 @@ class MinerFull:
 
          new_entity = self
          if found:
-            new_entity = actions.try_transform_miner(world, self,
-               actions.try_transform_miner_full)
+            new_entity = self.try_transform_miner(world,
+               self.try_transform_miner_full)
 
          actions.schedule_action(world, new_entity,
-            actions.create_miner_action(world, new_entity, i_store),
+            new_entity.create_miner_action(world,i_store),
                current_ticks + get_rate(new_entity))
          return tiles
       return action
+
+   def try_transform_miner(self,world,transform):
+      new_entity = transform(world)
+      if self != new_entity:
+         actions.clear_pending_actions(world, self)
+         world.remove_entity_at(self.position)
+         world.add_entity(new_entity)
+         actions.schedule_animation(world, new_entity)
+
+      return new_entity
+
+   def try_transform_miner_full(self, world):
+      new_entity = MinerNotFull(self.name,
+        self.resource_limit,self.position,self.rate,get_images(self),
+            self.animation_rate)
+                                       
+      return new_entity
+          
+   def create_miner_action(self, world, image_store):
+      if isinstance(self, MinerNotFull):
+         return self.create_miner_not_full_action(world,image_store)
+      else:
+         return self.create_miner_full_action(world, image_store)
 
 class Vein:
     def __init__(self, name, rate, position, imgs, resource_distance=1):
@@ -146,6 +210,27 @@ class Ore:
       self.current_img = 0
       self.rate = rate
       self.pending_actions = []
+
+   def create_ore_transform_action(self, world, i_store):
+      def action(current_ticks):
+         remove_pending_action(self, action)
+         blob = self.create_blob(world, self.name + " -- blob",
+            self.position,self.rate//BLOB_RATE_SCALE,current_ticks, i_store)
+
+         actions.remove_entity(world,self)
+         world.add_entity(blob)
+
+         return [blob.position]
+      return action
+   
+   def create_blob(self,world, name, pt, rate, ticks, i_store):
+      blob = OreBlob(name, pt, rate,
+         image_store.get_images(i_store, 'blob'),
+         random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+         * BLOB_ANIMATION_RATE_SCALE)
+      actions.schedule_blob(world, blob, ticks, i_store)
+      return blob
+
 
 class Blacksmith:
    def __init__(self, name, position, imgs, resource_limit, rate,
