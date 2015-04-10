@@ -40,7 +40,7 @@ class MinerNotFull:
          return (world.move_entity(self, new_pt), False)
 
    def schedule_miner(self,world, ticks, i_store):
-      actions.schedule_action(world, self,
+      world.schedule_action(self,
                               self.create_miner_action(world, i_store),
                       ticks + self.rate)
       actions.schedule_animation(world, self)
@@ -78,7 +78,7 @@ class MinerNotFull:
             new_entity = self.try_transform_miner(world,
                self.try_transform_miner_not_full)
 
-         actions.schedule_action(world, new_entity,
+         world.schedule_action(new_entity,
             new_entity.create_miner_action(world, i_store),
             current_ticks + get_rate(new_entity))
          return tiles
@@ -131,7 +131,7 @@ class MinerFull:
             new_entity = self.try_transform_miner(world,
                self.try_transform_miner_full)
 
-         actions.schedule_action(world, new_entity,
+         world.schedule_action(new_entity,
             new_entity.create_miner_action(world,i_store),
                current_ticks + get_rate(new_entity))
          return tiles
@@ -171,8 +171,7 @@ class Vein:
         self.pending_actions = []
 
     def schedule_vein(self,world, ticks, i_store):
-        actions.schedule_action(world,
-                     self, self.create_vein_action(world, i_store),
+        world.schedule_action(self, self.create_vein_action(world, i_store),
                               ticks + self.rate)
         
     def create_vein_action(self, world, i_store):
@@ -190,7 +189,7 @@ class Vein:
             else:
                 tiles = []
                     
-            actions.schedule_action(world, self,
+            world.schedule_action(self,
                             self.create_vein_action(world, i_store),
                             current_ticks + self.rate)
             return tiles
@@ -218,7 +217,7 @@ class Ore:
       return action
    
    def schedule_ore(self, world, ticks, i_store):
-      actions.schedule_action(world, self,
+      world.schedule_action(self,
                       self.create_ore_transform_action(world,i_store),
                               ticks + self.rate)
 
@@ -299,14 +298,14 @@ class OreBlob:
             world.add_entity(quake)
             next_time = current_ticks + get_rate(self) * 2
 
-         actions.schedule_action(world, self,
+         world.schedule_action(self,
             self.create_ore_blob_action(world, i_store),
             next_time)
          return tiles
       return action
 
    def schedule_blob(self,world, ticks, i_store):
-      actions.schedule_action(world, self, self.create_ore_blob_action(world, i_store),
+      world.schedule_action(self, self.create_ore_blob_action(world, i_store),
          ticks + get_rate(self))
       actions.schedule_animation(world, self)
 
@@ -322,7 +321,7 @@ class Quake:
 
    def schedule_quake(self, world, ticks):
       actions.schedule_animation(world, self, worldmodel.QUAKE_STEPS)
-      actions.schedule_action(world, self, actions.create_entity_death_action
+      world.schedule_action(self, actions.create_entity_death_action
                               (world, self),
                       ticks + worldmodel.QUAKE_DURATION)
 

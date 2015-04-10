@@ -32,7 +32,7 @@ def create_animation_action(world, entity, repeat_count):
       entities.next_image(entity)
 
       if repeat_count != 1:
-         schedule_action(world, entity,
+         world.schedule_action(entity,
             create_animation_action(world, entity, max(repeat_count - 1, 0)),
             current_ticks + entities.get_animation_rate(entity))
 
@@ -48,13 +48,8 @@ def create_entity_death_action(world, entity):
       return [pt]
    return action
 
-def schedule_action(world, entity, action, time):
-   entities.add_pending_action(entity, action)
-   world.schedule_action(action, time)
-
-
 def schedule_animation(world, entity, repeat_count=0):
-   schedule_action(world, entity,
+   world.schedule_action(entity,
       create_animation_action(world, entity, repeat_count),
       entities.get_animation_rate(entity))
 

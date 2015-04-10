@@ -50,6 +50,21 @@ class WorldModel:
         
         return tiles
     
+    def add_entity(self, entity):
+        pt = entities.get_position(entity)
+        if pt.within_bounds(self):
+            old_entity = occ_grid.get_cell(self.occupancy, pt)
+            if old_entity != None:
+                entities.clear_pending_actions(old_entity)
+            occ_grid.set_cell(self.occupancy, pt, entity)
+            self.entities.append(entity)
+
+    def remove_entity(self, entity):
+        for action in entities.get_pending_actions(entity):
+            self.unschedule_action(action)
+        entities.clear_pending_actions(entity)
+        self.remove_entity_at(entities.get_position(entity))
+        
     #def remove_entity(self, entity):
     #   self.remove_entity_at(entities.get_position(entity))
     ##Allison: Moved the remove_entity from actions.py to here.
@@ -63,7 +78,15 @@ class WorldModel:
             self.entities.remove(entity)
             occ_grid.set_cell(self.occupancy, pt, None)
     
-    
+    def schedule_action(self, entity, action, time):
+        entities.add_pending_action(entity, action)
+        self.action_queue.insert(action, time)
+
+   # def schedule_action(self, action, time):
+   #     self.action_queue.insert(action, time)
+   ##Allison: Moved the schedule_action from actions.py to here.
+   ##Added this functionality to that method instead.
+        
     def unschedule_action(self, action):
         self.action_queue.remove(action)
     
@@ -77,9 +100,6 @@ class WorldModel:
             next = self.action_queue.head()
         
         return tiles
-            
-    def schedule_action(self, action, time):
-        self.action_queue.insert(action, time)
     
     def get_background_image(self, pt):
         if pt.within_bounds(self):
@@ -104,21 +124,6 @@ class WorldModel:
     def get_entities(self):
         return self.entities
     
-    def add_entity(self, entity):
-        pt = entities.get_position(entity)
-        if pt.within_bounds(self):
-            old_entity = occ_grid.get_cell(self.occupancy, pt)
-            if old_entity != None:
-                entities.clear_pending_actions(old_entity)
-            occ_grid.set_cell(self.occupancy, pt, entity)
-            self.entities.append(entity)
-
-    def remove_entity(self, entity):
-        for action in entities.get_pending_actions(entity):
-            self.unschedule_action(action)
-        entities.clear_pending_actions(entity)
-        self.remove_entity_at(entities.get_position(entity))       
-
     def create_ore(self, name, pt, ticks, i_store):
         ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
                   random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
