@@ -72,13 +72,6 @@ def remove_entity(world, entity):
    world.remove_entity(entity)
 
 
-def create_vein(world, name, pt, ticks, i_store):
-   vein = entities.Vein("vein" + name,
-      random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
-      pt, image_store.get_images(i_store, 'vein'))
-   return vein
-
-
 def schedule_action(world, entity, action, time):
    entities.add_pending_action(entity, action)
    world.schedule_action(action, time)

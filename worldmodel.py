@@ -130,8 +130,13 @@ class WorldModel:
       quake = entities.Quake("quake", pt,
          image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
       quake.schedule_quake(self, ticks)
-      print "working"
       return quake
+
+    def create_vein(self, name, pt, ticks, i_store):
+        vein = entities.Vein("vein" + name,
+                             random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
+                             pt, image_store.get_images(i_store, 'vein'))
+        return vein
 
 def nearest_entity(entity_dists):
     if len(entity_dists) > 0:
