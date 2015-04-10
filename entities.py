@@ -6,20 +6,11 @@ import point
 import image_store
 import actions
 
-QUAKE_STEPS = 10
-QUAKE_DURATION = 1100
-QUAKE_ANIMATION_RATE = 100
-
-VEIN_SPAWN_DELAY = 500
-VEIN_RATE_MIN = 8000
-VEIN_RATE_MAX = 17000
-
 class Background:
    def __init__(self, name, imgs):
       self.name = name
       self.imgs = imgs
       self.current_img = 0
-
 
 class MinerNotFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
@@ -330,10 +321,10 @@ class Quake:
       self.pending_actions = []
 
    def schedule_quake(self, world, ticks):
-      actions.schedule_animation(world, self, QUAKE_STEPS) 
+      actions.schedule_animation(world, self, worldmodel.QUAKE_STEPS)
       actions.schedule_action(world, self, actions.create_entity_death_action
                               (world, self),
-                      ticks + QUAKE_DURATION)
+                      ticks + worldmodel.QUAKE_DURATION)
 
 def set_position(entity, point):
    entity.position = point
