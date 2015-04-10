@@ -6,6 +6,21 @@ import point
 import image_store
 import actions
 
+BLOB_RATE_SCALE = 4
+BLOB_ANIMATION_RATE_SCALE = 50
+BLOB_ANIMATION_MIN = 1
+BLOB_ANIMATION_MAX = 3
+
+ORE_CORRUPT_MIN = 20000
+ORE_CORRUPT_MAX = 30000
+
+QUAKE_STEPS = 10
+QUAKE_DURATION = 1100
+QUAKE_ANIMATION_RATE = 100
+
+VEIN_SPAWN_DELAY = 500
+VEIN_RATE_MIN = 8000
+VEIN_RATE_MAX = 17000
 
 class Background:
    def __init__(self, name, imgs):
@@ -195,6 +210,27 @@ class Ore:
       self.current_img = 0
       self.rate = rate
       self.pending_actions = []
+
+   def create_ore_transform_action(self, world, i_store):
+      def action(current_ticks):
+         remove_pending_action(self, action)
+         blob = self.create_blob(world, self.name + " -- blob",
+            self.position,self.rate//BLOB_RATE_SCALE,current_ticks, i_store)
+
+         actions.remove_entity(world,self)
+         world.add_entity(blob)
+
+         return [blob.position]
+      return action
+   
+   def create_blob(self,world, name, pt, rate, ticks, i_store):
+      blob = OreBlob(name, pt, rate,
+         image_store.get_images(i_store, 'blob'),
+         random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+         * BLOB_ANIMATION_RATE_SCALE)
+      actions.schedule_blob(world, blob, ticks, i_store)
+      return blob
+
 
 class Blacksmith:
    def __init__(self, name, position, imgs, resource_limit, rate,
