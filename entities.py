@@ -11,9 +11,6 @@ BLOB_ANIMATION_RATE_SCALE = 50
 BLOB_ANIMATION_MIN = 1
 BLOB_ANIMATION_MAX = 3
 
-ORE_CORRUPT_MIN = 20000
-ORE_CORRUPT_MAX = 30000
-
 QUAKE_STEPS = 10
 QUAKE_DURATION = 1100
 QUAKE_ANIMATION_RATE = 100
@@ -186,13 +183,6 @@ class Vein:
         self.current_img = 0
         self.resource_distance = resource_distance
         self.pending_actions = []
-        
-    def create_ore(self,world, name, pt, ticks, i_store):
-        ore = Ore(name, pt, image_store.get_images(i_store, 'ore'),
-                  random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-        ore.schedule_ore(world, ticks, i_store)
-
-        return ore
 
     def schedule_vein(self,world, ticks, i_store):
         actions.schedule_action(world,
@@ -206,7 +196,7 @@ class Vein:
             open_pt = actions.find_open_around(world, self.position,
                 self.resource_distance)
             if open_pt:
-                ore = self.create_ore(world,
+                ore = world.create_ore(
                 "ore - " + self.name + " - " + str(current_ticks),
                     open_pt, current_ticks, i_store)
                 world.add_entity(ore)
