@@ -6,6 +6,22 @@ import point
 import image_store
 import actions
 
+BLOB_RATE_SCALE = 4
+BLOB_ANIMATION_RATE_SCALE = 50
+BLOB_ANIMATION_MIN = 1
+BLOB_ANIMATION_MAX = 3
+
+ORE_CORRUPT_MIN = 20000
+ORE_CORRUPT_MAX = 30000
+
+QUAKE_STEPS = 10
+QUAKE_DURATION = 1100
+QUAKE_ANIMATION_RATE = 100
+
+VEIN_SPAWN_DELAY = 500
+VEIN_RATE_MIN = 8000
+VEIN_RATE_MAX = 17000
+
 class Background:
    def __init__(self, name, imgs):
       self.name = name
@@ -180,7 +196,7 @@ class Vein:
             pt = self.position
             open_pt = (pt.find_open_around(world,self.resource_distance))
             if open_pt:
-                ore = world.create_ore(
+                ore = self.create_ore(world,
                 "ore - " + self.name + " - " + str(current_ticks),
                     open_pt, current_ticks, i_store)
                 world.add_entity(ore)
@@ -194,6 +210,12 @@ class Vein:
             return tiles
        return action
 
+    def create_ore(self, world, name, pt, ticks, i_store):
+        ore = Ore(name, pt, image_store.get_images(i_store, 'ore'),
+                       random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+        ore.schedule_ore(world, ticks, i_store)
+        return ore
+
 class Ore:
    def __init__(self, name, position, imgs, rate=5000):
       self.name = name
@@ -206,7 +228,7 @@ class Ore:
    def create_ore_transform_action(self, world, i_store):
       def action(current_ticks):
          remove_pending_action(self, action)
-         blob = world.create_blob(self.name + " -- blob",
+         blob = self.create_blob(world,self.name + " -- blob",
             self.position,self.rate//worldmodel.BLOB_RATE_SCALE,current_ticks, i_store)
 
          world.remove_entity(self)
@@ -214,7 +236,15 @@ class Ore:
 
          return [blob.position]
       return action
-   
+
+   def create_blob(self, world,name, pt, rate, ticks, i_store):
+      blob = OreBlob(name, pt, rate,
+                            image_store.get_images(i_store, 'blob'),
+                            random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+                            * BLOB_ANIMATION_RATE_SCALE)
+      blob.schedule_blob(world, ticks, i_store)
+      return blob
+        
    def schedule_ore(self, world, ticks, i_store):
       world.schedule_action(self,
                       self.create_ore_transform_action(world,i_store),
@@ -292,7 +322,7 @@ class OreBlob:
 
          next_time = current_ticks + get_rate(self)
          if found:
-            quake = world.create_quake(tiles[0],
+            quake = self.create_quake(world,tiles[0],
                                          current_ticks, i_store)
             world.add_entity(quake)
             next_time = current_ticks + get_rate(self) * 2
@@ -303,6 +333,12 @@ class OreBlob:
          return tiles
       return action
 
+   def create_quake(self,world, pt, ticks, i_store):
+      quake = Quake("quake", pt,
+         image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+      quake.schedule_quake(world, ticks)
+      return quake
+   
    def schedule_blob(self,world, ticks, i_store):
       world.schedule_action(self, self.create_ore_blob_action(world, i_store),
          ticks + get_rate(self))
