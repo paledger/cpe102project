@@ -193,7 +193,12 @@ class Vein:
         ore.schedule_ore(world, ticks, i_store)
 
         return ore
-     
+
+    def schedule_vein(self,world, ticks, i_store):
+        actions.schedule_action(world,
+                     self, self.create_vein_action(world, i_store),
+                              ticks + self.rate)
+        
     def create_vein_action(self, world, i_store):
        def action(current_ticks):
             remove_pending_action(self, action)
@@ -336,7 +341,6 @@ class OreBlob:
       quake = Quake("quake", pt,
          image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
       quake.schedule_quake(world, ticks)
-      print "working"
       return quake
 
    def schedule_blob(self,world, ticks, i_store):

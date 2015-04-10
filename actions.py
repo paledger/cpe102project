@@ -79,11 +79,6 @@ def create_vein(world, name, pt, ticks, i_store):
    return vein
 
 
-def schedule_vein(world, vein, ticks, i_store):
-   schedule_action(world, vein, vein.create_vein_action(world, i_store),
-      ticks + entities.get_rate(vein))
-
-
 def schedule_action(world, entity, action, time):
    entities.add_pending_action(entity, action)
    world.schedule_action(action, time)
