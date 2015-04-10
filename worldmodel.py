@@ -118,6 +118,13 @@ class WorldModel:
 
         return ore
 
+    def create_blob(self, name, pt, rate, ticks, i_store):
+      blob = entities.OreBlob(name, pt, rate,
+         image_store.get_images(i_store, 'blob'),
+         random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+         * BLOB_ANIMATION_RATE_SCALE)
+      blob.schedule_blob(self, ticks, i_store)
+      return blob
 
 def nearest_entity(entity_dists):
     if len(entity_dists) > 0:
