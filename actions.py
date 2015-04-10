@@ -13,18 +13,7 @@ def sign(x):
       return 1
    else:
       return 0
-
-def find_open_around(world, pt, distance):
-   for dy in range(-distance, distance + 1):
-      for dx in range(-distance, distance + 1):
-         new_pt = point.Point(pt.x + dx, pt.y + dy)
-
-         if (new_pt.within_bounds(world) and
-            (not new_pt.is_occupied(world))):
-            return new_pt
-
-   return None
-
+   
 def create_animation_action(world, entity, repeat_count):
    def action(current_ticks):
       entities.remove_pending_action(entity, action)
