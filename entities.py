@@ -178,8 +178,7 @@ class Vein:
        def action(current_ticks):
             remove_pending_action(self, action)
             pt = self.position
-            open_pt = (pt.find_open_around(world,
-                self.resource_distance)
+            open_pt = (pt.find_open_around(world,self.resource_distance))
             if open_pt:
                 ore = world.create_ore(
                 "ore - " + self.name + " - " + str(current_ticks),
