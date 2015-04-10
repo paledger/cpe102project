@@ -126,6 +126,13 @@ class WorldModel:
       blob.schedule_blob(self, ticks, i_store)
       return blob
 
+    def create_quake(self, pt, ticks, i_store):
+      quake = entities.Quake("quake", pt,
+         image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+      quake.schedule_quake(self, ticks)
+      print "working"
+      return quake
+
 def nearest_entity(entity_dists):
     if len(entity_dists) > 0:
         pair = entity_dists[0]

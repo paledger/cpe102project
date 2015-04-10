@@ -303,7 +303,7 @@ class OreBlob:
 
          next_time = current_ticks + get_rate(self)
          if found:
-            quake = self.create_quake(world, tiles[0],
+            quake = world.create_quake(tiles[0],
                                          current_ticks, i_store)
             world.add_entity(quake)
             next_time = current_ticks + get_rate(self) * 2
@@ -313,12 +313,6 @@ class OreBlob:
             next_time)
          return tiles
       return action
-
-   def create_quake(self,world, pt, ticks, i_store):
-      quake = Quake("quake", pt,
-         image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
-      quake.schedule_quake(world, ticks)
-      return quake
 
    def schedule_blob(self,world, ticks, i_store):
       actions.schedule_action(world, self, self.create_ore_blob_action(world, i_store),
