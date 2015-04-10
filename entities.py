@@ -348,6 +348,11 @@ class Quake:
       self.animation_rate = animation_rate
       self.pending_actions = []
 
+   def schedule_quake(self, world, ticks):
+      actions.schedule_animation(world, self, QUAKE_STEPS) 
+      actions.schedule_action(world, self, actions.create_entity_death_action
+                              (world, self),
+                      ticks + QUAKE_DURATION)
 
 def set_position(entity, point):
    entity.position = point
