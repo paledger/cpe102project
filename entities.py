@@ -190,7 +190,7 @@ class Vein:
     def create_ore(self,world, name, pt, ticks, i_store):
         ore = Ore(name, pt, image_store.get_images(i_store, 'ore'),
                   random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
-        actions.schedule_ore(world, ore, ticks, i_store)
+        ore.schedule_ore(world, ticks, i_store)
 
         return ore
      
@@ -235,6 +235,11 @@ class Ore:
 
          return [blob.position]
       return action
+   
+   def schedule_ore(self, world, ticks, i_store):
+      actions.schedule_action(world, self,
+                      self.create_ore_transform_action(world,i_store),
+                              ticks + self.rate)
    
    def create_blob(self,world, name, pt, rate, ticks, i_store):
       blob = OreBlob(name, pt, rate,

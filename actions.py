@@ -71,11 +71,6 @@ def remove_entity(world, entity):
    entities.clear_pending_actions(entity)
    world.remove_entity(entity)
 
-def schedule_ore(world, ore, ticks, i_store):
-   schedule_action(world, ore,
-      ore.create_ore_transform_action(world,i_store),
-      ticks + entities.get_rate(ore))
-
 
 def create_quake(world, pt, ticks, i_store):
    quake = entities.Quake("quake", pt,
