@@ -89,6 +89,12 @@ class WorldModel:
         
     def unschedule_action(self, action):
         self.action_queue.remove(action)
+
+    def clear_pending_actions(self, entity):
+        for action in entities.get_pending_actions(entity):
+            self.unschedule_action(action)
+        entities.clear_pending_actions(entity)
+        print "working"
     
     def update_on_time(self, ticks):
         tiles = []

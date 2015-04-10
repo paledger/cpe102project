@@ -48,7 +48,7 @@ class MinerNotFull:
    def try_transform_miner(self,world,transform):
       new_entity = transform(world)
       if self != new_entity:
-         actions.clear_pending_actions(world, self)
+         world.clear_pending_actions(self)
          world.remove_entity_at(self.position)
          world.add_entity(new_entity)
          actions.schedule_animation(world, new_entity)
@@ -140,7 +140,7 @@ class MinerFull:
    def try_transform_miner(self,world,transform):
       new_entity = transform(world)
       if self != new_entity:
-         actions.clear_pending_actions(world, self)
+         world.clear_pending_actions(self)
          world.remove_entity_at(self.position)
          world.add_entity(new_entity)
          actions.schedule_animation(world, new_entity)
