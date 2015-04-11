@@ -133,9 +133,13 @@ class WorldView:
     # worldview.py/worldview class
 
     def handle_mouse_motion(self, event):
-        mouse_pt = builder_controller.mouse_to_tile(event.pos, self.tile_width,\
+        mouse_pt = builder_controller.mouse_to_tile(event.pos,self.tile_width,\
             self.tile_height)
         self.mouse_move(mouse_pt)
+    
+    def handle_keydown(self, event):
+        view_delta = on_keydown(event)
+        self.update_view(view_delta)
 
     def handle_keydown(self, event, i_store, world, entity_select):
        (view_delta, entity_select) = on_keydown(event, world,\

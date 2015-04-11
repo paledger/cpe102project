@@ -47,5 +47,4 @@ class Point:
                 if (new_pt.within_bounds(world) and
                     (not new_pt.is_occupied(world))):
                     return new_pt
-        print "working"
         return None

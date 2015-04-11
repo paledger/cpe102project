@@ -15,7 +15,12 @@ class WorldModel:
         self.occupancy = occ_grid.Grid(num_cols, num_rows, None)
         self.entities = []
         self.action_queue = ordered_list.OrderedList()
+
+    def handle_timer_event(self, view):
+        rects = self.update_on_time(pygame.time.get_ticks())
+        view.update_view_tiles(rects)
     
+
     def find_nearest(self, pt, type):
         oftype = [(e, pt.distance_sq(entities.get_position(e)))
                   for e in self.entities if isinstance(e, type)]

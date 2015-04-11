@@ -18,20 +18,6 @@ def on_keydown(event):
     
     return (x_delta, y_delta)
 
-
-def mouse_to_tile(pos, tile_width, tile_height):
-    return point.Point(pos[0] // tile_width, pos[1] // tile_height)
-
-
-def handle_timer_event(world, view):
-    rects = world.update_on_time(pygame.time.get_ticks())
-    view.update_view_tiles(rects)
-
-def handle_keydown(view, event):
-    view_delta = on_keydown(event)
-    view.update_view(view_delta)
-
-
 def activity_loop(view, world):
     pygame.key.set_repeat(KEY_DELAY, KEY_INTERVAL)
     pygame.time.set_timer(pygame.USEREVENT, TIMER_FREQUENCY)
@@ -41,9 +27,9 @@ def activity_loop(view, world):
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.USEREVENT:
-                handle_timer_event(world, view)
+                world.handle_timer_event(view)
             elif event.type == pygame.MOUSEMOTION:
                 view.handle_mouse_motion(event)
             elif event.type == pygame.KEYDOWN:
-                handle_keydown(view, event)
+                view.handle_keydown(event)
 

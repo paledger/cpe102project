@@ -28,6 +28,7 @@ class Background:
       self.imgs = imgs
       self.current_img = 0
 
+
 class MinerNotFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):

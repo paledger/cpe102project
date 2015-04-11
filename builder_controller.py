@@ -28,10 +28,8 @@ SMITH_LIMIT_MAX = 15
 SMITH_RATE_MIN = 2000
 SMITH_RATE_MAX = 4000
 
-
-def mouse_to_tile(pos, tile_width, tile_height):
-   return point.Point(pos[0] // tile_width, pos[1] // tile_height)
-
+def mouse_to_tile(pt, tile_width, tile_height):
+    return point.Point(pt[0] // tile_width, pt[1] // tile_height)
 
 def save_world(world, filename):
    with open(filename, 'w') as file:
