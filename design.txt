@@ -3,38 +3,122 @@ CPE 102-08 (akeen) || Paula Ledger and Allison Lee
 Class: Background
 methods:
 - get_images
+- get_image
 
 Class: MinerNotFull
 methods:
+- entity_string
 - miner_to_ore
 - schedule_miner
 - try_transform_miner
 - try_transform_miner_not_full
 - create_miner_not_full_action
 - create_miner_action
+- get_name
+- get_position
+- set_position
+- get_rate
+- get_images
+- get_image
+- set_resource_count
+- get_resource_count
+- get_resource_limit
+- remove_pending_action
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- get_animation_rate
+- next_image
 
 Class: MinerFull
 methods:
+- entity_string
 - miner_to_smith
 - create_miner_full_action
 - try_transform_miner
 - try_transform_miner_full
 - create_miner_action
+- get_name
+- get_position
+- set_position
+- get_rate
+- get_images
+- get_image
+- set_resource_count
+- get_resource_count
+- get_resource_limit
+- remove_pending_action
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- get_animation_rate
+- next_image
 
 Class: Vein
 methods:
 - schedule_vein
 - create_vein_action
 - create_ore
+- entity_string
+- remove_pending_action
+- get_name
+- set_position
+- get_position
+- get_images
+- get_image
+- get_rate
+- get_resource_distance
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- next_image
 
 Class: Ore
 methods:
 - create_ore_transform_action
 - create_blob
 - schedule_ore
+- entity_string
+- remove_pending_action
+- get_name
+- set_position
+- get_position
+- get_images
+- get_image
+- get_rate
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- next_image
 
 Class: Blacksmith
 methods:
+- entity_string
+- get_name
+- remove_pending_action
+- get_resource_distance
+- set_position
+- get_position
+- get_image
+- get_images
+- get_rate
+- set_resource_count
+- get_resource_count
+- get_resource_limit
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- next_image
+
+Clas: Obstacle
+methods:
+- entity_string
+- set_position
+- get_position
+- get_images
+- get_images
+- get_name
+- next_image
 
 Class: OreBlob
 methods:
@@ -43,10 +127,34 @@ methods:
 - create_ore_blob_action
 - create_quake
 - schedule_blob
+- get_name
+- set_position
+- get_position
+- get_images
+- get_image
+- get_rate
+- get_animation_rate
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- next_image
+- entity_string
 
 Class: Quake
 methods:
 - schedule_quake
+- get_name
+- set_position
+- get_position
+- get_images
+- get_image
+- get_animation_rate
+- remove_pending_action
+- add_pending_action
+- get_pending_actions
+- clear_pending_actions
+- next_image
+- entity_string
 
 
 —————

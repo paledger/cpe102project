@@ -564,7 +564,10 @@ class OreBlob:
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
-
+   
+   def entity_string(self):
+        return 'unknown'
+   
    def remove_pending_action(self, action):
        if hasattr(self, "pending_actions"):
           self.pending_actions.remove(action)
@@ -687,6 +690,9 @@ class Quake:
                               (self),
                       ticks + QUAKE_DURATION)
 
+   def entity_string(self):
+      return 'unknown'
+        
    def get_name(self):
       return self.name
         
