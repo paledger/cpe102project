@@ -83,7 +83,7 @@ def add_background(world, properties, i_store):
    if len(properties) >= BGND_NUM_PROPERTIES:
       pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
       name = properties[BGND_NAME]
-      world.set_background(pt,
+      world.set_background(pt, 
          entities.Background(name, image_store.get_images(i_store, name)))
 
 
@@ -92,7 +92,7 @@ def add_entity(world, properties, i_store, run):
     if new_entity:
         world.add_entity(new_entity)
         if run:
-            schedule_entity(world, new_entity, i_store)
+            new_entity.schedule_entity(world, i_store)
 
 
 def create_from_properties(properties, i_store):
@@ -165,12 +165,3 @@ def create_obstacle(properties, i_store):
          image_store.get_images(i_store, properties[PROPERTY_KEY]))
    else:
       return None
-
-
-def schedule_entity(world, entity, i_store):
-   if isinstance(entity, entities.MinerNotFull):
-      entity.schedule_miner(world, 0, i_store)
-   elif isinstance(entity, entities.Vein):
-      entity.schedule_vein(world, 0, i_store)
-   elif isinstance(entity, entities.Ore):
-      entity.schedule_ore(world, 0, i_store)

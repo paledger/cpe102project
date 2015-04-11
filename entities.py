@@ -34,6 +34,9 @@ class Background:
    def get_image(self):
      return self.imgs[self.current_img]
 
+   def schedule_entity(self,world,i_store):
+     pass
+
 class MinerNotFull:
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
@@ -46,7 +49,10 @@ class MinerNotFull:
       self.resource_count = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
-   
+ 
+   def schedule_entity(self,world,i_store):
+       self.schedule_miner(world, 0, i_store)
+
    def get_name(self):
        return self.name
 
@@ -179,7 +185,10 @@ class MinerFull:
       self.resource_count = resource_limit
       self.animation_rate = animation_rate
       self.pending_actions = []
- 
+
+   def schedule_entity(self,world,i_store):
+      pass
+   
    def get_name(self):
       return self.name
          
@@ -297,7 +306,10 @@ class Vein:
         self.current_img = 0
         self.resource_distance = resource_distance
         self.pending_actions = []
- 
+
+    def schedule_entity(self,world,i_store):
+        self.schedule_vein(world, 0, i_store)
+
     def entity_string(self):
         return ' '.join(['vein', entity.name, str(entity.position.x),
                       str(entity.position.y), str(entity.rate),
@@ -385,6 +397,9 @@ class Ore:
       self.rate = rate
       self.pending_actions = []
 
+   def schedule_entity(self,world,i_store):
+      self.schedule_ore(world, 0, i_store)
+
    def remove_pending_action(self, action):
       if hasattr(self, "pending_actions"):
          self.pending_actions.remove(action)
@@ -468,6 +483,9 @@ class Blacksmith:
       self.resource_distance = resource_distance
       self.pending_actions = []
 
+   def schedule_entity(self,world,i_store):
+      pass
+        
    def get_name(self):
       return self.name
         
@@ -531,7 +549,10 @@ class Obstacle:
       self.position = position
       self.imgs = imgs
       self.current_img = 0
-   
+
+   def schedule_entity(self,world,i_store):
+      pass
+        
    def entity_string(self):
       return ' '.join(['obstacle', entity.name, str(entity.position.x),
                         str(entity.position.y)])
@@ -564,7 +585,10 @@ class OreBlob:
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
-   
+
+   def schedule_entity(self,world,i_store):
+       pass
+        
    def entity_string(self):
         return 'unknown'
    
@@ -684,6 +708,9 @@ class Quake:
       self.animation_rate = animation_rate
       self.pending_actions = []
 
+   def schedule_entity(self,world,i_store):
+      pass
+        
    def schedule_quake(self, world, ticks):
       world.schedule_animation(self, QUAKE_STEPS)
       world.schedule_action(self, world.create_entity_death_action

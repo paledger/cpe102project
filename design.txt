@@ -1,5 +1,50 @@
 CPE 102-08 (akeen) || Paula Ledger and Allison Lee
 —————
+ACTIONS.PY
+
+unchanged:
+- sign
+>> Too general to be used in a specific class.
+- create_vein
+>> Not called in any functions yet. Unable to judge what class it will belong to.
+—————
+BUILDER_CONTROLLER.PY
+
+unchanged:
+- mouse_to_tile:
+>> Because event.pos is a tuple rather than a point, it doesn't take arguments related to other classes.
+- save_world
+>> File I/O can stay out of a class.
+- load_world
+>> File I/O can stay out of a class.
+- on_keydown
+>> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world.
+- create_new_entity
+>> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world. Also doesn't take arguments related to any other class.
+- is_background_tile
+>> Doesn't take arguments related to other classes.
+—————
+BUILDER.PY
+
+unchanged:
+- create_default_background
+>> Doesn't take arguments related to other classes.
+—————
+CONTROLLER.PY
+
+unchanged:
+- handle_keydown
+>> Different than the handle_keydown used in view. 
+>>>> (Can possibly be converted into a variable argument function?)
+- on_keydown
+>> Doesn't take arguments related to other classes.
+- mouse_to_tile:
+>> Already in builder_controller.py (identical). Not used anywhere, so deleted.
+- activity_loop
+>> Doesn't take arguments related to other classes. Used as part of the pygame setup.
+—————
+ENTITIES.PY
+
 Class: Background
 methods:
 - get_images
@@ -29,6 +74,7 @@ methods:
 - clear_pending_actions
 - get_animation_rate
 - next_image
+- schedule_entity
 
 Class: MinerFull
 methods:
@@ -53,6 +99,7 @@ methods:
 - clear_pending_actions
 - get_animation_rate
 - next_image
+- schedule_entity: pass. Is there a better way to do this? If schedule_entity is called through add_entity, it gives an AttributeError without a pass function.
 
 Class: Vein
 methods:
@@ -72,6 +119,7 @@ methods:
 - get_pending_actions
 - clear_pending_actions
 - next_image
+- schedule_entity
 
 Class: Ore
 methods:
@@ -90,6 +138,7 @@ methods:
 - get_pending_actions
 - clear_pending_actions
 - next_image
+- schedule_entity
 
 Class: Blacksmith
 methods:
@@ -109,6 +158,7 @@ methods:
 - get_pending_actions
 - clear_pending_actions
 - next_image
+- schedule_entity: pass. Is there a better way to do this? If schedule_entity is called through add_entity, it gives an AttributeError without a pass function.
 
 Clas: Obstacle
 methods:
@@ -119,6 +169,7 @@ methods:
 - get_images
 - get_name
 - next_image
+- schedule_entity: pass. Is there a better way to do this? If schedule_entity is called through add_entity, it gives an AttributeError without a pass function.
 
 Class: OreBlob
 methods:
@@ -139,6 +190,7 @@ methods:
 - clear_pending_actions
 - next_image
 - entity_string
+- schedule_entity: pass. Is there a better way to do this? If schedule_entity is called through add_entity, it gives an AttributeError without a pass function.
 
 Class: Quake
 methods:
@@ -155,53 +207,105 @@ methods:
 - clear_pending_actions
 - next_image
 - entity_string
-
-
+- schedule_entity: pass. Is there a better way to do this? If schedule_entity is called through add_entity, it gives an AttributeError without a pass function.
 —————
-Functions not converted to methods:
-
-ACTIONS.PY
-- sign
->> Too general to be used in a specific class.
-- create_vein
->> Not called in any functions yet. Unable to judge what class it will belong to.
-
-BUILDER_CONTROLLER.PY
-- mouse_to_tile:
->> Because event.pos is a tuple rather than a point, it doesn't take arguments related to other classes.
-
-- save_world
->> File I/O can stay out of a class.
-
-- load_world
->> File I/O can stay out of a class.
-
-- on_keydown
->> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world.
-
-- create_new_entity
->> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world. Also doesn't take arguments related to any other class.
-
-- is_background_tile
->> Doesn't take arguments related to other classes.
-
-BUILDER.PY
-- create_default_background
->> Doesn't take arguments related to other classes.
-
-CONTROLLER.PY
-- handle_keydown
->> Different than the handle_keydown used in view. 
->>>> (Can possibly be converted into a variable argument function?)
-
-- on_keydown
->> Doesn't take arguments related to other classes.
-
-- mouse_to_tile:
->> Already in builder_controller.py (identical). Not used anywhere, so deleted.
-
-- activity_loop
->> Doesn't take arguments related to other classes. Used as part of the pygame setup.
-
 IMAGE_STORE.PY
+
+unchanged:
 >> Everything related to images ore file I/O, no image class.
+—————
+OCC_GRID.PY
+
+Class: Grid
+methods:
+- set_cell
+- get_cell
+—————
+ORDERED_LIST.PY
+
+unchanged:
+>> Everything already neatly in classes
+—————
+POINT.PY
+
+Class: Point
+methods:
+- within_bounds
+- is_occupied
+- distance_sq
+- adjacent
+- next_position
+- find_open_around
+—————
+SAVE_LOAD.PY
+
+unchanged:
+- save_world, save_entities, save_background, load_world
+>> File I/O excluded from class
+—————
+WORLDMODEL.PY
+
+Class: WorldModel
+methods:
+- handle_timer_event
+- find_nearest
+- move_entity
+- add_entity
+- remove_entity
+- remove_entity_at
+- schedule_action
+- unschedule_action
+- clear_pending_actions
+- create_entity_death_action
+- schedule_animation
+- create_animation_action
+- update_on_time
+- get_background_image
+- get_background
+- set_background
+- get_tile_occupant
+- get_entities
+
+unchanged:
+- nearest_entity
+>> No pertaining arguments.
+—————
+WORLDVIEW.PY
+
+Class: WorldView
+methods:
+- viewport_to_world
+- world_to_viewport
+- create_shifted_viewport
+- draw_background
+- draw_entities
+- draw_viewport
+- update_view
+- update_view_tiles
+- update_tile
+- get_tile_image
+- create_mouse_surface
+- update_mouse_cursor
+- mouse_move
+- handle_mouse_motion
+- handle_keydown
+- handle_mouse_button
+
+unchaged:
+- clamp
+>> No pertaining arguments.
+
+- add_background
+>> Uses global variables defined in save_load.py
+
+- add_entity
+>> World already has a different add_entity, add_entity in save_load uses that function and is hierarchically higher.
+
+- create_from_properties
+>> Doesn't take arguments related to other classes.
+
+- create_miner, create_vein, create_ore, create_blacksmith, create_obstacle
+>> Doesn't take arguments related to other classes.
+
+
+
