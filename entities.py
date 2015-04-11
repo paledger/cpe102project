@@ -41,15 +41,38 @@ class MinerNotFull:
       self.resource_count = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
-      
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+
    def miner_to_ore(self,world,ore):
-      entity_pt = get_position(self)
+      entity_pt = self.get_position()
       if not ore:
          return ([entity_pt], False)
-      ore_pt = get_position(ore)
+      ore_pt = ore.get_position()
       if entity_pt.adjacent(ore_pt):
-         set_resource_count(self,
-            1 + get_resource_count(self))
+         self.set_resource_count(1 + self.get_resource_count())
          world.remove_entity(ore)
          return ([ore_pt], True)
       else:
@@ -86,7 +109,7 @@ class MinerNotFull:
       def action(current_ticks):
          remove_pending_action(self, action)
 
-         entity_pt = get_position(self)
+         entity_pt = self.get_position()
          ore = world.find_nearest(entity_pt,Ore)
          (tiles, found) = self.miner_to_ore(world,ore)
 
@@ -97,7 +120,7 @@ class MinerNotFull:
 
          world.schedule_action(new_entity,
             new_entity.create_miner_action(world, i_store),
-            current_ticks + get_rate(new_entity))
+            current_ticks + new_entity.get_rate())
          return tiles
       return action
           
@@ -118,18 +141,42 @@ class MinerFull:
       self.resource_limit = resource_limit
       self.resource_count = resource_limit
       self.animation_rate = animation_rate
-      self.pending_actions = []  
+      self.pending_actions = []
+      
+   def set_position(self, point):
+      self.position = point
 
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+   
    def miner_to_smith(self, world, smith):
-      entity_pt = get_position(self)
+      entity_pt = self.get_position()
       if not smith:
          return ([entity_pt], False)
-      smith_pt = get_position(smith)
+      smith_pt = smith.get_position()
       if entity_pt.adjacent(smith_pt):
-         set_resource_count(smith,
-            get_resource_count(smith) +
-            get_resource_count(self))
-         set_resource_count(self, 0)
+         smith.set_resource_count(
+            smith.get_resource_count() +
+            self.get_resource_count())
+         self.set_resource_count(0)
          return ([], True)
       else:
          new_pt = entity_pt.next_position(world,smith_pt)
@@ -139,7 +186,7 @@ class MinerFull:
       def action(current_ticks):
          remove_pending_action(self, action)
 
-         entity_pt = get_position(self)
+         entity_pt = self.get_position()
          smith = world.find_nearest(entity_pt,Blacksmith)
          (tiles, found) = self.miner_to_smith(world,smith)
 
@@ -150,7 +197,7 @@ class MinerFull:
 
          world.schedule_action(new_entity,
             new_entity.create_miner_action(world,i_store),
-               current_ticks + get_rate(new_entity))
+               current_ticks + new_entity.get_rate())
          return tiles
       return action
 
@@ -187,6 +234,30 @@ class Vein:
         self.resource_distance = resource_distance
         self.pending_actions = []
 
+    def set_position(self, point):
+        self.position = point
+
+    def get_position(self):
+        return self.position
+
+    def get_images(self):
+        return self.imgs
+
+    def get_image(self):
+        return self.imgs[self.current_img]
+
+    def get_rate(self):
+        return self.rate
+
+    def set_resource_count(self, n):
+        self.resource_count = n
+
+    def get_resource_count(self):
+        return self.resource_count
+
+    def get_resource_limit(self):
+        return self.resource_limit
+   
     def schedule_vein(self,world, ticks, i_store):
         world.schedule_action(self, self.create_vein_action(world, i_store),
                               ticks + self.rate)
@@ -226,6 +297,30 @@ class Ore:
       self.rate = rate
       self.pending_actions = []
 
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+   
    def create_ore_transform_action(self, world, i_store):
       def action(current_ticks):
          remove_pending_action(self, action)
@@ -265,12 +360,60 @@ class Blacksmith:
       self.resource_distance = resource_distance
       self.pending_actions = []
 
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
+
 class Obstacle:
    def __init__(self, name, position, imgs):
       self.name = name
       self.position = position
       self.imgs = imgs
       self.current_img = 0
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
 
 class OreBlob:
    def __init__(self, name, position, rate, imgs, animation_rate):
@@ -281,6 +424,30 @@ class OreBlob:
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
+
+   def set_position(self, point):
+      self.position = point
+
+   def get_position(self):
+      return self.position
+
+   def get_images(self):
+      return self.imgs
+
+   def get_image(self):
+      return self.imgs[self.current_img]
+
+   def get_rate(self):
+      return self.rate
+
+   def set_resource_count(self, n):
+      self.resource_count = n
+
+   def get_resource_count(self):
+      return self.resource_count
+
+   def get_resource_limit(self):
+      return self.resource_limit
 
    def blob_next_position(self, world, dest_pt):
       horiz = actions.sign(dest_pt.x - self.position.x)
@@ -299,10 +466,10 @@ class OreBlob:
       return new_pt
 
    def blob_to_vein(self,world, vein):
-      entity_pt = get_position(self)
+      entity_pt = self.get_position()
       if not vein:
          return ([entity_pt], False)
-      vein_pt = get_position(vein)
+      vein_pt = vein.get_position()
       if entity_pt.adjacent(vein_pt):
          world.remove_entity(vein)
          return ([vein_pt], True)
@@ -317,16 +484,16 @@ class OreBlob:
       def action(current_ticks):
          remove_pending_action(self, action)
 
-         entity_pt = get_position(self)
+         entity_pt = self.get_position()
          vein = world.find_nearest(entity_pt, Vein)
          (tiles, found) = self.blob_to_vein(world,vein)
 
-         next_time = current_ticks + get_rate(self)
+         next_time = current_ticks + self.get_rate()
          if found:
             quake = self.create_quake(world,tiles[0],
                                          current_ticks, i_store)
             world.add_entity(quake)
-            next_time = current_ticks + get_rate(self) * 2
+            next_time = current_ticks + self.get_rate() * 2
 
          world.schedule_action(self,
             self.create_ore_blob_action(world, i_store),
@@ -342,7 +509,7 @@ class OreBlob:
    
    def schedule_blob(self,world, ticks, i_store):
       world.schedule_action(self, self.create_ore_blob_action(world, i_store),
-         ticks + get_rate(self))
+         ticks + self.get_rate())
       world.schedule_animation(self)
 
 
@@ -361,33 +528,29 @@ class Quake:
                               (self),
                       ticks + worldmodel.QUAKE_DURATION)
 
-def set_position(entity, point):
-   entity.position = point
+   def set_position(self, point):
+      self.position = point
 
-def get_position(entity):
-   return entity.position
+   def get_position(self):
+      return self.position
 
+   def get_images(self):
+      return self.imgs
 
-def get_images(entity):
-   return entity.imgs
+   def get_image(self):
+      return self.imgs[self.current_img]
 
-def get_image(entity):
-   return entity.imgs[entity.current_img]
+   def get_rate(self):
+      return self.rate
 
+   def set_resource_count(self, n):
+      self.resource_count = n
 
-def get_rate(entity):
-   return entity.rate
+   def get_resource_count(self):
+      return self.resource_count
 
-
-def set_resource_count(entity, n):
-   entity.resource_count = n
-
-def get_resource_count(entity):
-   return entity.resource_count
-
-
-def get_resource_limit(entity):
-   return entity.resource_limit
+   def get_resource_limit(self):
+      return self.resource_limit
 
 
 def get_resource_distance(entity):

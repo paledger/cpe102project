@@ -22,7 +22,7 @@ class WorldModel:
     
 
     def find_nearest(self, pt, type):
-        oftype = [(e, pt.distance_sq(entities.get_position(e)))
+        oftype = [(e, pt.distance_sq(e.get_position()))
                   for e in self.entities if isinstance(e, type)]
                   
         return nearest_entity(oftype)
@@ -30,17 +30,17 @@ class WorldModel:
     def move_entity(self, entity, pt):
         tiles = []
         if pt.within_bounds(self):
-            old_pt = entities.get_position(entity)
+            old_pt = entity.get_position()
             occ_grid.set_cell(self.occupancy, old_pt, None)
             tiles.append(old_pt)
             occ_grid.set_cell(self.occupancy, pt, entity)
             tiles.append(pt)
-            entities.set_position(entity, pt)
+            entity.set_position(pt)
         
         return tiles
     
     def add_entity(self, entity):
-        pt = entities.get_position(entity)
+        pt = entity.get_position()
         if pt.within_bounds(self):
             old_entity = occ_grid.get_cell(self.occupancy, pt)
             if old_entity != None:
@@ -52,7 +52,7 @@ class WorldModel:
         for action in entities.get_pending_actions(entity):
             self.unschedule_action(action)
         entities.clear_pending_actions(entity)
-        self.remove_entity_at(entities.get_position(entity))
+        self.remove_entity_at(entity.get_position())
         
     #def remove_entity(self, entity):
     #   self.remove_entity_at(entities.get_position(entity))
@@ -63,7 +63,7 @@ class WorldModel:
         if (pt.within_bounds(self) and
             occ_grid.get_cell(self.occupancy, pt) != None):
             entity = occ_grid.get_cell(self.occupancy, pt)
-            entities.set_position(entity, point.Point(-1, -1))
+            set_position(point.Point(-1, -1))
             self.entities.remove(entity)
             occ_grid.set_cell(self.occupancy, pt, None)
     
@@ -87,7 +87,7 @@ class WorldModel:
     def create_entity_death_action(self, entity):
         def action(current_ticks):
             entities.remove_pending_action(entity, action)
-            pt = entities.get_position(entity)
+            pt = entity.get_position()
             self.remove_entity(entity)
             return [pt]
         return action
@@ -109,7 +109,7 @@ class WorldModel:
                     max(repeat_count - 1, 0)),
                     current_ticks + entities.get_animation_rate(entity))
 
-            return [entities.get_position(entity)]
+            return [entity.get_position()]
         return action
    
     def update_on_time(self, ticks):
@@ -125,7 +125,7 @@ class WorldModel:
     
     def get_background_image(self, pt):
         if pt.within_bounds(self):
-            return entities.get_image(occ_grid.get_cell(self.background, pt))
+            return occ_grid.get_cell(self.background, pt).get_image()
     
     
     def get_background(self, pt):
