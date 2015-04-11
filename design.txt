@@ -1,0 +1,92 @@
+CPE 102-08 (akeen) || Paula Ledger and Allison Lee
+—————
+Class: MinerNotFull
+methods:
+- miner_to_ore
+- schedule_miner
+- try_transform_miner
+- try_transform_miner_not_full
+- create_miner_not_full_action
+- create_miner_action
+
+Class: MinerFull
+methods:
+- miner_to_smith
+- create_miner_full_action
+- try_transform_miner
+- try_transform_miner_full
+- create_miner_action
+
+Class: Vein
+methods:
+- schedule_vein
+- create_vein_action
+- create_ore
+
+Class: Ore
+methods:
+- create_ore_transform_action
+- create_blob
+- schedule_ore
+
+Class: Blacksmith
+methods:
+
+Class: OreBlob
+methods:
+- blob_next_position
+- blob_to_vein
+- create_ore_blob_action
+- create_quake
+- schedule_blob
+
+Class: Quake
+methods:
+- schedule_quake
+
+
+—————
+Functions not converted to methods:
+
+ACTIONS.PY
+- sign
+>> Too general to be used in a specific class.
+- create_vein
+>> Not called in any functions yet. Unable to judge what class it will belong to.
+
+BUILDER.PY
+- create_default_background
+>> Doesn't take arguments related to other classes.
+
+BUILDER_CONTROLLER.PY
+- mouse_to_tile
+>> No arguments that needed a specific class.
+
+- save_world
+>> File I/O can stay out of a class.
+
+- load_world
+>> File I/O can stay out of a class.
+
+- on_keydown
+>> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world.
+
+- create_new_entity
+>> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world. Also doesn't take arguments related to any other class.
+
+- mouse_to_tile:
+>> Because event.pos is a tuple rather than a point, it doesn't take arguments related to other classes.
+
+
+- is_background_tile
+>> Doesn't take arguments related to other classes.
+
+CONTROLLER.PY
+- on_keydown
+>> Doesn't take arguments related to other classes.
+
+- mouse_to_tile:
+>> Already in builder_controller.py (identical). Not used anywhere, so deleted.
+
+- activity_loop
+>> Doesn't take arguments related to other classes. Used as part of the pygame setup.
