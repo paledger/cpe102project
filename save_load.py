@@ -65,9 +65,8 @@ def save_background(world, file):
    for row in range(0, world.num_rows):
       for col in range(0, world.num_cols):
          file.write('background ' +
-            entities.get_name(
-               worldmodel.get_background(world, point.Point(col, row))) +
-            ' ' + str(col) + ' ' + str(row) + '\n')
+            (worldmodel.get_background(world, point.Point(col, row))) +\
+             ' ' + str(col) + ' ' + str(row) + '\n').get_name()
 
 
 def load_world(world, images, file, run=False):

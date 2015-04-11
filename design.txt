@@ -1,5 +1,9 @@
 CPE 102-08 (akeen) || Paula Ledger and Allison Lee
 —————
+Class: Background
+methods:
+- get_images
+
 Class: MinerNotFull
 methods:
 - miner_to_ore
@@ -54,13 +58,9 @@ ACTIONS.PY
 - create_vein
 >> Not called in any functions yet. Unable to judge what class it will belong to.
 
-BUILDER.PY
-- create_default_background
->> Doesn't take arguments related to other classes.
-
 BUILDER_CONTROLLER.PY
-- mouse_to_tile
->> No arguments that needed a specific class.
+- mouse_to_tile:
+>> Because event.pos is a tuple rather than a point, it doesn't take arguments related to other classes.
 
 - save_world
 >> File I/O can stay out of a class.
@@ -74,14 +74,18 @@ BUILDER_CONTROLLER.PY
 - create_new_entity
 >> Interacts with the world, but is separate from (possibly even higher hierarchy than) the world. Also doesn't take arguments related to any other class.
 
-- mouse_to_tile:
->> Because event.pos is a tuple rather than a point, it doesn't take arguments related to other classes.
-
-
 - is_background_tile
 >> Doesn't take arguments related to other classes.
 
+BUILDER.PY
+- create_default_background
+>> Doesn't take arguments related to other classes.
+
 CONTROLLER.PY
+- handle_keydown
+>> Different than the handle_keydown used in view. 
+>>>> (Can possibly be converted into a variable argument function?)
+
 - on_keydown
 >> Doesn't take arguments related to other classes.
 

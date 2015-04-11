@@ -8,6 +8,10 @@ KEY_INTERVAL = 100
 
 TIMER_FREQUENCY = 100
 
+def handle_keydown(view, event):
+    view_delta = on_keydown(event)
+    view.update_view(view_delta)
+
 def on_keydown(event):
     x_delta = 0
     y_delta = 0
@@ -31,5 +35,5 @@ def activity_loop(view, world):
             elif event.type == pygame.MOUSEMOTION:
                 view.handle_mouse_motion(event)
             elif event.type == pygame.KEYDOWN:
-                view.handle_keydown(event)
+                handle_keydown(view,event)
 

@@ -44,14 +44,14 @@ class WorldModel:
         if pt.within_bounds(self):
             old_entity = occ_grid.get_cell(self.occupancy, pt)
             if old_entity != None:
-                entities.clear_pending_actions(old_entity)
+                old_entity.clear_pending_actions()
             occ_grid.set_cell(self.occupancy, pt, entity)
             self.entities.append(entity)
 
     def remove_entity(self, entity):
-        for action in entities.get_pending_actions(entity):
+        for action in entity.get_pending_actions():
             self.unschedule_action(action)
-        entities.clear_pending_actions(entity)
+        entity.clear_pending_actions()
         self.remove_entity_at(entity.get_position())
         
     #def remove_entity(self, entity):
@@ -63,12 +63,12 @@ class WorldModel:
         if (pt.within_bounds(self) and
             occ_grid.get_cell(self.occupancy, pt) != None):
             entity = occ_grid.get_cell(self.occupancy, pt)
-            set_position(point.Point(-1, -1))
+            entity.set_position(point.Point(-1, -1))
             self.entities.remove(entity)
             occ_grid.set_cell(self.occupancy, pt, None)
     
     def schedule_action(self, entity, action, time):
-        entities.add_pending_action(entity, action)
+        entity.add_pending_action(action)
         self.action_queue.insert(action, time)
 
    # def schedule_action(self, action, time):
@@ -80,13 +80,13 @@ class WorldModel:
         self.action_queue.remove(action)
 
     def clear_pending_actions(self, entity):
-        for action in entities.get_pending_actions(entity):
+        for action in entity.get_pending_actions():
             self.unschedule_action(action)
-        entities.clear_pending_actions(entity)
+        entity.clear_pending_actions()
 
     def create_entity_death_action(self, entity):
         def action(current_ticks):
-            entities.remove_pending_action(entity, action)
+            entity.remove_pending_action(action)
             pt = entity.get_position()
             self.remove_entity(entity)
             return [pt]
@@ -95,19 +95,19 @@ class WorldModel:
     def schedule_animation(self, entity, repeat_count=0):
         self.schedule_action(entity,
             self.create_animation_action(entity, repeat_count),
-                              entities.get_animation_rate(entity))
+                              entity.get_animation_rate())
 
     def create_animation_action(self, entity, repeat_count):
         def action(current_ticks):
-            entities.remove_pending_action(entity, action)
+            entity.remove_pending_action(action)
 
-            entities.next_image(entity)
+            entity.next_image()
 
             if repeat_count != 1:
                 self.schedule_action(entity,
                     self.create_animation_action(entity,
                     max(repeat_count - 1, 0)),
-                    current_ticks + entities.get_animation_rate(entity))
+                    current_ticks + entity.get_animation_rate())
 
             return [entity.get_position()]
         return action
