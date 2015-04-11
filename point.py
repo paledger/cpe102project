@@ -18,7 +18,7 @@ class Point:
     
     def is_occupied(self, world):
         return (self.within_bounds(world) and
-                occ_grid.get_cell(world.occupancy, self) != None)
+                world.occupancy.get_cell(self) != None)
     
     def distance_sq(self, p2):
         return (self.x - p2.x)**2 + (self.y - p2.y)**2
