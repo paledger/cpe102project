@@ -22,11 +22,6 @@ VEIN_SPAWN_DELAY = 500
 VEIN_RATE_MIN = 8000
 VEIN_RATE_MAX = 17000
 
-class Entity:
-   def __init__(self, name, position):
-      self.name = name
-      self.position  = position
-      
 class Background:
    def __init__(self, name, imgs):
       self.name = name
@@ -41,12 +36,16 @@ class Background:
 
    def schedule_entity(self,world,i_store):
      pass
+     
+class Entity(object):
+   def __init__(self, name, position):
+      self.name = name
+      self.position  = position
 
-class MinerNotFull:
+class MinerNotFull(Entity):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      self.name = name
-      self.position = position
+      super(MinerNotFull,self).__init__(name,position)
       self.rate = rate
       self.imgs = imgs
       self.current_img = 0
@@ -178,11 +177,10 @@ class MinerNotFull:
                         str(entity.position.y), str(entity.resource_limit),
                         str(entity.rate), str(entity.animation_rate)])
 
-class MinerFull:
+class MinerFull(Entity):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      self.name = name
-      self.position = position
+      super(MinerFull,self).__init__(name,position)
       self.rate = rate
       self.imgs = imgs
       self.current_img = 0
@@ -302,10 +300,9 @@ class MinerFull:
       else:
          return self.create_miner_full_action(world, image_store)
 
-class Vein:
+class Vein(Entity):
     def __init__(self, name, rate, position, imgs, resource_distance=1):
-        self.name = name
-        self.position = position
+        super(Vein,self).__init__(name,position)
         self.rate = rate
         self.imgs = imgs
         self.current_img = 0
@@ -393,10 +390,9 @@ class Vein:
         ore.schedule_ore(world, ticks, i_store)
         return ore
 
-class Ore:
+class Ore(Entity):
    def __init__(self, name, position, imgs, rate=5000):
-      self.name = name
-      self.position = position
+      super(Ore,self).__init__(name,position)      
       self.imgs = imgs
       self.current_img = 0
       self.rate = rate
@@ -475,11 +471,10 @@ class Ore:
                               ticks + self.rate)
 
 
-class Blacksmith:
+class Blacksmith(Entity):
    def __init__(self, name, position, imgs, resource_limit, rate,
       resource_distance=1):
-      self.name = name
-      self.position = position
+      super(Blacksmith,self).__init__(name,position)
       self.imgs = imgs
       self.current_img = 0
       self.resource_limit = resource_limit
@@ -548,10 +543,9 @@ class Blacksmith:
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
-class Obstacle:
+class Obstacle(Entity):
    def __init__(self, name, position, imgs):
-      self.name = name
-      self.position = position
+      super(Obstacle,self).__init__(name,position)
       self.imgs = imgs
       self.current_img = 0
 
@@ -581,10 +575,9 @@ class Obstacle:
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
-class OreBlob:
+class OreBlob(Entity):
    def __init__(self, name, position, rate, imgs, animation_rate):
-      self.name = name
-      self.position = position
+      super(OreBlob,self).__init__(name,position)
       self.rate = rate
       self.imgs = imgs
       self.current_img = 0
@@ -704,10 +697,9 @@ class OreBlob:
       world.schedule_animation(self)
 
 
-class Quake:
+class Quake(Entity):
    def __init__(self, name, position, imgs, animation_rate):
-      self.name = name
-      self.position = position
+      super(Quake,self).__init__(name,position)
       self.imgs = imgs
       self.current_img = 0
       self.animation_rate = animation_rate
