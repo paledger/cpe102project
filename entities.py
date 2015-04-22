@@ -51,8 +51,11 @@ class Entity(object):
       return self.imgs
    def get_image(self):
       return self.imgs[self.current_img]
+      
+   def next_image(self):
+      self.current_img = (self.current_img + 1) % len(self.imgs)      
             
-class Resources(object):
+class Resourced(object):
    def __init__(self,resource_limit,resource_count):
       self.resource_limit = resource_limit
       self.resource_count = resource_count
@@ -93,7 +96,7 @@ class Actionable(object):
       if hasattr(self, "pending_actions"):
          self.pending_actions = []
       
-class MinerNotFull(Entity,Resources,Animated,Actionable):
+class MinerNotFull(Entity,Resourced,Animated,Actionable):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       self.resource_count = 0
@@ -101,7 +104,7 @@ class MinerNotFull(Entity,Resources,Animated,Actionable):
       self.current_img = 0   
          
       Entity.__init__(self,name,position,imgs)
-      Resources.__init__(self,resource_limit,self.resource_count)
+      Resourced.__init__(self,resource_limit,self.resource_count)
       Animated.__init__(self,animation_rate)
       Actionable.__init__(self)      
       #called with the old class inheritance, super doesn't 
@@ -112,9 +115,6 @@ class MinerNotFull(Entity,Resources,Animated,Actionable):
 
    def get_rate(self):
       return self.rate
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
 
    def miner_to_ore(self,world,ore):
       entity_pt = self.get_position()
@@ -185,7 +185,7 @@ class MinerNotFull(Entity,Resources,Animated,Actionable):
                         str(entity.position.y), str(entity.resource_limit),
                         str(entity.rate), str(entity.animation_rate)])
 
-class MinerFull(Entity,Resources,Animated,Actionable):
+class MinerFull(Entity,Resourced,Animated,Actionable):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       self.rate = rate
@@ -193,7 +193,7 @@ class MinerFull(Entity,Resources,Animated,Actionable):
       self.resource_count = resource_limit
       
       Entity.__init__(self,name,position,imgs)
-      Resources.__init__(self,resource_limit,self.resource_count)
+      Resourced.__init__(self,resource_limit,self.resource_count)
       Animated.__init__(self,animation_rate)
       Actionable.__init__(self)           
 
@@ -202,9 +202,6 @@ class MinerFull(Entity,Resources,Animated,Actionable):
    
    def get_rate(self):
       return self.rate
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
 
    def miner_to_smith(self, world, smith):
       entity_pt = self.get_position()
@@ -285,10 +282,6 @@ class Vein(Entity,Actionable):
     
     def get_resource_distance(self):
         return self.resource_distance
-
-    def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
-
    
     def schedule_vein(self,world, ticks, i_store):
         world.schedule_action(self, self.create_vein_action(world, i_store),
@@ -337,10 +330,6 @@ class Ore(Entity,Actionable):
    
    def get_rate(self):
       return self.rate
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
-
    
    def create_ore_transform_action(self, world, i_store):
       def action(current_ticks):
@@ -368,7 +357,7 @@ class Ore(Entity,Actionable):
                               ticks + self.rate)
 
 
-class Blacksmith(Entity,Resources,Actionable):
+class Blacksmith(Entity,Resourced,Actionable):
    def __init__(self, name, position, imgs, resource_limit, rate,
       resource_distance=1):
       self.current_img = 0
@@ -377,7 +366,7 @@ class Blacksmith(Entity,Resources,Actionable):
       self.resource_distance = resource_distance
       
       Entity.__init__(self,name,position,imgs)
-      Resources.__init__(self,resource_limit,self.resource_count)
+      Resourced.__init__(self,resource_limit,self.resource_count)
       Actionable.__init__(self)     
       
    def schedule_entity(self,world,i_store):
@@ -394,9 +383,6 @@ class Blacksmith(Entity,Resources,Actionable):
    def get_rate(self):
       return self.rate
 
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
-
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
       self.current_img = 0
@@ -408,10 +394,6 @@ class Obstacle(Entity):
    def entity_string(self):
       return ' '.join(['obstacle', entity.name, str(entity.position.x),
                         str(entity.position.y)])
-                        
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
-
 
 class OreBlob(Entity,Animated,Actionable):
    def __init__(self, name, position, rate, imgs, animation_rate):
@@ -430,9 +412,6 @@ class OreBlob(Entity,Animated,Actionable):
    
    def get_rate(self):
       return self.rate
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
 
    def blob_next_position(self, world, dest_pt):
       horiz = actions.sign(dest_pt.x - self.position.x)
@@ -517,9 +496,6 @@ class Quake(Entity,Animated,Actionable):
 
    def entity_string(self):
       return 'unknown'
-
-   def next_image(self):
-      self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
 # This is a less than pleasant file format, but structured based on
