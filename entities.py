@@ -54,6 +54,29 @@ class Entity(object):
       
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)      
+      
+   def entity_string(self):
+      if isinstance(self, MinerNotFull) or isinstance(self,MinerFull):
+         return ' '.join(['miner', entity.name, str(entity.position.x),
+                        str(entity.position.y), str(entity.resource_limit),
+                        str(entity.rate), str(entity.animation_rate)])
+      if isinstance(self,Vein):
+         return ' '.join(['vein', entity.name, str(entity.position.x),
+                       str(entity.position.y), str(entity.rate),
+                       str(entity.resource_distance)])
+      if isinstance(self,Ore):
+         return ' '.join(['ore', entity.name, str(entity.position.x),
+                        str(entity.position.y), str(entity.rate)])
+      if isinstance(self,Blacksmith):
+         return ' '.join(['blacksmith', entity.name, str(entity.position.x),
+                    str(entity.position.y), str(entity.resource_limit),
+                    str(entity.rate), str(entity.resource_distance)])
+      if isinstance(self,Obstacle):
+         return ' '.join(['obstacle', entity.name, str(entity.position.x),
+                           str(entity.position.y)])
+         
+      else:
+         return "unknown"
             
 class Resourced(object):
    def __init__(self,resource_limit,resource_count):
@@ -188,11 +211,6 @@ class MinerNotFull(Miner):
          return tiles
       return action
 
-   def entity_string(self):
-       return ' '.join(['miner', entity.name, str(entity.position.x),
-                        str(entity.position.y), str(entity.resource_limit),
-                        str(entity.rate), str(entity.animation_rate)])
-
 class MinerFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
@@ -259,11 +277,6 @@ class Vein(Entity,Actionable):
     def schedule_entity(self,world,i_store):
         self.schedule_vein(world, 0, i_store)
 
-    def entity_string(self):
-        return ' '.join(['vein', entity.name, str(entity.position.x),
-                      str(entity.position.y), str(entity.rate),
-                      str(entity.resource_distance)])
-
     def get_rate(self):
         return self.rate
     
@@ -310,11 +323,7 @@ class Ore(Entity,Actionable):
                
    def schedule_entity(self,world,i_store):
       self.schedule_ore(world, 0, i_store)
-        
-   def entity_string(self):
-      return ' '.join(['ore', entity.name, str(entity.position.x),
-                     str(entity.position.y), str(entity.rate)])
-   
+
    def get_rate(self):
       return self.rate
    
@@ -358,11 +367,6 @@ class Blacksmith(Entity,Resourced,Actionable):
       
    def schedule_entity(self,world,i_store):
       pass
-        
-   def entity_string(self):
-      return ' '.join(['blacksmith', entity.name, str(entity.position.x),
-                 str(entity.position.y), str(entity.resource_limit),
-                 str(entity.rate), str(entity.resource_distance)])
 
    def get_resource_distance(self):
       return self.resource_distance
@@ -377,10 +381,6 @@ class Obstacle(Entity):
 
    def schedule_entity(self,world,i_store):
       pass
-        
-   def entity_string(self):
-      return ' '.join(['obstacle', entity.name, str(entity.position.x),
-                        str(entity.position.y)])
 
 class OreBlob(Entity,Animated,Actionable):
    def __init__(self, name, position, rate, imgs, animation_rate):
@@ -393,9 +393,6 @@ class OreBlob(Entity,Animated,Actionable):
       
    def schedule_entity(self,world,i_store):
        pass
-        
-   def entity_string(self):
-        return 'unknown'
    
    def get_rate(self):
       return self.rate
@@ -480,9 +477,6 @@ class Quake(Entity,Animated,Actionable):
       world.schedule_action(self, world.create_entity_death_action
                               (self),
                       ticks + QUAKE_DURATION)
-
-   def entity_string(self):
-      return 'unknown'
 
 
 # This is a less than pleasant file format, but structured based on
