@@ -36,10 +36,11 @@ class Background:
      pass
      
 class Entity(object):
-   def __init__(self, name, position, imgs):
+   def __init__(self, name, position, imgs, rate):
       self.name = name
       self.position  = position
       self.imgs = imgs
+      self.rate = rate
       
    def get_name(self):
       return self.name
@@ -51,6 +52,8 @@ class Entity(object):
       return self.imgs
    def get_image(self):
       return self.imgs[self.current_img]
+   def get_rate(self):
+      return self.rate
       
    def next_image(self):
       self.current_img = (self.current_img + 1) % len(self.imgs)      
@@ -77,17 +80,23 @@ class Entity(object):
       else:
          return "unknown"
             
-class Resourced(object):
+class Resource(object):
    def __init__(self,resource_limit,resource_count):
       self.resource_limit = resource_limit
       self.resource_count = resource_count
-      
+            
    def set_resource_count(self, n):
       self.resource_count = n
    def get_resource_count(self):
       return self.resource_count
    def get_resource_limit(self):
       return self.resource_limit
+      
+class ResourceDistance(object):
+   def __init__(self,resource_distance):
+      self.resource_distance = resource_distance
+   def get_resource_distance(self):
+      return self.resource_distance
       
 class Animated(object):
    def __init__(self,animation_rate):
@@ -118,12 +127,12 @@ class Actionable(object):
       if hasattr(self, "pending_actions"):
          self.pending_actions = []
          
-class Miner(Entity,Resourced,Animated,Actionable):
+class Miner(Entity,Resource,Animated,Actionable):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       
-      Entity.__init__(self,name,position,imgs)
-      Resourced.__init__(self,resource_limit,self.resource_count)
+      Entity.__init__(self,name,position,imgs, rate)
+      Resource.__init__(self,resource_limit,self.resource_count)
       Animated.__init__(self,animation_rate)
       Actionable.__init__(self)
       #called with the old class inheritance, super doesn't 
@@ -137,9 +146,6 @@ class Miner(Entity,Resourced,Animated,Actionable):
          world.add_entity(new_entity)
          world.schedule_animation(new_entity)
       return new_entity
-   
-   def get_rate(self):
-      return self.rate
       
    def create_miner_action(self, world, image_store):
       if isinstance(self, MinerNotFull):
@@ -151,7 +157,6 @@ class MinerNotFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       self.resource_count = 0
-      self.rate = rate
       self.current_img = 0   
          
       Miner.__init__(self,name, resource_limit, position, rate, imgs,
@@ -213,7 +218,6 @@ class MinerNotFull(Miner):
 class MinerFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      self.rate = rate
       self.current_img = 0
       self.resource_count = resource_limit
       
@@ -264,23 +268,16 @@ class MinerFull(Miner):
                                        
       return new_entity
 
-class Vein(Entity,Actionable):
-    def __init__(self, name, rate, position, imgs, resource_distance=1):
-        self.rate = rate
+class Vein(Entity,Actionable,ResourceDistance):
+    def __init__(self, name, rate, position, imgs, resource_distance):
         self.current_img = 0
-        self.resource_distance = resource_distance
-
-        Actionable.__init__(self)             
-        Entity.__init__(self,name,position,imgs)
+        self.resource_distance = 1
+        Actionable.__init__(self)   
+        ResourceDistance.__init__(self,self.resource_distance)                     
+        Entity.__init__(self,name,position,imgs,rate)
 
     def schedule_entity(self,world,i_store):
         self.schedule_vein(world, 0, i_store)
-
-    def get_rate(self):
-        return self.rate
-    
-    def get_resource_distance(self):
-        return self.resource_distance
    
     def schedule_vein(self,world, ticks, i_store):
         world.schedule_action(self, self.create_vein_action(world, i_store),
@@ -315,16 +312,12 @@ class Vein(Entity,Actionable):
 class Ore(Entity,Actionable):
    def __init__(self, name, position, imgs, rate=5000): 
       self.current_img = 0
-      self.rate = rate
       
-      Entity.__init__(self,name,position,imgs)
+      Entity.__init__(self,name,position,imgs, rate)
       Actionable.__init__(self)  
                
    def schedule_entity(self,world,i_store):
       self.schedule_ore(world, 0, i_store)
-
-   def get_rate(self):
-      return self.rate
    
    def create_ore_transform_action(self, world, i_store):
       def action(current_ticks):
@@ -352,49 +345,40 @@ class Ore(Entity,Actionable):
                               ticks + self.rate)
 
 
-class Blacksmith(Entity,Resourced,Actionable):
+class Blacksmith(Entity,Resource,Actionable,ResourceDistance):
    def __init__(self, name, position, imgs, resource_limit, rate,
-      resource_distance=1):
+      resource_distance):
+      self.resource_distance = 1
       self.current_img = 0
       self.resource_count = 0
-      self.rate = rate
-      self.resource_distance = resource_distance
       
-      Entity.__init__(self,name,position,imgs)
-      Resourced.__init__(self,resource_limit,self.resource_count)
+      Entity.__init__(self,name,position,imgs, rate)
+      ResourceDistance.__init__(self,self.resource_distance)   
+      Resource.__init__(self,resource_limit,self.resource_count)
       Actionable.__init__(self)     
       
    def schedule_entity(self,world,i_store):
       pass
 
-   def get_resource_distance(self):
-      return self.resource_distance
-
-   def get_rate(self):
-      return self.rate
-
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
       self.current_img = 0
-      Entity.__init__(self,name,position,imgs)
+      rate = 0
+      Entity.__init__(self,name,position,imgs,rate)
 
    def schedule_entity(self,world,i_store):
       pass
 
 class OreBlob(Entity,Animated,Actionable):
    def __init__(self, name, position, rate, imgs, animation_rate):
-      self.rate = rate
       self.current_img = 0
       
-      Entity.__init__(self,name,position,imgs)
+      Entity.__init__(self,name,position,imgs, rate)
       Animated.__init__(self,animation_rate)
       Actionable.__init__(self)     
       
    def schedule_entity(self,world,i_store):
        pass
-   
-   def get_rate(self):
-      return self.rate
 
    def blob_next_position(self, world, dest_pt):
       horiz = actions.sign(dest_pt.x - self.position.x)
@@ -463,8 +447,8 @@ class OreBlob(Entity,Animated,Actionable):
 class Quake(Entity,Animated,Actionable):
    def __init__(self, name, position, imgs, animation_rate):
       self.current_img = 0
-      
-      Entity.__init__(self,name,position,imgs)
+      rate = 0
+      Entity.__init__(self,name,position,imgs, rate)
       Animated.__init__(self,animation_rate)
       Actionable.__init__(self)     
       
