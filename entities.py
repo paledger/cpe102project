@@ -73,8 +73,7 @@ class Entity(object):
                     str(entity.rate), str(entity.resource_distance)])
       if isinstance(self,Obstacle):
          return ' '.join(['obstacle', entity.name, str(entity.position.x),
-                           str(entity.position.y)])
-         
+                           str(entity.position.y)])       
       else:
          return "unknown"
             
@@ -482,6 +481,4 @@ class Quake(Entity,Animated,Actionable):
 # This is a less than pleasant file format, but structured based on
 # material covered in course.  Something like JSON would be a
 # significant improvement.
-
-## Moved these to methods.
 

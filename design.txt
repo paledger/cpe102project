@@ -1,5 +1,16 @@
 CPE 102-08 (akeen) || Paula Ledger and Allison Lee
 —————
+4-22-15 Notes:
+> Everything but quake has a rate—should quake be given rate so that it can inherit from the entity class and rate can be moved to entity?
+
+> Next_image should probably be moved to the animated class, but this means Vein, Ore needs it—which also means it'll inherit things it doesn't necessarily need.
+
+> I hesitate to make an entirely new class for just resource_distance—it's only used in two classes.
+
+> Every class has a schedule_entity method, but depending on the class, there's either functionality or it is "pass" for the functionality. This could be added to the Entity class and then edited to work based on an isinstance of the class—up to us.
+
+Other than that, entites.py is all done!
+—————
 ACTIONS.PY
 
 unchanged:
