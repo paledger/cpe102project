@@ -95,26 +95,50 @@ class Actionable(object):
    def clear_pending_actions(self):
       if hasattr(self, "pending_actions"):
          self.pending_actions = []
+         
+class Miner(Entity,Resourced,Animated,Actionable):
+   def __init__(self, name, resource_limit, position, rate, imgs,
+      animation_rate):
       
-class MinerNotFull(Entity,Resourced,Animated,Actionable):
+      Entity.__init__(self,name,position,imgs)
+      Resourced.__init__(self,resource_limit,self.resource_count)
+      Animated.__init__(self,animation_rate)
+      Actionable.__init__(self)
+      #called with the old class inheritance, super doesn't 
+      #handle this well(?)
+      
+   def try_transform_miner(self,world,transform):
+      new_entity = transform(world)
+      if self != new_entity:
+         world.clear_pending_actions(self)
+         world.remove_entity_at(self.position)
+         world.add_entity(new_entity)
+         world.schedule_animation(new_entity)
+      return new_entity
+   
+   def get_rate(self):
+      return self.rate
+      
+   def create_miner_action(self, world, image_store):
+      if isinstance(self, MinerNotFull):
+         return self.create_miner_not_full_action(world,image_store)
+      else:
+         return self.create_miner_full_action(world, image_store)
+      
+class MinerNotFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       self.resource_count = 0
       self.rate = rate
       self.current_img = 0   
          
-      Entity.__init__(self,name,position,imgs)
-      Resourced.__init__(self,resource_limit,self.resource_count)
-      Animated.__init__(self,animation_rate)
-      Actionable.__init__(self)      
+      Miner.__init__(self,name, resource_limit, position, rate, imgs,
+      animation_rate)    
       #called with the old class inheritance, super doesn't 
       #handle this well(?)
  
    def schedule_entity(self,world,i_store):
        self.schedule_miner(world, 0, i_store)
-
-   def get_rate(self):
-      return self.rate
 
    def miner_to_ore(self,world,ore):
       entity_pt = self.get_position()
@@ -134,16 +158,6 @@ class MinerNotFull(Entity,Resourced,Animated,Actionable):
                               self.create_miner_action(world, i_store),
                       ticks + self.rate)
       world.schedule_animation(self)
-   
-   def try_transform_miner(self,world,transform):
-      new_entity = transform(world)
-      if self != new_entity:
-         world.clear_pending_actions(self)
-         world.remove_entity_at(self.position)
-         world.add_entity(new_entity)
-         world.schedule_animation(new_entity)
-
-      return new_entity
    
    def try_transform_miner_not_full(self, world):
       if self.resource_count < self.resource_limit:
@@ -173,35 +187,24 @@ class MinerNotFull(Entity,Resourced,Animated,Actionable):
             current_ticks + new_entity.get_rate())
          return tiles
       return action
-          
-   def create_miner_action(self, world, image_store):
-      if isinstance(self, MinerNotFull):
-         return self.create_miner_not_full_action(world,image_store)
-      else:
-         return self.create_miner_full_action(world, image_store)
 
    def entity_string(self):
        return ' '.join(['miner', entity.name, str(entity.position.x),
                         str(entity.position.y), str(entity.resource_limit),
                         str(entity.rate), str(entity.animation_rate)])
 
-class MinerFull(Entity,Resourced,Animated,Actionable):
+class MinerFull(Miner):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
       self.rate = rate
       self.current_img = 0
       self.resource_count = resource_limit
       
-      Entity.__init__(self,name,position,imgs)
-      Resourced.__init__(self,resource_limit,self.resource_count)
-      Animated.__init__(self,animation_rate)
-      Actionable.__init__(self)           
-
+      Miner.__init__(self, name, resource_limit, position, rate, imgs,
+      animation_rate)
+      
    def schedule_entity(self,world,i_store):
       pass
-   
-   def get_rate(self):
-      return self.rate
 
    def miner_to_smith(self, world, smith):
       entity_pt = self.get_position()
@@ -237,28 +240,12 @@ class MinerFull(Entity,Resourced,Animated,Actionable):
          return tiles
       return action
 
-   def try_transform_miner(self,world,transform):
-      new_entity = transform(world)
-      if self != new_entity:
-         world.clear_pending_actions(self)
-         world.remove_entity_at(self.position)
-         world.add_entity(new_entity)
-         world.schedule_animation(new_entity)
-
-      return new_entity
-
    def try_transform_miner_full(self, world):
       new_entity = MinerNotFull(self.name,
         self.resource_limit,self.position,self.rate,self.get_images(),
             self.animation_rate)
                                        
       return new_entity
-          
-   def create_miner_action(self, world, image_store):
-      if isinstance(self, MinerNotFull):
-         return self.create_miner_not_full_action(world,image_store)
-      else:
-         return self.create_miner_full_action(world, image_store)
 
 class Vein(Entity,Actionable):
     def __init__(self, name, rate, position, imgs, resource_distance=1):
