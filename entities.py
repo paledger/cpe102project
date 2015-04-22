@@ -52,20 +52,19 @@ class Animated(object):
    def __init__(self,animation_rate):
       self.animation_rate = animation_rate
       
-class MinerNotFull(Entity,Resources):
+class MinerNotFull(Entity,Resources,Animated):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      resource_count = 0
-      
+      self.resource_count = 0
+      self.rate = rate
+      self.current_img = 0   
+      self.pending_actions = []
+         
       Entity.__init__(self,name,position,imgs)
-      Resources.__init__(self,resource_limit,resource_count)
+      Resources.__init__(self,resource_limit,self.resource_count)
+      Animated.__init__(self,animation_rate)
       #called with the old class inheritance, super doesn't 
       #handle this well(?)
-      self.rate = rate
-      self.current_img = 0
-      #self.resource_count = 0
-      self.animation_rate = animation_rate
-      self.pending_actions = []
  
    def schedule_entity(self,world,i_store):
        self.schedule_miner(world, 0, i_store)
@@ -190,16 +189,17 @@ class MinerNotFull(Entity,Resources):
                         str(entity.position.y), str(entity.resource_limit),
                         str(entity.rate), str(entity.animation_rate)])
 
-class MinerFull(Entity):
+class MinerFull(Entity,Resources,Animated):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      super(MinerFull,self).__init__(name,position,imgs)
       self.rate = rate
       self.current_img = 0
-      self.resource_limit = resource_limit
-      self.resource_count = resource_limit
-      self.animation_rate = animation_rate
       self.pending_actions = []
+      self.resource_count = resource_limit
+      
+      Entity.__init__(self,name,position,imgs)
+      Resources.__init__(self,resource_limit,self.resource_count)
+      Animated.__init__(self,animation_rate)
 
    def schedule_entity(self,world,i_store):
       pass
@@ -314,11 +314,12 @@ class MinerFull(Entity):
 
 class Vein(Entity):
     def __init__(self, name, rate, position, imgs, resource_distance=1):
-        super(Vein,self).__init__(name,position,imgs)
         self.rate = rate
         self.current_img = 0
         self.resource_distance = resource_distance
         self.pending_actions = []
+        
+        Entity.__init__(self,name,position,imgs)
 
     def schedule_entity(self,world,i_store):
         self.schedule_vein(world, 0, i_store)
@@ -402,12 +403,13 @@ class Vein(Entity):
         return ore
 
 class Ore(Entity):
-   def __init__(self, name, position, imgs, rate=5000):
-      super(Ore,self).__init__(name,position,imgs)      
+   def __init__(self, name, position, imgs, rate=5000): 
       self.current_img = 0
       self.rate = rate
       self.pending_actions = []
-
+      
+      Entity.__init__(self,name,position,imgs)
+      
    def schedule_entity(self,world,i_store):
       self.schedule_ore(world, 0, i_store)
 
@@ -481,16 +483,17 @@ class Ore(Entity):
                               ticks + self.rate)
 
 
-class Blacksmith(Entity):
+class Blacksmith(Entity,Resources):
    def __init__(self, name, position, imgs, resource_limit, rate,
       resource_distance=1):
-      super(Blacksmith,self).__init__(name,position,imgs)
       self.current_img = 0
-      self.resource_limit = resource_limit
       self.resource_count = 0
       self.rate = rate
       self.resource_distance = resource_distance
       self.pending_actions = []
+      
+      Entity.__init__(self,name,position,imgs)
+      Resources.__init__(self,resource_limit,self.resource_count)
 
    def schedule_entity(self,world,i_store):
       pass
@@ -554,8 +557,8 @@ class Blacksmith(Entity):
 
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
-      super(Obstacle,self).__init__(name,position,imgs)
       self.current_img = 0
+      Entity.__init__(self,name,position,imgs)
 
    def schedule_entity(self,world,i_store):
       pass
@@ -583,13 +586,14 @@ class Obstacle(Entity):
       self.current_img = (self.current_img + 1) % len(self.imgs)
 
 
-class OreBlob(Entity):
+class OreBlob(Entity,Animated):
    def __init__(self, name, position, rate, imgs, animation_rate):
-      super(OreBlob,self).__init__(name,position,imgs)
       self.rate = rate
       self.current_img = 0
-      self.animation_rate = animation_rate
       self.pending_actions = []
+      
+      Entity.__init__(self,name,position,imgs)
+      Animated.__init__(self,animation_rate)
 
    def schedule_entity(self,world,i_store):
        pass
@@ -704,12 +708,13 @@ class OreBlob(Entity):
       world.schedule_animation(self)
 
 
-class Quake(Entity):
+class Quake(Entity,Animated):
    def __init__(self, name, position, imgs, animation_rate):
-      super(Quake,self).__init__(name,position,imgs)
       self.current_img = 0
-      self.animation_rate = animation_rate
       self.pending_actions = []
+      
+      Entity.__init__(self,name,position,imgs)
+      Animated.__init__(self,animation_rate)
 
    def schedule_entity(self,world,i_store):
       pass
