@@ -22,6 +22,11 @@ VEIN_SPAWN_DELAY = 500
 VEIN_RATE_MIN = 8000
 VEIN_RATE_MAX = 17000
 
+class Entity:
+   def __init__(self, name, position):
+      self.name = name
+      self.position  = position
+      
 class Background:
    def __init__(self, name, imgs):
       self.name = name
