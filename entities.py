@@ -38,16 +38,16 @@ class Background:
      pass
      
 class Entity(object):
-   def __init__(self, name, position):
+   def __init__(self, name, position, imgs):
       self.name = name
       self.position  = position
-
+      self.imgs = imgs
+      
 class MinerNotFull(Entity):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      super(MinerNotFull,self).__init__(name,position)
+      super(MinerNotFull,self).__init__(name,position,imgs)
       self.rate = rate
-      self.imgs = imgs
       self.current_img = 0
       self.resource_limit = resource_limit
       self.resource_count = 0
@@ -180,9 +180,8 @@ class MinerNotFull(Entity):
 class MinerFull(Entity):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      super(MinerFull,self).__init__(name,position)
+      super(MinerFull,self).__init__(name,position,imgs)
       self.rate = rate
-      self.imgs = imgs
       self.current_img = 0
       self.resource_limit = resource_limit
       self.resource_count = resource_limit
@@ -302,9 +301,8 @@ class MinerFull(Entity):
 
 class Vein(Entity):
     def __init__(self, name, rate, position, imgs, resource_distance=1):
-        super(Vein,self).__init__(name,position)
+        super(Vein,self).__init__(name,position,imgs)
         self.rate = rate
-        self.imgs = imgs
         self.current_img = 0
         self.resource_distance = resource_distance
         self.pending_actions = []
@@ -392,8 +390,7 @@ class Vein(Entity):
 
 class Ore(Entity):
    def __init__(self, name, position, imgs, rate=5000):
-      super(Ore,self).__init__(name,position)      
-      self.imgs = imgs
+      super(Ore,self).__init__(name,position,imgs)      
       self.current_img = 0
       self.rate = rate
       self.pending_actions = []
@@ -474,8 +471,7 @@ class Ore(Entity):
 class Blacksmith(Entity):
    def __init__(self, name, position, imgs, resource_limit, rate,
       resource_distance=1):
-      super(Blacksmith,self).__init__(name,position)
-      self.imgs = imgs
+      super(Blacksmith,self).__init__(name,position,imgs)
       self.current_img = 0
       self.resource_limit = resource_limit
       self.resource_count = 0
@@ -545,8 +541,7 @@ class Blacksmith(Entity):
 
 class Obstacle(Entity):
    def __init__(self, name, position, imgs):
-      super(Obstacle,self).__init__(name,position)
-      self.imgs = imgs
+      super(Obstacle,self).__init__(name,position,imgs)
       self.current_img = 0
 
    def schedule_entity(self,world,i_store):
@@ -577,9 +572,8 @@ class Obstacle(Entity):
 
 class OreBlob(Entity):
    def __init__(self, name, position, rate, imgs, animation_rate):
-      super(OreBlob,self).__init__(name,position)
+      super(OreBlob,self).__init__(name,position,imgs)
       self.rate = rate
-      self.imgs = imgs
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
@@ -699,8 +693,7 @@ class OreBlob(Entity):
 
 class Quake(Entity):
    def __init__(self, name, position, imgs, animation_rate):
-      super(Quake,self).__init__(name,position)
-      self.imgs = imgs
+      super(Quake,self).__init__(name,position,imgs)
       self.current_img = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
