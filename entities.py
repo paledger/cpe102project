@@ -43,14 +43,27 @@ class Entity(object):
       self.position  = position
       self.imgs = imgs
       
-class MinerNotFull(Entity):
+class Resources(object):
+   def __init__(self,resource_limit,resource_count):
+      self.resource_limit = resource_limit
+      self.resource_count = resource_count
+      
+class Animated(object):
+   def __init__(self,animation_rate):
+      self.animation_rate = animation_rate
+      
+class MinerNotFull(Entity,Resources):
    def __init__(self, name, resource_limit, position, rate, imgs,
       animation_rate):
-      super(MinerNotFull,self).__init__(name,position,imgs)
+      resource_count = 0
+      
+      Entity.__init__(self,name,position,imgs)
+      Resources.__init__(self,resource_limit,resource_count)
+      #called with the old class inheritance, super doesn't 
+      #handle this well(?)
       self.rate = rate
       self.current_img = 0
-      self.resource_limit = resource_limit
-      self.resource_count = 0
+      #self.resource_count = 0
       self.animation_rate = animation_rate
       self.pending_actions = []
  
