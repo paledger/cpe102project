@@ -1,4 +1,3 @@
-
 import entities
 import pygame
 import ordered_list
