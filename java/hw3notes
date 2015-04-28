@@ -1,0 +1,19 @@
+Allison Lee:
+Obstacle
+Vein
+Ore 
+OreBlob
+Miner >>
+- MinerNotFull
+- MinerFull
+Quake
+
+Paula Ledgerwood:
+WorldModel
+Interfaces >>
+- Entity
+- Resource
+Parent Classes >>
+- Actionable
+- Animated
+- ResourceDistance
