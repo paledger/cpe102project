@@ -1,0 +1,20 @@
+Allison Lee:
+Obstacle
+Vein
+Ore 
+OreBlob
+Blacksmith
+Miner >>
+MinerNotFull
+MinerFull
+
+
+Paula Ledgerwood:
+WorldModel.py
+Interfaces: 
+>> Entity
+>> Resources
+Parent Classes:
+>> Actionable
+>> ResourceDistance
+>> Animated
