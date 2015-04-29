@@ -18,15 +18,6 @@ public class WorldModel
 
    private Entity find_nearest(Point pt, Entity type)
    {
-      // WHERE PAULA LEFT OFF! :) 
-
-
-
-
-
-
-    
+         
    }
-
-
 }

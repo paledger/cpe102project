@@ -1,3 +1,21 @@
+ASSIGNMENT 3 
+CPE 102
+
+QUESTIONS/COMMENTS:
+
+P >> What do you think about the class I made for the global data in 
+entities.java? I wasn't sure how else to do that, since Java doesn't
+allow data outside of classes.
+
+P >> for hasattr() method used in Actionable in entities.java, this website 
+might be helpful (I haven't looked it over yet):
+http://www.javadocexamples.com/org/w3c/dom/Element/hasAttribute%28String%20name%29.html 
+
+
+_____________________________
+
+WORK LOADS
+
 Allison Lee:
 Obstacle
 Vein
@@ -10,10 +28,11 @@ Quake
 
 Paula Ledgerwood:
 WorldModel
-Interfaces >>
-- Entity
-- Resource
 Parent Classes >>
 - Actionable
 - Animated
 - ResourceDistance
+Interfaces >>
+- Entity
+- Resource
+
