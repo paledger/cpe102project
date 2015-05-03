@@ -107,7 +107,7 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	public Actionable(ArrayList pending_actions)
+	public Actionable(s)
 	{
 		List this.pendingActions = new ArrayList [];
 	}
@@ -279,10 +279,12 @@ public class Vein
 	public Vein(String name, int rate, Point position, 
 					List imgs, int resource_distance)
 	{
-//		super();
+		super();
 		
 	}
 }
+
+public class OreBlob()
 
 
 
