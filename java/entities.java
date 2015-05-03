@@ -101,6 +101,8 @@ public abstract class Entity
 
 
 // STILL NEEDS WORK ?? hasattr ??
+// you need to add a super into this function in order for it to initialize
+// things into entity
 public class Actionable
     extends Entity
 {
@@ -265,6 +267,19 @@ public class MinerFull
 	}
 }
 
+public class Vein
+	extends ResourceDistance
+{
+	private int current_img;
+	private int resource_distance;
+	
+	public Vein(String name, int rate, Point position, 
+					List imgs, int resource_distance)
+	{
+//		super();
+		
+	}
+}
 
 
 
