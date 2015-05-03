@@ -24,7 +24,7 @@ public class Data
 	public static final int VEIN_RATE_MAX = 17000;
 }
 
-public Interface Resource
+public interface Resource
 {
 	void setResourceCount(int n);
 	int getResourceCount();
@@ -112,7 +112,7 @@ public class Actionable
     	super(name, position, imgs, rate);
     }
 
-	protected getPendingActions()
+	protected List<Type> getPendingActions()
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -124,7 +124,7 @@ public class Actionable
 	    }
 	}
 
-	protected addPendingAction(Type action)
+	protected void addPendingAction(Type action)
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -132,7 +132,7 @@ public class Actionable
 		} 
 	}
 
-	protected removePendingAction(Type action)
+	protected void removePendingAction(Type action)
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -140,7 +140,7 @@ public class Actionable
 		} 
 	}
 
-	protected clearPendingActions()
+	protected void clearPendingActions()
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
