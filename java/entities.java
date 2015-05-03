@@ -5,7 +5,7 @@ import org.w3c.dom.Node;
 public class Data
 {
 	public static final int BLOB_RATE_SCALE = 4;
-    public static final int BLOB_ANIMATION_RATE_SCALE = 50;
+   public static final int BLOB_ANIMATION_RATE_SCALE = 50;
 	public static final int BLOB_ANIMATION_MIN = 1;
 	public static final int BLOB_ANIMATION_MAX = 3;
 
@@ -99,7 +99,7 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	private List pendingActions = new LinkedList<Type>();
+	private List pendingActions = new ArrayList<>;
 
     public Actionable(String name, Point position, List imgs, int rate)
     {
@@ -114,7 +114,7 @@ public class Actionable
 		}  
 		else
 		{
-			return new LinkedList<Type>();
+			return [];
 	    }
 	}
 	// what the fuck are actions
@@ -122,7 +122,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions.addLast(action);
+			this.pending_actions.append(action);
 		} 
 	}
 
@@ -130,7 +130,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pendingActions.remove(action);
+			this.pending_actions.remove(action);
 		} 
 	}
 
@@ -138,7 +138,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions.clear();
+			this.pending_actions = [];
 		}
 	}
 }
@@ -148,6 +148,7 @@ public class ResourceDistance
     extends Actionable
 {
   	 private int resourceDistance;
+
     public ResourceDistance(String name, 
     	                    Point position, 
     	                    List imgs, 
