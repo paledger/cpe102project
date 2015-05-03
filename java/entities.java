@@ -23,37 +23,97 @@ public class Data
 	public static final int VEIN_RATE_MAX = 17000;
 }
 
-public Interface Entity
-{
-	String get_name();
-    String set_position();
-    String get_position();
-    Image get_images();
-    Image get_image();
-    int get_rate();
-    Image next_image();
-    String entity_string();
-}
-
 public Interface Resource
 {
-	void set_resource_count(int n);
-	int get_resource_count();
-	int get_resource_limit();
+	void setResourceCount(int n);
+	int getResourceCount();
+	int getResourceLimit();
 }
 
+
+// CONSIDERING MAKING THIS A PARENT CLASS TO ENTITY B/C
+//   IT HAS THE SAME FUNCTIONS? BUT I AM NOT SURE...
+public class Background
+{
+	private String name;
+	private List imgs;
+
+	public Background(Sting name, List imgs)
+	{
+		this.name = name;
+		this.imgs = imgs;
+		this.currentImg = 0;
+	}
+
+    protected Image getImages()
+    {
+    	return imgs;
+    }
+
+    protected Image getImage()
+    {
+    	return imgs[currentImg];
+    }
+}
+
+public abstract class Entity
+{
+	private String name;
+	private Point position;
+	private List imgs;
+	private int rate;
+
+	protected Entity(String name, Point point, List imgs, int rate)
+	{
+        this.name = name;
+        this.position = position;
+        this.imgs = imgs;
+        this.rate = rate;
+	}
+
+	protected String getName()
+	{
+		return name;
+	}
+
+    protected void setPosition(Point pt)
+    {
+    	this.position = pt;
+    }
+
+    protected Point getPosition()
+    {
+    	return position;
+    }
+
+    protected int getRate()
+    {
+    	return rate;
+    }
+
+    protected void nextImage()
+    {
+        this.currentImg = (this.currentImg + 1) % len(imgs);
+    }
+
+    protected abstract String entityString();
+}
+
+
+// STILL NEEDS WORK ?? hasattr ??
 public class Actionable
+    extends Entity
 {
 	public Actionable(ArrayList pending_actions)
 	{
-		List this.pending_actions = new ArrayList [];
+		List this.pendingActions = new ArrayList [];
 	}
 
-	protected get_pending_actions()
+	protected getPendingActions()
 	{
 		if (hasattr(this, "pending_actions"))
 		{
-			return this.pending_actions;
+			return this.pendingActions;
 		}   //place where second note in hw3notes might be handy
 		else
 		{
@@ -61,7 +121,7 @@ public class Actionable
 	    }
 	}
 
-	protected add_pending_action(Type action)
+	protected addPendingAction(Type action)
 	{
 		if hasattr(this, "pending_actions")
 		{
@@ -69,7 +129,7 @@ public class Actionable
 		} 
 	}
 
-	protected remove_pending_action(Type action)
+	protected removePendingAction(Type action)
 	{
 		if hasattr(this, "pending_actions")
 		{
@@ -77,12 +137,62 @@ public class Actionable
 		} 
 	}
 
-	protected remove_pending_action(Type action)
+	protected clearPendingActions()
 	{
 		if hasattr(this, "pending_actions")
 		{
 			this.pending_actions = [];
-		} 
+		}
 	}
 }
 
+
+public class ResourceDistance
+    extends Actionable
+{
+	private int resourceDistance;
+
+    public ResourceDistance(int resourceDistance)
+    {
+    	super(pending_actions);
+    	this.resourceDistance = resourceDistance;
+    }
+
+    protected int getResourceDistance()
+    {
+    	return this.resourceDistance;
+    }
+}
+
+
+public class Animated
+    extends Actionable
+{
+    private int animationRate;
+
+    public Animated(int animationRate)
+    {
+    	super(pending_actions);
+        this.animationRate = animationRate;
+    }
+
+    protected int getAnimationRate()
+    {
+    	return this.animationRate;
+    }
+}
+
+public class Miner
+    extends Animated
+{
+	public Miner(String name, 
+		         int resource_limit, 
+		         Point position,
+		         int rate,
+		         List imgs,
+		         int animation_rate)
+	{
+		super(animationRate);
+	}
+}
+   
