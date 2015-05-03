@@ -129,7 +129,7 @@ class WorldModel:
     
     
     def get_background(self, pt):
-        if pt.within_bounds():
+        if pt.within_bounds(self):
             return self.background.get_cell(pt)
     
     

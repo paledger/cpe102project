@@ -32,8 +32,6 @@ public Interface Resource
 }
 
 
-// CONSIDERING MAKING THIS A PARENT CLASS TO ENTITY B/C
-//   IT HAS THE SAME FUNCTIONS? BUT I AM NOT SURE...
 public class Background
 {
 	private String name;
@@ -107,7 +105,7 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	private List pendingActions = new ArrayList<>;
+	private List pendingActions = new LinkedList<Type>();
 
     public Actionable(String name, Point position, List imgs, int rate)
     {
@@ -122,7 +120,7 @@ public class Actionable
 		}  
 		else
 		{
-			return [];
+			return new LinkedList<Type>();
 	    }
 	}
 
@@ -130,7 +128,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions.append(action);
+			this.pending_actions.addLast(action);
 		} 
 	}
 
@@ -138,7 +136,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions.remove(action);
+			this.pendingActions.remove(action);
 		} 
 	}
 
@@ -146,7 +144,7 @@ public class Actionable
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions = [];
+			this.pending_actions.clear();
 		}
 	}
 }
