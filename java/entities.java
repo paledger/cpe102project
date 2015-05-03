@@ -99,14 +99,14 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	private List pendingActions = new LinkedList<>;
+	private List pendingActions = new LinkedList<>();
 
     public Actionable(String name, Point position, List imgs, int rate)
     {
     	super(name, position, imgs, rate);
     }
 
-	protected getPendingActions()
+	protected List getPendingActions()
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -114,11 +114,11 @@ public class Actionable
 		}  
 		else
 		{
-			return [];
+			return new LinkedList<Type>();
 	    }
 	}
 	// what the fuck are actions
-	protected addPendingAction(Type action)
+	protected void addPendingAction(Type action)
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -126,7 +126,7 @@ public class Actionable
 		} 
 	}
 
-	protected removePendingAction(Type action)
+	protected void removePendingAction(Type action)
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
@@ -134,11 +134,11 @@ public class Actionable
 		} 
 	}
 
-	protected clearPendingActions()
+	protected void clearPendingActions()
 	{
 		if (this.hasAttribute("pending_actions"))
 		{
-			this.pending_actions = [];
+			this.pending_actions = new LinkedList<Type>();
 		}
 	}
 }
