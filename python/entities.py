@@ -29,11 +29,9 @@ class Background:
       self.current_img = 0
 
    def get_images(self):
-     return self.imgs
+      return self.imgs
    def get_image(self):
-     return self.imgs[self.current_img]
-   def schedule_entity(self,world,i_store):
-     pass
+      return self.imgs[self.current_img]
      
 class Entity(object):
    def __init__(self, name, position, imgs, rate):
