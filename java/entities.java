@@ -1,6 +1,3 @@
-// entities.py in Java
-// Paula's parts
-
 import java.lang.Math;
 import java.random;
 import org.w3c.dom.Node;
@@ -31,15 +28,12 @@ public Interface Resource
 	int getResourceLimit();
 }
 
-
-// CONSIDERING MAKING THIS A PARENT CLASS TO ENTITY B/C
-//   IT HAS THE SAME FUNCTIONS? BUT I AM NOT SURE...
 public class Background
 {
 	private String name;
 	private List imgs;
 
-	public Background(Sting name, List imgs)
+	public Background(String name, List imgs)
 	{
 		this.name = name;
 		this.imgs = imgs;
@@ -63,6 +57,7 @@ public abstract class Entity
 	private Point position;
 	private List imgs;
 	private int rate;
+	private int currentImg;
 
 	protected Entity(String name, Point position, List imgs, int rate)
 	{
@@ -70,6 +65,7 @@ public abstract class Entity
         this.position = position;
         this.imgs = imgs;
         this.rate = rate;
+		  this.currentImg = currentImg;
 	}
 
 	protected String getName()
@@ -94,24 +90,20 @@ public abstract class Entity
 
     protected void nextImage()
     {
-        this.currentImg = (this.currentImg + 1) % len(imgs);
+      this.currentImg = (this.currentImg + 1) % len(imgs);
     }
 
     protected abstract String entityString();
 }
 
-
-// STILL NEEDS WORK ?? hasattr ??
-// you need to add a super into this function in order for it to initialize
-// things into entity
 public class Actionable
     extends Entity
 {
 	private List pendingActions = new ArrayList<>;
 
-    public Actionable(String name, Point point, List imgs, int rate)
+    public Actionable(String name, Point position, List imgs, int rate)
     {
-    	super(name, point, imgs, rate);
+    	super(name, position, imgs, rate);
     }
 
 	protected getPendingActions()
@@ -125,7 +117,7 @@ public class Actionable
 			return [];
 	    }
 	}
-
+	// what the fuck are actions
 	protected addPendingAction(Type action)
 	{
 		if (this.hasAttribute("pending_actions"))
@@ -155,15 +147,15 @@ public class Actionable
 public class ResourceDistance
     extends Actionable
 {
-	private int resourceDistance;
+  	 private int resourceDistance;
 
-    public ResourceDistance(int resourceDistance, 
-    	                    String name, 
-    	                    Point point, 
+    public ResourceDistance(String name, 
+    	                    Point position, 
     	                    List imgs, 
-    	                    int rate)
+    	                    int rate,
+								  int resourceDistance)
     {
-    	super(name, point, imgs, rate);	
+    	super(name, position, imgs, rate);	
     	this.resourceDistance = resourceDistance;
     }
 
@@ -179,13 +171,14 @@ public class Animated
 {
     private int animationRate;
 
-    public Animated(int animationRate, 
+    public Animated( 
     	            String name, 
-    	            Point point, 
+    	            Point position, 
     	            List imgs, 
-    	            int rate)
+    	            int rate,
+						int animationRate)
     {
-      super(name, point, imgs, rate);
+      super(name, position, imgs, rate);
       this.animationRate = animationRate;		  
     }
 
@@ -195,106 +188,138 @@ public class Animated
     }
 }
 
-
-
+// need to write the functions for the resource interface here
 public class Miner
     extends Animated
+	 implements Resource
 {
+	private int resourceLimit;
+	private int resourceCount;
+	
 	public Miner(String name, 
-		         int resource_limit, 
+		         int resourceLimit, 
 		         Point position,
 		         int rate,
 		         List imgs,
-		         int animation_rate)
+		         int animationRate)
 	{
-		super(animationRate, name, point, imgs, rate);
+		super(name, point, imgs, rate, animationRate);
+		this.resourceLimit = resourceLimit;
+		this.resourceCount = resourceCount;
+	}
+}
+
+public class MinerNotFull
+	extends Miner
+{	
+	public MinerFull(String name, 
+		         int resourceLimit, 
+		         Point position,
+		         int rate,
+		         List imgs,
+		         int animationRate)
+	{
+		this.currentImg = 0;
+		this.resourceCount = 0;
+		super(name, resourceLimit, position, rate, imgs, 
+			animation_rate);		
+	}
+}
+
+public class MinerFull
+	extends Miner
+{	
+	public MinerFull(String name, 
+		         int resourceLimit, 
+		         Point position,
+		         int rate,
+		         List imgs,
+		         int animationRate)
+	{
+		this.currentImg = 0;
+		this.resourceCount = resourceLimit;
+		super(name, resourceLimit, position, rate, imgs, 
+			animation_rate);				
+	}
+}
+
+public class Vein
+	extends ResourceDistance
+{	
+	public Vein(String name, int rate, Point position, 
+					List imgs, int resourceDistance)
+	{
+		this.currentImg = 0;
+		this.resourceDistance = 1;
+ 		super(name, rate, position, imgs, resourceDistance);		
+		
+	}
+}
+
+public class Ore
+	extends Actionable
+{	
+	public Ore(String name, Point position, List imgs, int rate)
+		
+	{
+		this.rate = 5000;
+		super(name, position, imgs, this.rate);
+	}
+}
+
+public class Blacksmith
+	extends ResourceDistance
+	implements Resource
+{
+	private int resourceLimit;
+	private int resourceCount;
+	
+	public Blacksmith(String name, Point position, List imgs, 
+		int resourceLimit, int rate, int resourceDistance)
+	{
+		this.resourceDistance = 1;
+		this.currentImg= 0;
+		this.resourceCount = 0;
+		super(name, rate, position, imgs, resourceDistance);
+		
 	}
 }
 
 public class Obstacle
 	extends Entity
 {
-	private int current_img;
-	private int rate;
-	public Obstacle(Strong name, Point position, List imgs)
+	public Obstacle(String name, Point position, List imgs, int rate)
 	{
-		this.current_img = 0;
+		this.currentImg = 0;
 		this.rate = 0;
-		super(name, position, imgs, rate);
+		super(name, position, imgs, this.rate);
 	}
 	
 }
-/* some of allison's stuff don't here don't mind #################################### 
-Still need to add in all the functionality to these classes.*/
 
-
-public class Ore
-	extends Actionable
+public class OreBlob
+	extends Animated
 {
-	private int current_img;
-	
-	public Ore(String name, Point position, List imgs, int rate)
-		
+	public OreBlob(String name, Point position, int rate, 
+		List imgs, int animationRate)
 	{
-		this.rate = 5000;
-		this.current_img = 0;
-		super(pending_actions);
+		this.currentImg = 0;
+		super(name, position, imgs, rate, animationRate);
+	}
+	
+}
+
+public class Quake
+	extends Animated
+{
+	public Quake(String name, Point position, List imgs, int animation_rate)
+	{
+		this.currentImg = 0;
+		this.rate = 0;
+		super(name, position, imgs, this.rate, animationRate);
 	}
 }
 
-public class MinerNotFull
-	extends Miner
-{
-	private int current_img;
-	private int resource_count;
-	
-	public MinerFull(String name, 
-		         int resource_limit, 
-		         Point position,
-		         int rate,
-		         List imgs,
-		         int animation_rate)
-	{
-		this.current_img = 0;
-		this.resource_count = 0;
-		super(name, resource_limit, position, rate, imgs, animation_rate);		
-	}
-}
-
-public class MinerFull
-	extends Miner
-{
-	private int current_img;
-	private int resource_count;
-	
-	public MinerFull(String name, 
-		         int resource_limit, 
-		         Point position,
-		         int rate,
-		         List imgs,
-		         int animation_rate)
-	{
-		super(name, resource_limit, position, rate, imgs, animation_rate);
-		this.current_img = 0;
-		this.resource_count = resource_limit;
-	}
-}
-
-public class Vein
-	extends ResourceDistance
-{
-	private int current_img;
-	private int resource_distance;
-	
-	public Vein(String name, int rate, Point position, 
-					List imgs, int resource_distance)
-	{
- 		super(name, rate, position, imgs, resource_distance);
-		this.current_img = 0;
-		this.resource_distance = 1;
-		
-	}
-}
 
 
 
