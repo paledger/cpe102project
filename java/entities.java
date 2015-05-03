@@ -154,8 +154,8 @@ public class ResourceDistance
 
     public ResourceDistance(int resourceDistance)
     {
-    	super(pending_actions);
     	this.resourceDistance = resourceDistance;
+    	super(pending_actions);		
     }
 
     protected int getResourceDistance()
@@ -172,8 +172,8 @@ public class Animated
 
     public Animated(int animationRate)
     {
-    	super(pending_actions);
-        this.animationRate = animationRate;
+      this.animationRate = animationRate;
+    	super(pending_actions);		  
     }
 
     protected int getAnimationRate()
@@ -195,4 +195,85 @@ public class Miner
 		super(animationRate);
 	}
 }
+
+public class Obstacle
+	extends Entity
+{
+	private int current_img;
+	private int rate;
+	public Obstacle(Strong name, Point position, List imgs)
+	{
+		this.current_img = 0;
+		this.rate = 0;
+		super(name, position, imgs, rate);
+	}
+	
+}
+/* some of allison's stuff don't here don't mind #################################### 
+Still need to add in all the functionality to these classes.*/
+
+
+public class Ore
+	extends Actionable
+{
+	private int current_img;
+	
+	public Ore(String name, Point position, List imgs, int rate)
+		
+	{
+		this.rate = 5000;
+		this.current_img = 0;
+		super(pending_actions);
+	}
+}
+
+public class MinerNotFull
+	extends Miner
+{
+	private int current_img;
+	private int resource_count;
+	
+	public MinerFull(String name, 
+		         int resource_limit, 
+		         Point position,
+		         int rate,
+		         List imgs,
+		         int animation_rate)
+	{
+		this.current_img = 0;
+		this.resource_count = 0;
+		super(name, resource_limit, position, rate, imgs, animation_rate);		
+	}
+}
+
+public class MinerFull
+	extends Miner
+{
+	private int current_img;
+	private int resource_count;
+	
+	public MinerFull(String name, 
+		         int resource_limit, 
+		         Point position,
+		         int rate,
+		         List imgs,
+		         int animation_rate)
+	{
+		super(name, resource_limit, position, rate, imgs, animation_rate);
+		this.current_img = 0;
+		this.resource_count = resource_limit;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
    
