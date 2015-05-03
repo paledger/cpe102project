@@ -64,7 +64,7 @@ public abstract class Entity
 	private List imgs;
 	private int rate;
 
-	protected Entity(String name, Point point, List imgs, int rate)
+	protected Entity(String name, Point position, List imgs, int rate)
 	{
         this.name = name;
         this.position = position;
@@ -107,17 +107,19 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	public Actionable(s)
-	{
-		List this.pendingActions = new ArrayList [];
-	}
+	private List pendingActions = new ArrayList<>;
+
+    public Actionable(String name, Point point, List imgs, int rate)
+    {
+    	super(name, point, imgs, rate);
+    }
 
 	protected getPendingActions()
 	{
-		if (hasattr(this, "pending_actions"))
+		if (this.hasAttribute("pending_actions"))
 		{
 			return this.pendingActions;
-		}   //place where second note in hw3notes might be handy
+		}  
 		else
 		{
 			return [];
@@ -134,7 +136,7 @@ public class Actionable
 
 	protected removePendingAction(Type action)
 	{
-		if hasattr(this, "pending_actions")
+		if (this.hasAttribute("pending_actions"))
 		{
 			this.pending_actions.remove(action);
 		} 
@@ -142,7 +144,7 @@ public class Actionable
 
 	protected clearPendingActions()
 	{
-		if hasattr(this, "pending_actions")
+		if (this.hasAttribute("pending_actions"))
 		{
 			this.pending_actions = [];
 		}
@@ -155,10 +157,14 @@ public class ResourceDistance
 {
 	private int resourceDistance;
 
-    public ResourceDistance(int resourceDistance)
+    public ResourceDistance(int resourceDistance, 
+    	                    String name, 
+    	                    Point point, 
+    	                    List imgs, 
+    	                    int rate)
     {
+    	super(name, point, imgs, rate);	
     	this.resourceDistance = resourceDistance;
-    	super(pending_actions);		
     }
 
     protected int getResourceDistance()
@@ -173,10 +179,14 @@ public class Animated
 {
     private int animationRate;
 
-    public Animated(int animationRate)
+    public Animated(int animationRate, 
+    	            String name, 
+    	            Point point, 
+    	            List imgs, 
+    	            int rate)
     {
-      this.animationRate = animationRate;
-    	super(pending_actions);		  
+      super(name, point, imgs, rate);
+      this.animationRate = animationRate;		  
     }
 
     protected int getAnimationRate()
@@ -197,7 +207,7 @@ public class Miner
 		         List imgs,
 		         int animation_rate)
 	{
-		super(animationRate);
+		super(animationRate, name, point, imgs, rate);
 	}
 }
 
@@ -279,12 +289,12 @@ public class Vein
 	public Vein(String name, int rate, Point position, 
 					List imgs, int resource_distance)
 	{
-		super();
+ 		super(name, rate, position, imgs, resource_distance);
+		this.current_img = 0;
+		this.resource_distance = 1;
 		
 	}
 }
-
-public class OreBlob()
 
 
 
