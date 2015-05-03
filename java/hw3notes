@@ -2,6 +2,10 @@ ASSIGNMENT 3
 CPE 102
 
 QUESTIONS/COMMENTS:
+A >> 
+- Don't initialize pending_actions in the Actions class
+- Make it possible for us to super(); the initialized arguments in Entity from the 4 bottom classes so that lower classes can access it
+
 
 P >> I'm a little bit confused about where current_img in 
 Entity is coming from....

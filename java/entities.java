@@ -7,7 +7,7 @@ import java.random;
 public class Data
 {
 	public static final int BLOB_RATE_SCALE = 4;
-    public static final int BLOB_ANIMATION_RATE_SCALE = 50;
+   public static final int BLOB_ANIMATION_RATE_SCALE = 50;
 	public static final int BLOB_ANIMATION_MIN = 1;
 	public static final int BLOB_ANIMATION_MAX = 3;
 
