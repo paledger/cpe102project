@@ -99,7 +99,7 @@ public abstract class Entity
 public class Actionable
     extends Entity
 {
-	private List pendingActions = new ArrayList<>;
+	private List pendingActions = new LinkedList<>;
 
     public Actionable(String name, Point position, List imgs, int rate)
     {
@@ -212,7 +212,7 @@ public class Miner
 public class MinerNotFull
 	extends Miner
 {	
-	public MinerFull(String name, 
+	public MinerNotFull(String name, 
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
