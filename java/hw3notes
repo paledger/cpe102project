@@ -3,6 +3,9 @@ CPE 102
 
 QUESTIONS/COMMENTS:
 
+P >> I'm a little bit confused about where current_img in 
+Entity is coming from....
+
 P >> What do you think about the class I made for the global data in 
 entities.java? I wasn't sure how else to do that, since Java doesn't
 allow data outside of classes. 
