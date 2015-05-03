@@ -21,7 +21,7 @@ public class Data
 	public static final int VEIN_RATE_MAX = 17000;
 }
 
-public Interface Resource
+public interface Resource
 {
 	void setResourceCount(int n);
 	int getResourceCount();
