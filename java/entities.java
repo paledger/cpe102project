@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 public class Data
 {
 	public static final int BLOB_RATE_SCALE = 4;
-   public static final int BLOB_ANIMATION_RATE_SCALE = 50;
+    public static final int BLOB_ANIMATION_RATE_SCALE = 50;
 	public static final int BLOB_ANIMATION_MIN = 1;
 	public static final int BLOB_ANIMATION_MAX = 3;
 
@@ -64,7 +64,7 @@ public abstract class Entity
 	private List imgs;
 	private int rate;
 
-	protected Entity(String name, Point point, List imgs, int rate)
+	protected Entity(String name, Point position, List imgs, int rate)
 	{
         this.name = name;
         this.position = position;
@@ -109,9 +109,9 @@ public class Actionable
 {
 	private List pendingActions = new ArrayList<>;
 
-    public Actionable(String name, Point point, List imgs, int rate)
+    public Actionable(String name, Point position, List imgs, int rate)
     {
-    	super(name, point, imgs, rate);
+    	super(name, position, imgs, rate);
     }
 
 	protected getPendingActions()
@@ -159,7 +159,7 @@ public class ResourceDistance
 
     public ResourceDistance(int resourceDistance, 
     	                    String name, 
-    	                    Point point, 
+    	                    Point position, 
     	                    List imgs, 
     	                    int rate)
     {
@@ -181,11 +181,11 @@ public class Animated
 
     public Animated(int animationRate, 
     	            String name, 
-    	            Point point, 
+    	            Point position, 
     	            List imgs, 
     	            int rate)
     {
-      super(name, point, imgs, rate);
+      super(name, position, imgs, rate);
       this.animationRate = animationRate;		  
     }
 
@@ -207,7 +207,7 @@ public class Miner
 		         List imgs,
 		         int animation_rate)
 	{
-		super(animationRate, name, point, imgs, rate);
+		super(animationRate, name, position, imgs, rate);
 	}
 }
 

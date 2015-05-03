@@ -25,10 +25,10 @@ Quake
 Paula Ledgerwood:
 WorldModel
 Parent Classes >>
+- Entity
 - Actionable
 - Animated
 - ResourceDistance
 Interfaces >>
-- Entity
 - Resource
 
