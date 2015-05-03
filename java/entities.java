@@ -3,6 +3,7 @@
 
 import java.lang.Math;
 import java.random;
+import org.w3c.dom.Node;
 
 public class Data
 {
@@ -125,7 +126,7 @@ public class Actionable
 
 	protected addPendingAction(Type action)
 	{
-		if hasattr(this, "pending_actions")
+		if (this.hasAttribute("pending_actions"))
 		{
 			this.pending_actions.append(action);
 		} 
@@ -183,6 +184,8 @@ public class Animated
     	return this.animationRate;
     }
 }
+
+
 
 public class Miner
     extends Animated
