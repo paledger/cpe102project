@@ -3,22 +3,26 @@ public class WorldModel
    private Background background;
    private int num_rows;
    private int num_cols;
+   private List<Entity> occupancy;
 
    public WorldModel(int num_rows, int num_cols, Background background)
    {
       this.background = background;
       this.num_rows = num_rows;
       this.num_cols = num_cols;
-      List<Entity> occupancy = new occ_grid.Grid(num_cols, num_rows, None);
+      this.occupancy = new occ_grid.Grid(num_cols, num_rows, None);
       Linkedist<Entity> entities = new LinkedList<Entity>();
       LinkedList<String> actionQueue = new LinkedList<String>();
    }
 
+   /*
    public void handle_timer_event(WorldView view)
    {
       rects = update_on_time(pygame.time.get_ticks());
       view.update_view_tiles(rects);
    }
+   */
+
 
    // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
    Entity nearestEntity = (List entityDists) -> 
@@ -44,7 +48,6 @@ public class WorldModel
 
    public Entity find_nearest(Point pt, Class type)
    {
-        
    }
 
    public List moveEntity(Entity entity, Point pt)

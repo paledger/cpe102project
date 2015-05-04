@@ -22,13 +22,13 @@ public class Point
 	public boolean withinBounds(WorldModel world)
 	{
 	    return (this.x >= 0 && this.x < world.num_cols) &&
-            (this.y >= 0 && this.y < world.num);
+            (this.y >= 0 && this.y < world.num_rows);
 	}
 
 	public boolean isOccupied(WorldModel world)
 	{
 		return (this.withinBounds(world) && 
-			world.occupancy.getCell(this) != Null);
+			world.occupancy.getCell(this) != null);
 	}
 
 	public double distanceSq(Point p2)
@@ -41,4 +41,27 @@ public class Point
 		return (this.x == pt2.x() && Math.abs(this.y - pt2.y()) == 1) ||
 		    (this.y == pt2.y() && Math.abs(this.x - pt2.x()) == 1);
 	}
+
+	/*public Point nextPosition(WorldModel world, Point destination)
+	{
+        int horiz = actions.sign(destination.x() - this.x());
+        Point newPt = new Point(this.x() + horiz, this.y);
+
+        if(horiz == 0 || newPt.isOccupied(world))
+        {
+        	int vert = actions.sign(destination.y() - this.x);
+        	newPt = new Point(this.x(), this.y() + vert);
+        	if (vert == 0 || newPt.isOccupied(world))
+        	{
+        		newPt = new Point(this.x(), this.y());
+        	}
+        }
+	}
+
+	public Point findOpenAround(WorldModel world, int distance)
+	{
+
+	}
+    */
+
 }
