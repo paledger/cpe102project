@@ -49,7 +49,7 @@ public class WorldModel
 
    public List moveEntity(Entity entity, Point pt)
    {
-      List tiles = new LinkedList<Point>();
+      List<Point> tiles = new LinkedList<Point>();
       if(pt.withinBounds())
       {
 
@@ -73,9 +73,10 @@ public class WorldModel
 
    public void removeEntity(Entity entity)
    {
-      for(action : entity.getPendingActions())
+      List<Type> list = entity.getPendingActions();
+      for(int action = 0; action < list.length; action ++)
       {
-         this.unscheduleAction(action);
+         this.unscheduleAction(list[action]);
       }
       entity.clearPendingActions();
       this.removeEntityAt(entity.getPosition());
@@ -83,7 +84,7 @@ public class WorldModel
 
    public void removeEntityAt(Point pt)
    {
-      if(pt.withinBounds() && 
+      if(pt.withinBounds(this) && 
          this.occupancy.getCell(pt) != None)
       {
          entity = this.occupancy.getCell(pt);
@@ -94,6 +95,7 @@ public class WorldModel
       }
    }
 
+/*
    public void scheduleAction(Entity entity, Type action, int time)
    {
       entity.addPendingAction(action);
@@ -149,7 +151,7 @@ public class WorldModel
       }
       return action;
    }
-   
+*/
    public List<Point> update_on_time(int ticks)
    {
       List tiles = new LinkedList<Point>();
