@@ -23,7 +23,7 @@ P >> for hasattr() method used in Actionable in entities.java, this website
 might be helpful (I haven't looked it over yet):
 http://www.javadocexamples.com/org/w3c/dom/Element/hasAttribute%28String%20name%29.html 
 
-
+>> In Quake, change 0 to make more readable to name rate or this.rate. 
 _____________________________
 
 WORK LOADS
