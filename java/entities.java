@@ -1,25 +1,9 @@
 import java.lang.Math;
 import java.random;
+import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
 import org.w3c.dom.Node;
-
-public class Data
-{
-	public static final int BLOB_RATE_SCALE = 4;
-   public static final int BLOB_ANIMATION_RATE_SCALE = 50;
-	public static final int BLOB_ANIMATION_MIN = 1;
-	public static final int BLOB_ANIMATION_MAX = 3;
-
-	public static final int ORE_CORRUPT_MIN = 20000;
-	public static final int ORE_CORRUPT_MAX = 30000;
-
-	public static final int QUAKE_STEPS = 10;
-	public static final int QUAKE_DURATION = 1100;
-	public static final int QUAKE_ANIMATION_RATE = 100;
-
-	public static final int VEIN_SPAWN_DELAY = 500;
-	public static final int VEIN_RATE_MIN = 8000;
-	public static final int VEIN_RATE_MAX = 17000;
-}
 
 public interface Resource
 {
@@ -31,41 +15,24 @@ public interface Resource
 public class Background
 {
 	private String name;
-	private List imgs;
 
-	public Background(String name, List imgs)
+	public Background(String name)
 	{
 		this.name = name;
-		this.imgs = imgs;
-		this.currentImg = 0;
 	}
-
-    protected Image getImages()
-    {
-    	return imgs;
-    }
-
-    protected Image getImage()
-    {
-    	return imgs[currentImg];
-    }
 }
 
 public abstract class Entity
 {
-	private String name;
-	private Point position;
-	private List imgs;
-	private int rate;
-	private int currentImg;
+	protected String name;
+	protected Point position;
+	protected int rate;
 
-	protected Entity(String name, Point position, List imgs, int rate)
+	protected Entity(String name, Point position, int rate)
 	{
         this.name = name;
         this.position = position;
-        this.imgs = imgs;
         this.rate = rate;
-		  this.currentImg = currentImg;
 	}
 
 	protected String getName()
@@ -87,75 +54,31 @@ public abstract class Entity
     {
     	return rate;
     }
-
-    protected void nextImage()
-    {
-      this.currentImg = (this.currentImg + 1) % len(imgs);
-    }
-
+	 
     protected abstract String entityString();
 }
 
 public class Actionable
     extends Entity
 {
-	private List pendingActions = new LinkedList<>();
-
-    public Actionable(String name, Point position, List imgs, int rate)
+    public Actionable(String name, Point position,int rate)
     {
-    	super(name, position, imgs, rate);
+    	super(name, position,rate);
     }
-
-	protected List getPendingActions()
-	{
-		if (this.hasAttribute("pending_actions"))
-		{
-			return this.pendingActions;
-		}  
-		else
-		{
-			return new LinkedList<Type>();
-	    }
-	}
-	// what the fuck are actions
-	protected void addPendingAction(Type action)
-	{
-		if (this.hasAttribute("pending_actions"))
-		{
-			this.pending_actions.append(action);
-		} 
-	}
-
-	protected void removePendingAction(Type action)
-	{
-		if (this.hasAttribute("pending_actions"))
-		{
-			this.pending_actions.remove(action);
-		} 
-	}
-
-	protected void clearPendingActions()
-	{
-		if (this.hasAttribute("pending_actions"))
-		{
-			this.pending_actions = new LinkedList<Type>();
-		}
-	}
 }
 
 
 public class ResourceDistance
     extends Actionable
 {
-  	 private int resourceDistance;
+  	 protected int resourceDistance;
 
     public ResourceDistance(String name, 
     	                    Point position, 
-    	                    List imgs, 
     	                    int rate,
 								  int resourceDistance)
     {
-    	super(name, position, imgs, rate);	
+    	super(name, position, rate);	
     	this.resourceDistance = resourceDistance;
     }
 
@@ -173,12 +96,11 @@ public class Animated
 
     public Animated( 
     	            String name, 
-    	            Point position, 
-    	            List imgs, 
+    	            Point position,
     	            int rate,
 						int animationRate)
     {
-      super(name, position, imgs, rate);
+      super(name, position, rate);
       this.animationRate = animationRate;		  
     }
 
@@ -193,17 +115,16 @@ public class Miner
     extends Animated
 	 implements Resource
 {
-	private int resourceLimit;
-	private int resourceCount;
+	protected int resourceLimit;
+	protected int resourceCount;
 	
 	public Miner(String name, 
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-		         List imgs,
 		         int animationRate)
 	{
-		super(name, point, imgs, rate, animationRate);
+		super(name, position, rate, animationRate);
 		this.resourceLimit = resourceLimit;
 		this.resourceCount = resourceCount;
 	}
@@ -216,13 +137,11 @@ public class MinerNotFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-		         List imgs,
 		         int animationRate)
 	{
-		this.currentImg = 0;
-		this.resourceCount = 0;
-		super(name, resourceLimit, position, rate, imgs, 
-			animation_rate);		
+		super(name, resourceLimit, position, rate,
+			animationRate);	
+		this.resourceCount = 0;	
 	}
 }
 
@@ -233,37 +152,38 @@ public class MinerFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-		         List imgs,
 		         int animationRate)
 	{
-		this.currentImg = 0;
-		this.resourceCount = resourceLimit;
-		super(name, resourceLimit, position, rate, imgs, 
-			animation_rate);				
+		super(name, resourceLimit, position, rate, 
+			animationRate);			
+		this.resourceCount = resourceLimit;			
 	}
 }
 
 public class Vein
 	extends ResourceDistance
-{	
-	public Vein(String name, int rate, Point position, 
-					List imgs, int resourceDistance)
+{
+	private static final int VEIN_SPAWN_DELAY = 500;
+	private static final int VEIN_RATE_MIN = 8000;
+	private static final int VEIN_RATE_MAX = 17000;	
+	
+	public Vein(String name, int rate, Point position, int resourceDistance)
 	{
-		this.currentImg = 0;
-		this.resourceDistance = 1;
- 		super(name, rate, position, imgs, resourceDistance);		
-		
+ 		super(name, position, rate, resourceDistance);	
+		this.resourceDistance = 1;	
 	}
 }
 
 public class Ore
 	extends Actionable
 {	
-	public Ore(String name, Point position, List imgs, int rate)
+	private static final int ORE_CORRUPT_MIN = 20000;
+	private static final int ORE_CORRUPT_MAX = 30000;
+	
+	public Ore(String name, Point position, int rate)
 		
 	{
-		this.rate = 5000;
-		super(name, position, imgs, this.rate);
+		super(name, position, 5000);
 	}
 }
 
@@ -271,16 +191,15 @@ public class Blacksmith
 	extends ResourceDistance
 	implements Resource
 {
-	private int resourceLimit;
-	private int resourceCount;
+	protected int resourceLimit;
+	protected int resourceCount;
 	
-	public Blacksmith(String name, Point position, List imgs, 
+	public Blacksmith(String name, Point position, 
 		int resourceLimit, int rate, int resourceDistance)
 	{
+		super(name, position, rate, resourceDistance);
 		this.resourceDistance = 1;
-		this.currentImg= 0;
 		this.resourceCount = 0;
-		super(name, rate, position, imgs, resourceDistance);
 		
 	}
 }
@@ -288,11 +207,9 @@ public class Blacksmith
 public class Obstacle
 	extends Entity
 {
-	public Obstacle(String name, Point position, List imgs, int rate)
+	public Obstacle(String name, Point position, int rate)
 	{
-		this.currentImg = 0;
-		this.rate = 0;
-		super(name, position, imgs, this.rate);
+		super(name, position,0);
 	}
 	
 }
@@ -300,11 +217,15 @@ public class Obstacle
 public class OreBlob
 	extends Animated
 {
+	private static final int BLOB_RATE_SCALE = 4;
+   private static final int BLOB_ANIMATION_RATE_SCALE = 50;
+	private static final int BLOB_ANIMATION_MIN = 1;
+	private static final int BLOB_ANIMATION_MAX = 3;
+	
 	public OreBlob(String name, Point position, int rate, 
-		List imgs, int animationRate)
+		int animationRate)
 	{
-		this.currentImg = 0;
-		super(name, position, imgs, rate, animationRate);
+		super(name, position, rate, animationRate);
 	}
 	
 }
@@ -312,11 +233,13 @@ public class OreBlob
 public class Quake
 	extends Animated
 {
-	public Quake(String name, Point position, List imgs, int animation_rate)
+	private static final int QUAKE_STEPS = 10;
+	private static final int QUAKE_DURATION = 1100;
+	private static final int QUAKE_ANIMATION_RATE = 100;
+	
+	public Quake(String name, Point position, int animationRate)
 	{
-		this.currentImg = 0;
-		this.rate = 0;
-		super(name, position, imgs, this.rate, animationRate);
+		super(name, position, 0, animationRate);
 	}
 }
 

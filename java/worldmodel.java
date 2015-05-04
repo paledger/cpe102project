@@ -159,7 +159,7 @@ public class WorldModel
       {
          this.actionQueue.pop();
          tiles.addAll(next.item(ticks)); //confused aboout what next is ??? and item??
-         next = this.actionQueue.head();
+         Type next = this.actionQueue.head();
       }
 
       return tiles;
