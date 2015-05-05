@@ -1,12 +1,12 @@
 public class DistPair
 {
-   private Entity entity;
-   private double distanceTo;
+   protected Entity entity;
+   protected double dist;
 
-   public DistPair(Entity entity, double distanceTo)
+   public DistPair(Entity entity, double dist)
    {
       this.entity = entity;
-      this.distanceTo = distanceTo;
+      this.dist = dist;
    }
 
    public Entity getEnt()
@@ -16,6 +16,6 @@ public class DistPair
 
    public double getDist()
    {
-      return this.distanceTo;
+      return this.dist;
    }
 }
