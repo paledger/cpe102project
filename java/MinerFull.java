@@ -13,7 +13,7 @@ public class MinerFull
 	}
 	//missing schedule_entity
 	
-	//miner_to_smith: also uses world.move_entity, deals with tuple return
+	//miner_to_smith: also uses world.move_entity, deals with tuple return of function
 	//create_miner_full_action uses action methods
 	
 	public Entity tryTransformMinerFull(WorldModel world)
