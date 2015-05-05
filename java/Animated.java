@@ -1,7 +1,7 @@
 public class Animated
     extends Actionable
 {
-    private int animationRate;
+    protected int animationRate;
 
     public Animated( 
     	            String name, 

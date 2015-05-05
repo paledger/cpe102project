@@ -13,4 +13,17 @@ public class Blacksmith
 		this.resourceCount = 0;
 		
 	}
+	public void setResourceCount(int n)
+	{
+		this.resource_count = n;
+	}
+	public int getResourceCount()
+	{
+		return this.resourceCount;
+	}
+	public int getResourceLimit()
+	{
+		return this.resourceLimit;
+	}
+	//missing currentImg
 }

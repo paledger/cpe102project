@@ -5,5 +5,6 @@ public class Obstacle
 	{
 		super(name, position,0);
 	}
+	//missing currentImg
 	
 }

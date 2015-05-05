@@ -9,4 +9,9 @@ public class Ore
 	{
 		super(name, position, 5000);
 	}
+	//missing schedule_entity, create_ore_transform_action (deals with actions)
+	//missing create_blob--deals with i_store
+	//missing schedule_ore -- works wiht action functionality
+	// also missing currentImg
+	
 }

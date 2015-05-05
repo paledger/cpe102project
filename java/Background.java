@@ -6,4 +6,6 @@ public class Background
 	{
 		this.name = name;
 	}
+	
+	//Missing get_images, get_image, schedule_entity, currentImg
 }

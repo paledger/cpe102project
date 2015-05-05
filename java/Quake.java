@@ -9,4 +9,5 @@ public class Quake
 	{
 		super(name, position, 0, animationRate);
 	}
+	//missing schedule_entity and schedule_quake
 }
