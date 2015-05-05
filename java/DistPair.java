@@ -1,4 +1,4 @@
-public class DistPair
+public class DistPair extends Pair
 {
    protected Entity entity;
    protected double dist;

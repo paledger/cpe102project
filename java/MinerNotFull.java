@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MinerNotFull
 	extends Miner
 {	
@@ -15,17 +18,32 @@ public class MinerNotFull
 		//also missing schedule_entity, schedule_miner (has to do with actions)
 		//also missing create_miner_not_full_action--uses action methods
 	}
-/*	public void miner_to_ore(WorldModel world, Ore ore)
+	public Pair miner_to_ore(WorldModel world, Ore ore)
 	{
-		private occupancy entityPt = this.getPosition();
+		Point entityPt = this.getPosition();
 		if (ore==null)
-			//from python: "if not ore"
 		{
-			return ([entityPt], False);
+			ArrayList<Point> entityPtL = new ArrayList<Point>(Arrays.asList(entityPt));
+			ListBooleanPair pair = new ListBooleanPair(entityPtL,false);
+			return pair;
 		}
+		if (entityPt.adjacent(ore.getPosition()))
+		{
+			this.setResourceCount(1+this.getResourceCount());
+			//world.removeEntity(ore); -> removeentity has action functionality
+			Point orePt = ore.getPosition();
+			PointBooleanPair pair2 = new PointBooleanPair(orePt,true);
+			return pair2;
+			
+		} /*else
+		{
+			Point newPt = entityPt.nextPosition(world, ore.getPosition);
+			//from python:          return (world.move_entity(self, new_pt), False)
+			//>>>> need to be able to return something with a function, commented out for now
+		}*/
+			return null;
+		
 	} 
-	// need to finish this--how to return things of this type?
-	*/
 	
 	public Entity tryTransformMinerNotFull(WorldModel world)
 	{
