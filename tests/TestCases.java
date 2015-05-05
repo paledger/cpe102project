@@ -19,6 +19,17 @@ public class TestCases
         assertEquals(pt.y(), 4);
 	}
 
+	@Test
+	public void testActionable()
+	{
+		String name = "Name";
+		Point pt = new Point(0,1);
+		int rate = 1;
+		Actionable action = new Actionable(name, pt, rate);
+		assertEquals(action.name, "Name");
+		assertEquals(action.pt, pt);
+		assertEquals(action.pt, 1);
+	}
 /*	@Test
 	public void testPoint_withinBounds()
 	{
