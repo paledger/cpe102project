@@ -177,6 +177,48 @@ public class TestCases
 		assertEquals(notfull.getResourceCount(),2);
 	}
 	
+	@Test
+	public void testObstacle()
+	{
+		String name = "Name";
+		Point pt = new Point(0,1);
+		int rate = 0;
+		Obstacle test = new Obstacle(name,pt,rate);
+		assertEquals(test.getName(),"Name");
+		assertEquals(test.position.x(), 0);
+		assertEquals(test.position.y(), 1);
+		assertEquals(test.rate, 0);
+	}
+	
+	@Test
+	public void testOre()
+	{
+		String name = "Name";
+		Point pt = new Point(0,1);
+		int rate = 5000;
+		Ore test = new Ore(name,pt,rate);
+		assertEquals(test.name,"Name");
+		assertEquals(test.position.x(), 0);
+		assertEquals(test.position.y(), 1);
+		assertEquals(test.rate, 5000);
+	}
+	
+	@Test
+	public void testOreBlob()
+	{
+		String name = "Name";
+		Point pt = new Point(0,1);
+		int rate = 5000;
+		int aRate = 1;
+		OreBlob test = new OreBlob(name,pt,rate,aRate);
+		assertEquals(test.name,"Name");
+		assertEquals(test.position.x(), 0);
+		assertEquals(test.position.y(), 1);
+		assertEquals(test.rate, 5000);		
+		assertEquals(test.animationRate,1);
+		
+	}
+	
 /*	@Test
 	public void testPoint_withinBounds()
 	{
