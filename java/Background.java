@@ -1,6 +1,6 @@
 public class Background
 {
-	private String name;
+	protected String name;
 
 	public Background(String name)
 	{

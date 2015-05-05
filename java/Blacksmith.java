@@ -9,6 +9,7 @@ public class Blacksmith
 		int resourceLimit, int rate, int resourceDistance)
 	{
 		super(name, position, rate, resourceDistance);
+		this.resourceLimit = resourceLimit;
 		this.resourceDistance = 1;
 		this.resourceCount = 0;
 		

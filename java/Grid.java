@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class Grid
 {
-    private int width;
-    private int height;
-    private Entity occupancy_value;
-    private Entity[] cells;
+    protected int width;
+    protected int height;
+    protected Entity occupancy_value;
+    protected Entity[] cells;
 
 	public Grid(int width, int height, Entity occupancy_value)
 	{
@@ -15,11 +15,11 @@ public class Grid
         this.cells = new Entity[width*height];
 	}
 
-	private void createCells()
+	protected void createCells()
 	{
-		for(int row = 0; row < this.height-1; row ++)
+		for(int row = 0; row < this.height; row ++)
 		{
-            for(int col = 0; col < this.width-1; col ++)
+            for(int col = 0; col < this.width; col ++)
             {
             	cells[row*width + col] = occupancy_value;
             }

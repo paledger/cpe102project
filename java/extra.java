@@ -329,11 +329,4 @@ public class TestCases
 		assertEquals(test.animationRate,1);
 		
 	}
-	
-/*	@Test
-	public void testPoint_withinBounds()
-	{
-		Point pt = new Point()
-	} */
->>>>>>> origin/master
 }
