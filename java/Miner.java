@@ -17,7 +17,7 @@ public class Miner
 	}
 	public void setResourceCount(int n)
 	{
-		this.resource_count = n;
+		this.resourceCount = n;
 	}
 	public int getResourceCount()
 	{

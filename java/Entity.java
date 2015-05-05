@@ -31,7 +31,7 @@ public abstract class Entity
     	return rate;
     }
 	 
-    protected abstract String entityString();
+   // protected abstract String entityString();
 	 
 	 //Missing imgs, get_images, get_image, next_image
 }
