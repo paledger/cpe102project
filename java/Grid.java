@@ -17,9 +17,9 @@ public class Grid
 
 	private void createCells()
 	{
-		for(int row = 0; row < this.height; row ++)
+		for(int row = 0; row < this.height-1; row ++)
 		{
-            for(int col = 0; col < this.width; col ++)
+            for(int col = 0; col < this.width-1; col ++)
             {
             	cells[row*width + col] = occupancy_value;
             }

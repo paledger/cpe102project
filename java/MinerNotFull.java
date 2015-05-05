@@ -27,7 +27,7 @@ public class MinerNotFull
 	// need to finish this--how to return things of this type?
 	*/
 	
-	public Entity try_transform_miner_not_full(WorldModel world)
+	public Entity tryTransformMinerNotFull(WorldModel world)
 	{
 		if (this.resourceCount<this.resourceLimit)
 		{

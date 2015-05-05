@@ -2,8 +2,9 @@ import java.lang.Math;
 
 public class Point
 {
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
+	private Entity none;
 
 	public Point(int x, int y)
 	{
@@ -29,11 +30,11 @@ public class Point
 
 	public boolean isOccupied(WorldModel world)
 	{
-		return (this.withinBounds(world) && 
-			world.occupancy().getCell(this) != null);
+		return (this.withinBounds(world) && (
+			world.occupancy().getCell(this) != none));
 	}
 
-	public double distanceSq(Point p2)
+	public int distanceSq(Point p2)
 	{
 		return (this.x - p2.x())*(this.x - p2.x()) + (this.y - p2.y())*(this.y - p2.y());
 	}

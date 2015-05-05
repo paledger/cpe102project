@@ -16,7 +16,7 @@ public class MinerFull
 	//miner_to_smith: also uses world.move_entity, deals with tuple return
 	//create_miner_full_action uses action methods
 	
-	public Entity try_transform_miner_full(WorldModel world)
+	public Entity tryTransformMinerFull(WorldModel world)
 	{
 		Entity newEntity = new MinerNotFull(this.name, this.resourceLimit, 
 			this.position, this.rate, this.animationRate);
