@@ -42,7 +42,7 @@ public class WorldModel
    }
 
    // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
-   Entity nearestEntity = (ArrayList<DistPair> entityDists) -> 
+   Comparator<DistPair> nearestEntity = (ArrayList<DistPair> entityDists) -> 
    {
       Entity nearest = none;
       if (entityDists.length > 0)

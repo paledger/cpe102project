@@ -1,28 +1,27 @@
-
+import java.util.ArrayList;
 
 public class Grid
 {
     private int width;
     private int height;
     private Entity occupancy_value;
-    private ArrayList<Entity> cells;
+    private Entity[] cells;
 
 	public Grid(int width, int height, Entity occupancy_value)
 	{
 		this.width = width;
 		this.height = height;
 		this.occupancy_value = occupancy_value;
-
+        this.cells = new Entity[width*height];
 	}
 
 	private void createCells()
 	{
 		for(int row = 0; row < this.height; row ++)
 		{
-            this.cells.addLast();
             for(double col = 0; col < this.width; col ++)
             {
-            	this.cells[row].addLast(this.occupancy_value);
+            	cells[row*width + col] = occupancy_value;
             }
 		}
 	}
