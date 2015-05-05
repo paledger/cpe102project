@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 public class WorldModel
 {
@@ -41,13 +42,13 @@ public class WorldModel
       return this.occupancy;
    }
 
-   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
-   Comparator<DistPair> nearestEntity = (ArrayList<DistPair> entityDists) -> 
+/*   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
+   entityDists -> 
    {
       Entity nearest = none;
       if (entityDists.length > 0)
       {
-         DistPair pair = entity_dists[0];
+         DistPair pair = entityDists[0];
          for (int i = 1; i < entityDists.length; i ++)
          {
             DistPair other = entityDists(i);
@@ -61,13 +62,33 @@ public class WorldModel
       return nearest;
    };
    // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
+*/
 
-   public Entity find_nearest(Point pt, Class type)
+   public Entity nearestEntity(ArrayList<DistPair> entityDists)
    {
-
+      Entity nearest = entityDists.get(0).getEnt();
+      if(entityDists.size() > 0)
+      {
+         DistPair pair = entityDists.get(0);
+         for (int i = 1; i < entityDists.size(); i ++)
+         {
+            DistPair other = entityDists.get(i);
+            if (other.getDist() < pair.getDist())
+            {
+               pair = other;
+            }
+         }
+         nearest = pair.getEnt();
+      } 
+      return nearest;
    }
 
-   public List moveEntity(Entity entity, Point pt)
+  /* public Entity find_nearest(Point pt, Class type)
+   {
+
+   }*/
+
+   public void moveEntity(Entity entity, Point pt)
    {
       List<Point> tiles = new LinkedList<Point>();
       if(pt.withinBounds(this))
@@ -96,7 +117,8 @@ public class WorldModel
       if(pt.withinBounds(this))
       {
          return this.background.getCell(pt);
-      }
+      } 
+      return null;
    }
 
    public void setBackground(Point pt, Entity bgnd)
@@ -113,6 +135,7 @@ public class WorldModel
       {
          return this.occupancy().getCell(pt);
       }
+      return null;
    }
 
    public List<Entity> getEntities()
