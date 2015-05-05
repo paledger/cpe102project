@@ -1,22 +1,20 @@
-import java.lang.Math;
-
 public class Point
 {
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 
-	public Point(int x, int y)
+	public Point(double x, double y)
 	{
 	    this.x = x;
 	    this.y = y;
 	}
 
-	public int x()
+	public double x()
 	{
 		return this.x;
 	}
 
-	public int y()
+	public double y()
 	{
 		return this.y;
 	}
@@ -30,7 +28,7 @@ public class Point
 	public boolean isOccupied(WorldModel world)
 	{
 		return (this.withinBounds(world) && 
-			world.occupancy().getCell(this) != null);
+			world.occupancy.getCell(this) != null);
 	}
 
 	public double distanceSq(Point p2)

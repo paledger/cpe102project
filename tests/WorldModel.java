@@ -1,22 +1,15 @@
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.List;
-
 public class WorldModel
 {
+   private Grid background;
    private int num_rows;
    private int num_cols;
-   private Grid background;
-   private Grid occupancy;
-   private List<Entity> entities;
-   private Entity none;
 
    public WorldModel(int num_rows, int num_cols, Grid background)
    {
+      this.background = background;
       this.num_rows = num_rows;
       this.num_cols = num_cols;
-      this.background = background;
-      Grid occupancy = new Grid(num_cols, num_rows, none);
+      Grid occupancy = new Grid(num_cols, num_rows, None);
       List<Entity> entities = new LinkedList<Entity>();
  //     List<String> actionQueue = new LinkedList<String>();
    }
@@ -36,35 +29,30 @@ public class WorldModel
       return this.num_rows;
    }
 
-   public Grid occupancy()
-   {
-      return this.occupancy;
-   }
-
    // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
-   Entity nearestEntity = (ArrayList<DistPair> entityDists) -> 
+   Entity nearestEntity = (List entityDists) -> 
    {
-      Entity nearest = none;
-      if (entityDists.length > 0)
+      if (entity_dists.length > 0)
       {
-         DistPair pair = entity_dists[0];
-         for (int i = 1; i < entityDists.length; i ++)
+         pair = entity_dists[0];
+         for (int other = 1; other < entity_dists.length; other ++)
          {
-            DistPair other = entityDists(i);
-            if (other.getDist() < pair.getDist())
+            if (other[1] < pair[1])
             {
                pair = other;
             }
          }
-         nearest = pair.getEnt();
-      } 
+         Entity nearest = pair[0];
+      } else
+      {
+         nearest = None;
+      }
       return nearest;
    };
    // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
 
    public Entity find_nearest(Point pt, Class type)
    {
-
    }
 
    public List moveEntity(Entity entity, Point pt)
@@ -73,15 +61,14 @@ public class WorldModel
       if(pt.withinBounds(this))
       {
          Point oldPt = entity.getPosition();
-         this.occupancy().setCell(oldPt, none);
-         tiles.add(oldPt);
+         this.occupancy().setCell(oldPt, None);
+         tiles.addLast(oldPt);
          this.occupancy().setCell(pt, entity);
-         tiles.add(pt);
+         tiles.addLast(pt);
          entity.setPosition(pt);
       }
    }
 
-   /*
    public Image getBackgroundImage(Point pt)
    {
       if(pt.withinBounds(this))
@@ -89,9 +76,8 @@ public class WorldModel
          return this.background.getCell(pt).getImage();
       }
    }
-   */
 
-   public Entity getBackground(Point pt)
+   public Point getBackground(Point pt)
    {
       if(pt.withinBounds(this))
       {
@@ -107,7 +93,7 @@ public class WorldModel
       }
    }
 
-   public Entity getTileOccupant(Point pt)
+   public boolean getTileOccupant(Point pt)
    {
       if(pt.withinBounds(this))
       {
@@ -123,13 +109,13 @@ public class WorldModel
    public void removeEntityAt(Point pt)
    {
       if(pt.withinBounds(this) && 
-         this.occupancy().getCell(pt) != none)
+         this.occupancy().getCell(pt) != None)
       {
          Entity entity = this.occupancy().getCell(pt);
          Point newPos = new Point(-1, -1);
          entity.setPosition(newPos);
          this.entities.remove(entity);
-         this.occupancy().setCell(pt, none);
+         this.occupancy().setCell(pt, None);
       }
    }
 
