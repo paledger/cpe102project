@@ -30,8 +30,20 @@ public class Point
 
 	public boolean isOccupied(WorldModel world)
 	{
+<<<<<<< HEAD
 		return (this.withinBounds(world) && (
 			world.occupancy().getCell(this) != none));
+=======
+		if (this.withinBounds(world))
+		{
+			if (!(world.occupancy().getCell(this) instanceof Entity))
+			{
+				return true;
+			}
+			return false;
+		} 
+		return false;
+>>>>>>> a4e4a117c8328922f3ac1f05158050ad3740c766
 	}
 
 	public int distanceSq(Point p2)
@@ -45,26 +57,28 @@ public class Point
 		    (this.y == pt2.y() && Math.abs(this.x - pt2.x()) == 1);
 	}
 
-	/*public Point nextPosition(WorldModel world, Point destination)
+	public Point nextPosition(WorldModel world, Point destination)
 	{
-        int horiz = actions.sign(destination.x() - this.x());
-        Point newPt = new Point(this.x() + horiz, this.y);
+		Actions actions = new Actions();
+      int horiz = actions.sign(destination.x() - this.x());
+      Point newPt = new Point(this.x() + horiz, this.y);
 
-        if(horiz == 0 || newPt.isOccupied(world))
-        {
-        	int vert = actions.sign(destination.y() - this.x);
+      if(horiz == 0 || newPt.isOccupied(world))
+      {
+			int vert = actions.sign(destination.y() - this.x);
         	newPt = new Point(this.x(), this.y() + vert);
         	if (vert == 0 || newPt.isOccupied(world))
         	{
         		newPt = new Point(this.x(), this.y());
         	}
-        }
+      }
+		return newPt;
 	}
 
 	public Point findOpenAround(WorldModel world, int distance)
 	{
-
+		return null;
 	}
-    */
+    
 
 }
