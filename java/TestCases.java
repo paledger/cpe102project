@@ -40,16 +40,6 @@ public class TestCases
 		assertEquals(world.num_cols(), 2);
 		assertEquals(world.num_rows(), 2);
 	}
-/*
-	@Test
-	public void testWorldModel_occupancy()
-	{
-		Grid grid = new Grid(2, 2, none);
-		WorldModel test_world = new WorldModel(3, 3, grid);
-		Grid expected = new Grid(3, 3, none);
-		assertEquals(test_world.occupancy(), expected);
-	}
-*/
 
 	@Test
 	public void testVein()
@@ -98,21 +88,7 @@ public class TestCases
 		Point pt = new Point(0, 0);
 		assertTrue(pt.withinBounds(world));
 	}
-
-/*
-    @Test
-	public void testPoint_isOccupied()
-	{
-		Point ent_pt = new Point(0, 0);
-        Entity test1 = new Ore("Test1", ent_pt, 10);
-		Grid test = new Grid(10, 10, test1);
-
-		WorldModel world = new WorldModel(10, 10, test);
-
-		Point pt = new Point(0, 0);
-		assertFalse(pt.isOccupied(world));
-	}
-*/
+	
 	@Test
 	public void testPoint_distanceSq()
 	{
@@ -330,7 +306,58 @@ public class TestCases
 		
 	}
 	
+	@Test
+	public void minerToOre()
+		{
+			Ore ore = new Ore("Name", new Point(0,1), 5000);
+			Ore orenull = null;
+			MinerNotFull miner = new MinerNotFull("Name", 1, new Point(0,1),5000,1);
+			Grid grid = new Grid(2, 2, miner);
+			WorldModel world = new WorldModel(2, 2, grid);			
+			ArrayList<Point> entityPtL = new ArrayList<Point>(Arrays.asList(miner.position));
+			ListBooleanPair pair1 = new ListBooleanPair(entityPtL,false);
+			Pair expected = miner.minerToOre(world,orenull);
+			//Unfinished--unable to move forward because of grid type
+		} 
+		
+		@Test
+		public void test_nearestEntity()
+		{
+	        ArrayList<DistPair> test_dists = new ArrayList<DistPair>();
 
+	        Point pos1 = new Point(3, 4);
+	        Entity one = new Ore("blah", pos1, 10);
+	        DistPair d1 = new DistPair(one, 5);
+
+	        Point pos2 = new Point(6, 8);
+	        Entity two = new Ore("blah", pos2, 10);
+	        DistPair d2 = new DistPair(two, 10);
+
+	        test_dists.add(d1);
+	        test_dists.add(d2);
+
+			Point pt = new Point(1, 1);
+			Entity test1 = new Ore("Test1", pt, 10);
+			Grid test = new Grid(2, 2, test1);
+
+			WorldModel world = new WorldModel(2, 2, test);
+
+	        Entity closest = world.nearestEntity(test_dists);
+
+	        assertEquals(closest, one);
+		}
+	
+/*
+	@Test
+	public void testWorldModel_occupancy()
+	{
+		Grid grid = new Grid(2, 2, none);
+		WorldModel test_world = new WorldModel(3, 3, grid);
+		Grid expected = new Grid(3, 3, none);
+		assertEquals(test_world.occupancy(), expected);
+	}
+*/
+		
 /*	@Test
 	public void testPoint_isOccupied()
 	{
@@ -362,5 +389,31 @@ public class TestCases
 	{
 		Point pt = new Point()
 	} */
+		
+/*
+   @Test
+	public void testPoint_isOccupied()
+	{
+		Point ent_pt = new Point(0, 0);
+        Entity test1 = new Ore("Test1", ent_pt, 10);
+		Grid test = new Grid(10, 10, test1);
+
+		WorldModel world = new WorldModel(10, 10, test);
+
+		Point pt = new Point(0, 0);
+		assertFalse(pt.isOccupied(world));
+	}
+*/
+		
+/*
+	@Test
+	public void testWorldModel_occupancy()
+	{
+		Grid grid = new Grid(2, 2, none);
+		WorldModel test_world = new WorldModel(3, 3, grid);
+		Grid expected = new Grid(3, 3, none);
+		assertEquals(test_world.occupancy(), expected);
+	}
+*/
 
 }

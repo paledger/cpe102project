@@ -18,7 +18,7 @@ public class MinerNotFull
 		//also missing schedule_entity, schedule_miner (has to do with actions)
 		//also missing create_miner_not_full_action--uses action methods
 	}
-	public Pair miner_to_ore(WorldModel world, Ore ore)
+	public Pair minerToOre(WorldModel world, Ore ore)
 	{
 		Point entityPt = this.getPosition();
 		if (ore==null)
