@@ -82,13 +82,14 @@ public class WorldModel
       } 
       return nearest;
    }
-/*
-   public Entity find_nearest(Point pt, Class type)
+
+   public Entity find_nearest(Point pt, Entity t)
    {
       ArrayList<DistPair> oftype = new ArrayList<DistPair>();
       for(int i = 0; i < this.entities.size(); i ++)
       {
-         if (entities.get(i) instanceof type)
+			Class<?> eClass = t.getClass();
+         if ((entities.get(i).getClass() == eClass))
          {
             Entity e = entities.get(i);
             DistPair pair = new DistPair(e, pt.distanceSq(e.getPosition()));
@@ -97,7 +98,7 @@ public class WorldModel
       }
       return nearestEntity(oftype);
    }
-*/
+
    public void moveEntity(Entity entity, Point pt)
    {
       List<Point> tiles = new LinkedList<Point>();
