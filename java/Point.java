@@ -2,8 +2,9 @@ import java.lang.Math;
 
 public class Point
 {
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
+	private Entity none;
 
 	public Point(int x, int y)
 	{
@@ -38,6 +39,7 @@ public class Point
 			return false;
 		} 
 		return false;
+
 	}
 
 	public int distanceSq(Point p2)
@@ -71,8 +73,17 @@ public class Point
 
 	public Point findOpenAround(WorldModel world, int distance)
 	{
+		for(int dy = -distance; dy < (distance + 1); dy ++)
+		{
+			for(int dx = -distance; dx < (distance + 1); dx ++)
+			{
+				Point newPt = new Point(this.x + dx, this.y + dy);
+				if (newPt.withinBounds(world) && !(newPt.isOccupied(world)))
+				{
+					return newPt;
+				}
+			}
+		}
 		return null;
 	}
-    
-
 }

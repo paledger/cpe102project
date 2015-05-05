@@ -1,12 +1,12 @@
 public class ResourceDistance
     extends Actionable
 {
-  	 protected int resourceDistance;
+  	protected int resourceDistance;
 
     public ResourceDistance(String name, 
     	                    Point position, 
     	                    int rate,
-								  int resourceDistance)
+							int resourceDistance)
     {
     	super(name, position, rate);	
     	this.resourceDistance = resourceDistance;

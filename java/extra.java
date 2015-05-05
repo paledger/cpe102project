@@ -13,7 +13,7 @@ import org.junit.Before;
 public class TestCases
 {
 	private Entity none;
-	private static final double DELTA = 0.00001;
+
 
 	@Test
 	public void testPointArgs()
@@ -329,38 +329,4 @@ public class TestCases
 		assertEquals(test.animationRate,1);
 		
 	}
-	
-
-/*	@Test
-	public void testPoint_isOccupied()
-	{
-		Point ent_pt = new Point(0, 0);
-      Entity test1 = new Ore("Test1", ent_pt, 10);
-		Grid test = new Grid(10, 10, test1);
-
-		WorldModel world = new WorldModel(10, 10, test);
-
-		Point pt = new Point(0, 0);
-		assertTrue(pt.isOccupied(world));
-	}
-	>> NullPointerException
-	*/
-	
-	/*	
-	@Test
-		public void testWorldModel_occupancy()
-		{
-			Grid grid = new Grid(2, 2, none);
-			WorldModel test_world = new WorldModel(3, 3, grid);
-			Grid expected = new Grid(3, 3, none);
-			assertEquals(test_world.occupancy(), expected);
-		}
-		*/
-	
-/*	@Test
-	public void testPoint_withinBounds()
-	{
-		Point pt = new Point()
-	} */
-
 }

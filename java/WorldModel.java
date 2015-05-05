@@ -9,7 +9,7 @@ public class WorldModel
    private int num_cols;
    private Grid background;
    private Grid occupancy;
-   private List<Entity> entities;
+   private ArrayList<Entity> entities;
    private Entity none;
 
    public WorldModel(int num_rows, int num_cols, Grid background)
@@ -17,7 +17,7 @@ public class WorldModel
       this.num_rows = num_rows;
       this.num_cols = num_cols;
       this.background = background;
-      Grid occupancy = new Grid(num_cols, num_rows, none);
+      Grid occupancy = new Grid(num_cols, num_rows, null);
       List<Entity> entities = new LinkedList<Entity>();
  //     List<String> actionQueue = new LinkedList<String>();
    }
@@ -82,12 +82,22 @@ public class WorldModel
       } 
       return nearest;
    }
-
-  /* public Entity find_nearest(Point pt, Class type)
+/*
+   public Entity find_nearest(Point pt, Class type)
    {
-
-   }*/
-
+      ArrayList<DistPair> oftype = new ArrayList<DistPair>();
+      for(int i = 0; i < this.entities.size(); i ++)
+      {
+         if (entities.get(i) instanceof type)
+         {
+            Entity e = entities.get(i);
+            DistPair pair = new DistPair(e, pt.distanceSq(e.getPosition()));
+            oftype.add(pair);
+         }
+      }
+      return nearestEntity(oftype);
+   }
+*/
    public void moveEntity(Entity entity, Point pt)
    {
       List<Point> tiles = new LinkedList<Point>();
