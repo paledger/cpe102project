@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import processing.core.*;
+
 public class Miner
     extends Animated
 	 implements Resource
@@ -9,9 +12,10 @@ public class Miner
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
+					ArrayList<PImage> imgs,
 		         int animationRate)
 	{
-		super(name, position, rate, animationRate);
+		super(name, position, rate, imgs, animationRate);
 		this.resourceLimit = resourceLimit;
 		this.resourceCount = resourceCount;
 	}

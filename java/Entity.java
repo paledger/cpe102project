@@ -6,6 +6,7 @@ public abstract class Entity
 	protected String name;
 	protected Point position;
 	protected int rate;
+	protected ArrayList<PImage> imgs;
 
 	protected Entity(String name, Point position, int rate, ArrayList<PImage> imgs)
 	{
@@ -47,7 +48,7 @@ public abstract class Entity
 	 
 	 protected void nextImage()
 	 {
-		 this.currentImg = (this.currentImg+1) % imgs.length;
+		 this.currentImg = (this.currentImg+1) % imgs.size();
 	 }
 	 
    // protected abstract String entityString();

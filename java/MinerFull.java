@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import processing.core.*;
+
 public class MinerFull
 	extends Miner
 {	
@@ -5,9 +8,10 @@ public class MinerFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
+					ArrayList<PImage> imgs,
 		         int animationRate)
 	{
-		super(name, resourceLimit, position, rate, 
+		super(name, resourceLimit, position, rate, imgs, 
 			animationRate);			
 		this.resourceCount = resourceLimit;			
 	}
@@ -19,7 +23,7 @@ public class MinerFull
 	public Entity tryTransformMinerFull(WorldModel world)
 	{
 		Entity newEntity = new MinerNotFull(this.name, this.resourceLimit, 
-			this.position, this.rate, this.animationRate);
+			this.position, this.rate, this.imgs, this.animationRate);
 		return newEntity;
 	}
 }

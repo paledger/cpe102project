@@ -1,3 +1,4 @@
+import processing.core.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -8,9 +9,10 @@ public class MinerNotFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
+					ArrayList<PImage> imgs,
 		         int animationRate)
 	{
-		super(name, resourceLimit, position, rate,
+		super(name, resourceLimit, position, rate, imgs,
 			animationRate);	
 		this.resourceCount = 0;	
 		
@@ -53,7 +55,7 @@ public class MinerNotFull
 		} else
 		{
 			MinerFull newEntity = new MinerFull(this.name, this.resourceLimit, 
-				this.position, this.rate, this.animationRate);
+				this.position, this.rate, this.imgs, this.animationRate);
 			return newEntity;
 		}
 	}

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import processing.core.*;
+
 public class Vein
 	extends ResourceDistance
 {
@@ -5,9 +8,10 @@ public class Vein
 	private static final int VEIN_RATE_MIN = 8000;
 	private static final int VEIN_RATE_MAX = 17000;	
 	
-	public Vein(String name, int rate, Point position, int resourceDistance)
+	public Vein(String name, int rate, Point position, ArrayList<PImage> imgs, 
+		int resourceDistance)
 	{
- 		super(name, position, rate, resourceDistance);	
+ 		super(name, position, rate, imgs, resourceDistance);	
 		this.resourceDistance = 1;	
 	}
 	//missing schedule_entity, schedule_vein, create_vein_action
