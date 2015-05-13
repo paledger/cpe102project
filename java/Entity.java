@@ -1,14 +1,18 @@
+import java.util.ArrayList;
+import processing.core.*;
+
 public abstract class Entity
 {
 	protected String name;
 	protected Point position;
 	protected int rate;
 
-	protected Entity(String name, Point position, int rate)
+	protected Entity(String name, Point position, int rate, ArrayList<PImage> imgs)
 	{
         this.name = name;
         this.position = position;
         this.rate = rate;
+		  this.imgs = imgs;
 	}
 
 	protected String getName()
@@ -31,7 +35,20 @@ public abstract class Entity
     	return rate;
     }
 	 
-   // protected abstract String entityString();
+	 protected ArrayList<PImage> getImages()
+	 {
+		 return imgs;
+	 }
 	 
-	 //Missing imgs, get_images, get_image, next_image
+	 protected PImage getImage()
+	 {
+		 return imgs[this.currentImg];
+	 }
+	 
+	 protected void nextImage()
+	 {
+		 this.currentImg = (this.currentImg+1) % imgs.length;
+	 }
+	 
+   // protected abstract String entityString();
 }
