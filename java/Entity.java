@@ -41,15 +41,5 @@ public abstract class Entity
 		 return imgs;
 	 }
 	 
-	 protected PImage getImage()
-	 {
-		 return imgs[this.currentImg];
-	 }
-	 
-	 protected void nextImage()
-	 {
-		 this.currentImg = (this.currentImg+1) % imgs.size();
-	 }
-	 
    // protected abstract String entityString();
 }
