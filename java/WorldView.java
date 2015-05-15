@@ -1,6 +1,7 @@
 import java.lang.Math;
 import java.lang.Object;
 import processing.core.*;
+import java.util.ArrayList;
 
 // check types of arguments passed in
 
@@ -14,7 +15,7 @@ public class WorldView
    private WorldModel world;
    private int tile_width;
    private int tile_height;
-   private int mouseImg;
+   private PImage mouseImg;
 
    private int numCols;
    private int numRows;
@@ -109,7 +110,7 @@ public class WorldView
 	public void updateView(int[] viewDelta, PImage mouseImg2)
 	{
       viewport = createShiftedViewport(viewDelta);
-      mouseImg = mouseImg2;
+      this.mouseImg = mouseImg2;
       drawViewport();
       //HOW TO DO PYGAME.DISPLAY.UPDATE() IN JAVA
       //mouseMove(mousePt);
@@ -117,16 +118,23 @@ public class WorldView
 
 	public void updateViewTiles(Point[] tiles)
 	{
-		Rect[] rects;
+		ArrayList<Rect> rects = new ArrayList<Rect>();
 		for(int i = 0; i < tiles.length; i ++)
 		{
 			Point tile = tiles[i];
 			if(viewport.collidepoint(tile))
 			{
 				Point v_pt = worldToViewport(tile);
-			//	PImage img = getTileImage(v_pt);
+				PImage img = getTileImage(v_pt);
+				rects.add(updateTile(v_pt, img));
+				if (mousePt.x() == v_pt.x() && 
+					mousePt.y() == v_pt.y())
+				{
+					rects.add(updateMouseCursor());
+				}
 			}
 		}
+	   // EQUIVALENT OF PYGAME.DISPLAY.UPDATE()
 	}
 
 	public Rect updateTile(Point view_tile_pt, PImage surface)
@@ -139,4 +147,55 @@ public class WorldView
 		screen.blit(surface, pair);
 		return new Rect(abs_x, abs_y, tile_width, tile_height);
 	}
+
+	public PImage getTileImage(Point view_tile_pt)
+	{
+		Point pt = viewportToWorld(view_tile_pt);
+		PImage bgnd = world.getBackgroundImage(pt);
+		Entity occupant = world.getTileOccupant(pt);
+		if(occupant != null)
+		{
+			PImage img = pygame.Surface((tile_width, tile_height));// SURFACE  IN PYGAME
+			int[] pos = {0, 0};
+			img.blit(bgnd, pos);
+			img.blit(occupant.getImage(), pos);
+			return img;
+		}
+		else
+		{
+			return bgnd;
+		}
+	}
+
+
+/* MOUSE HOVERING STUFF THAT IS UNNECCESSARY BUT WE CAN CHECK TO SEE HOW TO DO THIS
+	public PImage createMouseSurface(boolean occupied)
+	{
+		PImage surface = pygame.Surface((tile_width, tile_height));
+		surface.set_alpha(MOUSE_HOVER_ALPHA);
+		int color = MOUSE_HOVER_EMPTY_COLOR;
+		if(occupied)
+		{
+			color = MOUSE_HOVER_OCC_COLOR;
+		}
+		surface.fill(color);
+		if(mouseImg)
+		{
+			surface.blit(mouseImg, pos);
+		}
+		return surface;
+	}
+
+
+	public updateMouseCursor()
+	{
+		boolean here = createMouseSurface(viewportToWorld(mousePt)).isOccupied(world);
+		return updateTile(mousePt, )
+	}
+
+	public handle
+*/
+
+	
 }
+

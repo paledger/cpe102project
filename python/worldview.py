@@ -60,7 +60,7 @@ class WorldView:
         self.mouse_img = mouse_img
         self.draw_viewport()
         pygame.display.update()
-        self.mouse_move(self.mouse_pt)
+      #  self.mouse_move(self.mouse_pt)
 
     def update_view_tiles(self, tiles):
         rects = []
@@ -94,7 +94,6 @@ class WorldView:
             return img
         else:
             return bgnd
-
 
     def create_mouse_surface(self, occupied):
         surface = pygame.Surface((self.tile_width, self.tile_height))
