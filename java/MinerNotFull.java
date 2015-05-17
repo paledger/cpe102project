@@ -18,10 +18,7 @@ public class MinerNotFull
 		super(name, resourceLimit, position, rate, imgs,
 			animationRate);	
 		this.resourceCount = 0;	
-		
-		//missing currentImg and imgs
 		//also missing schedule_entity, schedule_miner (has to do with actions)
-		//also missing create_miner_not_full_action--uses action methods
 	}
 	
 	public Entity tryTransformMinerNotFull(WorldModel world)
@@ -67,6 +64,12 @@ public class MinerNotFull
 		}
 	}
 	
+	public void scheduleMiner(WorldModel world, int ticks, List<String> iStore)
+	{
+		world.scheduleAction(this.createMinerAction(world,iStore), ticks+this.rate);
+		world.scheduleAnimation(this);
+	}
+	
 	public Object createMinerNotFullAction(WorldModel world, List<String> iStore)
 	{
 		Function<Integer, List<Point>> action = (currentTicks) ->
@@ -80,7 +83,10 @@ public class MinerNotFull
 			Miner newEntity = this;
 			if (found.getBool())
 			{
-				//MinerFull newEntity = this.tryTransformMiner(WorldModel world, this.tryTransformMinerNotFull);
+				//MinerFull newEntity = this.tryTransformMiner(world, this::tryTransformMinerNotFull);
+				//MinerFull newEntity = this.tryTransformMiner(WorldModel world, 
+				//	this.tryTransformMinerNotFull());
+				//urk i don't know how to do this
 				
 				world.scheduleAction(newEntity, newEntity.createMinerAction(world, iStore),
 					currentTicks + newEntity.getRate());
