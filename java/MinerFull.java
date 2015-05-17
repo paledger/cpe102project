@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.*;
 import processing.core.*;
 
 public class MinerFull
@@ -19,10 +20,7 @@ public class MinerFull
 	}
 	//missing schedule_entity
 	
-	//miner_to_smith: also uses world.move_entity, deals with tuple return of function
-	//create_miner_full_action uses action methods
-	
-	public Entity tryTransformMiner(WorldModel world)
+	public Entity tryTransformMinerFull(WorldModel world)
 	{
 		Entity newEntity = new MinerNotFull(this.name, this.resourceLimit, 
 			this.position, this.rate, this.imgs, this.animationRate);
@@ -60,27 +58,31 @@ public class MinerFull
 		}
 	}
 	
-	/*public Action createMinerFullAction(WorldModel world, List<String> iStore)
+	public Object createMinerFullAction(WorldModel world, List<String> iStore)
 	{
-		Action action = (currentTicks) ->
+		Function<Integer, List<Point>> action = (currentTicks) ->
 		{
 			this.removePendingAction(action);
 			
 			Point entityPt = this.getPosition();
 			Blacksmith smith = world.findNearest(entityPt, Blacksmith);
-			ListBooleanPair tilesFound = this.minerToSmith(world, smith);
+			ListBooleanPair found = this.minerToSmith(world, smith);
 			
 			Miner newEntity = this;
-			if (tilesFound.getBool())
+			if (found.getBool())
 			{
 				//MinerNotFull newEntity = this.tryTransformMiner(WorldModel world, this.tryTransformMinerFull);
 				
 				world.scheduleAction(newEntity, newEntity.createMinerAction(world, iStore),
 					currentTicks + newEntity.getRate());
 			}
-			return tilesFound.getEnt();
+			return found.getEnt();
 		};
 		return action;
 	}
-	*/	
+	
+	public Object createMinerAction(WorldModel world, List<String> imageStore)
+	{
+		return this.createMinerFullAction(world,imageStore);
+	}
 }

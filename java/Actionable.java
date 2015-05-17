@@ -6,37 +6,37 @@ public class Actionable
     extends Entity
 {
 	protected int currentImg;
-	protected ArrayList<Action> pendingActions;
+	protected ArrayList<Object> pendingActions;
 	
    public Actionable(String name, Point position,int rate, ArrayList<PImage> imgs)
    {
    	super(name, position,rate, imgs);
 		this.currentImg = 0;
-		this.pendingActions = new ArrayList<Action>();
+		this.pendingActions = new ArrayList<Object>();
    }
 	
-  protected PImage getImage()
-  {
-	 return imgs.get(this.currentImg);
-  }
+   protected PImage getImage()
+   {
+ 	 return imgs.get(this.currentImg);
+   }
  
   protected void nextImage()
   {
 	 this.currentImg = (this.currentImg+1) % imgs.size();
   }
   
-  protected ArrayList<Action> getPendingActions()
+  protected ArrayList<Object> getPendingActions()
   {
 	  if (this instanceof Actionable)
 	  {
 		  return this.pendingActions;
 	  } else 
 	  {
-		  return new ArrayList<Action>();
+		  return new ArrayList<Object>();
 	  }
   }
   
-  protected void addPendingAction(Action action)
+  protected void addPendingAction(Object action)
   {
 	  if (this instanceof Actionable)
 	  {
@@ -44,7 +44,7 @@ public class Actionable
 	  }
   }
   
-  protected void removePendingAction(Action action)
+  protected void removePendingAction(Object action)
   {
 	  if (this instanceof Actionable)
 	  {
@@ -56,7 +56,7 @@ public class Actionable
   {
 	  if (this instanceof Actionable)
 	  {
-		  this.pendingActions = new ArrayList<Action>();
+		  this.pendingActions = new ArrayList<Object>();
 	  }
   }
 }

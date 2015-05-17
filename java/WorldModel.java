@@ -1,7 +1,10 @@
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Math.*;
 import java.util.Comparator;
+import java.util.function.*;
+import processing.core.*;
 
 public class WorldModel
 {
@@ -9,8 +12,9 @@ public class WorldModel
    private int num_cols;
    private Grid background;
    private Grid occupancy;
-   private ArrayList<Entity> entities;
+   private LinkedList<Entity> entities;
    private Entity none;
+	private ArrayList<ActionTimePair> actionQueue;
 
    public WorldModel(int num_rows, int num_cols, Grid background)
    {
@@ -18,8 +22,10 @@ public class WorldModel
       this.num_cols = num_cols;
       this.background = background;
       Grid occupancy = new Grid(num_cols, num_rows, null);
-      List<Entity> entities = new LinkedList<Entity>();
- //     List<String> actionQueue = new LinkedList<String>();
+      LinkedList<Entity> entities = new LinkedList<Entity>();
+		this.entities = entities;
+      this.actionQueue = new ArrayList<ActionTimePair>();
+		//hopefully that's correct.
    }
 
    public Grid background()
@@ -119,6 +125,7 @@ public class WorldModel
 	//You cannot append a type of List<Point> to a List<Point>.
 	//Changed the return of this from tiles to tiles[1], but this may need to be
 	//changed/fixed.
+	
 	public Point moveEntity(Entity entity, Point pt)
 	   {
 			Point [] tiles = new Point [2];
@@ -134,16 +141,16 @@ public class WorldModel
 			return tiles[1];
 	   }	
 	
-
-   /*
-   public Image getBackgroundImage(Point pt)
+   public PImage getBackgroundImage(Point pt)
    {
       if(pt.withinBounds(this))
       {
          return this.background.getCell(pt).getImage();
+			//The method getImage() requires it to be an Actionable item because
+			//currentImg is only in Actionable. The issue is that
+			//this runs regardless, and therefore returns "cannot find symbol".
       }
    }
-   */
 
    public Entity getBackground(Point pt)
    {
@@ -198,57 +205,52 @@ public class WorldModel
    }
    */
 
-
-/*
    public void addEntity(Entity entity)
    {
-      pt = entity.getPosition();
-      if(pt.withinBounds())
+      Point pt = entity.getPosition();
+      if(pt.withinBounds(this))
       {
-         oldEntity = this.occupancy().getCell(pt);
+         Entity oldEntity = this.occupancy().getCell(pt);
          if(oldEntity != null)
          {
-            oldEntity.clearPendingActions();
+           	 this.clearPendingActions(oldEntity);					
          }
          this.occupancy().setCell(pt, entity);
          this.entities.addLast(entity);
       }
    }
 
-   public void removeEntity(Entity entity)
+   public void removeEntity(Actionable entity)
    {
-      List<Type> list = entity.getPendingActions();
-      for(int action = 0; action < list.length; action ++)
+      for(Object action:entity.getPendingActions())
       {
-         this.unscheduleAction(list[action]);
+         this.unscheduleAction(action);
       }
       entity.clearPendingActions();
       this.removeEntityAt(entity.getPosition());
    }
-*/
 
-
-/*
-   public void scheduleAction(Entity entity, Type action, int time)
+   public void scheduleAction(Actionable entity, Object action, int time)
    {
       entity.addPendingAction(action);
-      this.actionQueue.add(time, action);
+		ActionTimePair input = new ActionTimePair(action, time);
+      this.actionQueue.add(input);
    }
 
-   public void unscheduleAction(Type action)
+   public void unscheduleAction(Object action)
    {
       this.actionQueue.remove(action);
    }
-
-   public void clearPendingActions(Entity entity)
+	
+   public void clearPendingActions(Actionable entity)
    {
-      for(action : actionQueue)
+      for(Object action:entity.getPendingActions())
       {
          this.unscheduleAction(action);
       }
       entity.clearPendingActions();
    }
-
+	/*
    public  createEntityDeathAction(Entity entity)
    {
       public List<Point> action(int currentTicks)
@@ -260,17 +262,34 @@ public class WorldModel
       }
       return action;   // MIGHT MAKE THIS A LAMBDA EXPRESSION
    }
-
-   public void scheduleAnimation(Entity entity, int repeatCount = 0)
+*/
+   public void scheduleAnimation(Animated entity, int repeatCount)
    {
-      Type action = this.createAnimationAction(entity, repeatCount);
+		repeatCount = 0;
+      Object action = this.createAnimationAction(entity, repeatCount);
       int animationRate = entity.getAnimationRate();
       this.scheduleAction(entity, action, animationRate);
    }
 
-   public Type createAnimationAction(Entity entity, int repeatCount)
+   public Object createAnimationAction(Animated entity, int repeatCount)
    {
-      public action(int currentTicks)
+		Function<Integer, List<Point>> action = (currentTicks) ->
+		{
+			entity.removePendingAction(action);
+			entity.nextImage();
+			if (repeatCount !=1)
+			{
+				this.scheduleAction(entity,
+					this.createAnimationAction(entity, Math.max(repeatCount-1, 0)),
+						currentTicks+entity.getAnimationRate());
+			}
+			LinkedList<Point> output = new LinkedList<Point>();
+			output.add(entity.getPosition());
+			return output;
+		};
+      /*
+			Allison: Old code is down here. Fixed it best I could!
+			public action(int currentTicks)
       {
          entity.removePendingAction(action);
          entity.nextImage();
@@ -281,10 +300,10 @@ public class WorldModel
                currentTicks + entity.getAnimationRate());
          }
          return LinkedList<Point>(entity.getPosition()); // MIGHT MAKE THIS A LAMBDA EXPRESSION
-      }
+      }*/
       return action;
    }
-
+	/*
    public List<Point> update_on_time(int ticks)
    {
       List<Point> tiles = new LinkedList<Point>();

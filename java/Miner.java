@@ -3,12 +3,14 @@ import java.util.List;
 import java.util.function.*;
 import processing.core.*;
 
-public class Miner
+public abstract class Miner
     extends Animated
 	 implements Resource
 {
 	protected int resourceLimit;
 	protected int resourceCount;
+	
+	abstract Object createMinerAction(WorldModel world, List<String> imageStore);
 		
 	public Miner(String name, 
 		         int resourceLimit, 
@@ -39,18 +41,18 @@ public class Miner
 		*/
 	public Entity tryTransformMiner(WorldModel world, Function<WorldModel, Miner> transform)
 	{
-		Entity newEntity = transform.apply(world);
+		Animated newEntity = transform.apply(world);
 		if(this!= newEntity)
 		{
-			world.clearPendingActions();
+			world.clearPendingActions(this);
 			world.removeEntityAt(this.position);
 			world.addEntity(newEntity);
-			world.scheduleAnimation(newEntity);
+			world.scheduleAnimation(newEntity, 0);
 		}
 		return newEntity;
 	}
 	
-	public Action createMinerAction(WorldModel world, List<String> iStore)
+/*	public Action createMinerAction(WorldModel world, List<String> iStore)
 	{
 		if(this instanceof MinerNotFull)
 		{
@@ -60,7 +62,5 @@ public class Miner
 		{
 			return this.createMinerFullAction(world,iStore);
 		}
-	}
-	//create_miner_action
-//*/
+	}*/
 }
