@@ -55,13 +55,13 @@ public class Point
 
 	public Point nextPosition(WorldModel world, Point destination)
 	{
-		Actions actions = new Actions();
-      int horiz = Sign.sign(destination.x() - this.x());
+		Sign actions = new Sign();
+      int horiz = actions.sign(destination.x() - this.x());
       Point newPt = new Point(this.x() + horiz, this.y);
 
       if(horiz == 0 || newPt.isOccupied(world))
       {
-			int vert = sign.sign(destination.y() - this.x);
+			int vert = actions.sign(destination.y() - this.x);
         	newPt = new Point(this.x(), this.y() + vert);
         	if (vert == 0 || newPt.isOccupied(world))
         	{
