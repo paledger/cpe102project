@@ -18,7 +18,6 @@ public class MinerNotFull
 		super(name, resourceLimit, position, rate, imgs,
 			animationRate);	
 		this.resourceCount = 0;	
-		//also missing schedule_entity, schedule_miner (has to do with actions)
 	}
 	
 	public void scheduleEntity(WorldModel world, List<String> iStore)
