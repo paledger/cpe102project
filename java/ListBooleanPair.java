@@ -1,19 +1,19 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class ListBooleanPair extends Pair
 {
-   protected ArrayList<Point> entityPt;
-   protected boolean bool;
+   private List<Point> list;
+	private boolean bool;
 
-   public ListBooleanPair(ArrayList<Point> entity, boolean bool)
+   public ListBooleanPair(List<Point> list, boolean bool)
    {
-      this.entityPt = entityPt;
-      this.bool = bool;
+   	this.list = list;
+		this.bool = bool;
    }
 
-   public ArrayList<Point> getEnt()
+   public List<Point> getEnt()
    {
-      return this.entityPt;
+      return this.list;
    }
 
    public boolean getBool()

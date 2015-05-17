@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.*;
 import processing.core.*;
 
 public class Miner
@@ -7,7 +9,7 @@ public class Miner
 {
 	protected int resourceLimit;
 	protected int resourceCount;
-	
+		
 	public Miner(String name, 
 		         int resourceLimit, 
 		         Point position,
@@ -31,6 +33,22 @@ public class Miner
 	{
 		return this.resourceLimit;
 	}	
-	//try_transform_miner, create_miner_action
-	//missing imgs as well and currentImg
+/*	
+	Things need to be sorted out with WorldModel before this will work. Is "world" a
+	worldmodel object? How to get transform to work?
+		*/
+	public Entity tryTransformMiner(WorldModel world, Function<WorldModel, Miner> transform)
+	{
+		Entity newEntity = transform.apply(world);
+		if(this!= newEntity)
+		{
+			world.clearPendingActions();
+			world.removeEntityAt(this.position);
+			world.addEntity(newEntity);
+			world.scheduleAnimation(newEntity);
+		}
+		return newEntity;
+	}
+	//create_miner_action
+//*/
 }

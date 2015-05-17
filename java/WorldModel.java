@@ -83,7 +83,7 @@ public class WorldModel
       return nearest;
    }
 
-   public Entity find_nearest(Point pt, Entity t)
+   public Entity findNearest(Point pt, Entity t)
    {
       ArrayList<DistPair> oftype = new ArrayList<DistPair>();
       for(int i = 0; i < this.entities.size(); i ++)
@@ -99,19 +99,41 @@ public class WorldModel
       return nearestEntity(oftype);
    }
 
-   public void moveEntity(Entity entity, Point pt)
+/*   public Point[] moveEntity(Entity entity, Point pt)
    {
-      List<Point> tiles = new LinkedList<Point>();
-      if(pt.withinBounds(this))
-      {
-         Point oldPt = entity.getPosition();
-         this.occupancy().setCell(oldPt, none);
-         tiles.add(oldPt);
-         this.occupancy().setCell(pt, entity);
-         tiles.add(pt);
-         entity.setPosition(pt);
-      }
-   }
+		Point [] tiles = new Point [2];
+		if (pt.withinBounds(this))
+		{
+			Point oldPoint = entity.getPosition();
+			this.occupancy.setCell(oldPoint, null);
+			tiles[0] = oldPoint;
+			this.occupancy.setCell(pt, entity);
+			tiles[1] = pt;
+			entity.setPosition(pt);
+		}
+		return tiles;
+   } */
+	
+	//miner_to_smith needs moveentity as a return, but returns ListBooleanPairs,
+	//which require type (List<Point>, Boolean).
+	//You cannot append a type of List<Point> to a List<Point>.
+	//Changed the return of this from tiles to tiles[1], but this may need to be
+	//changed/fixed.
+	public Point moveEntity(Entity entity, Point pt)
+	   {
+			Point [] tiles = new Point [2];
+			if (pt.withinBounds(this))
+			{
+				Point oldPoint = entity.getPosition();
+				this.occupancy.setCell(oldPoint, null);
+				tiles[0] = oldPoint;
+				this.occupancy.setCell(pt, entity);
+				tiles[1] = pt;
+				entity.setPosition(pt);
+			}
+			return tiles[1];
+	   }	
+	
 
    /*
    public Image getBackgroundImage(Point pt)
