@@ -49,6 +49,18 @@ public class Miner
 		}
 		return newEntity;
 	}
+	
+	public Action createMinerAction(WorldModel world, List<String> iStore)
+	{
+		if(this instanceof MinerNotFull)
+		{
+			return this.createMinerNotFullAction(world,iStore);
+		}
+		else
+		{
+			return this.createMinerFullAction(world,iStore);
+		}
+	}
 	//create_miner_action
 //*/
 }
