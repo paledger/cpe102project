@@ -21,6 +21,11 @@ public class MinerNotFull
 		//also missing schedule_entity, schedule_miner (has to do with actions)
 	}
 	
+	public void scheduleEntity(WorldModel world, List<String> iStore)
+	{
+		this.scheduleMiner(world,0,iStore);
+	}
+	
 	public Entity tryTransformMinerNotFull(WorldModel world)
 	{
 		if (this.resourceCount<this.resourceLimit)
@@ -66,8 +71,8 @@ public class MinerNotFull
 	
 	public void scheduleMiner(WorldModel world, int ticks, List<String> iStore)
 	{
-		world.scheduleAction(this.createMinerAction(world,iStore), ticks+this.rate);
-		world.scheduleAnimation(this);
+		world.scheduleAction(this, this.createMinerAction(world,iStore), ticks+this.rate);
+		world.scheduleAnimation(this, 0);
 	}
 	
 	public Object createMinerNotFullAction(WorldModel world, List<String> iStore)
