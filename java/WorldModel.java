@@ -48,6 +48,11 @@ public class WorldModel
       return this.occupancy;
    }
 
+   public List<Entity> entities()
+   {
+      return this.entities;
+   }
+
 /*   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
    entityDists -> 
    {
@@ -176,11 +181,6 @@ public class WorldModel
          return this.occupancy().getCell(pt);
       }
       return null;
-   }
-
-   public List<Entity> getEntities()
-   {
-      return this.entities;
    }
 
    public void removeEntityAt(Point pt)

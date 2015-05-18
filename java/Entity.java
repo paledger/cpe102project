@@ -40,5 +40,6 @@ public abstract class Entity
 	 {
 		 return imgs;
 	 }
+	 
    // protected abstract String entityString();
 }

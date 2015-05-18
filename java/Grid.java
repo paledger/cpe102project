@@ -12,7 +12,7 @@ public class Grid
 		this.width = width;
 		this.height = height;
 		this.occupancy_value = occupancy_value;
-      this.cells = new Entity[width*height];
+        this.cells = new Entity[width*height];
 	}
 
 	protected void createCells()

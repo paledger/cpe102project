@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import processing.core.*;
 
 public class Actionable
-    extends Entity
+   extends Entity
 {
 	protected int currentImg;
 	protected ArrayList<Object> pendingActions;
@@ -59,4 +59,12 @@ public class Actionable
 		  this.pendingActions = new ArrayList<Object>();
 	  }
   }
+ 
+   protected void nextImage()
+   {
+	   this.currentImg = (this.currentImg+1) % imgs.size();
+   }
+	 
+	 //missing self.pending_actions[], add_pending_action, get_pending_actions
+	 //remove_pending_actions, clear_pending_actions
 }

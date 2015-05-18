@@ -23,6 +23,5 @@ public class Background
 	{
 		return imgs.get(this.currentImg);
 	}
-
 	//schedule_entity
 }

@@ -30,4 +30,5 @@ public class Blacksmith
 	{
 		return this.resourceLimit;
 	}
+	//missing currentImg
 }
