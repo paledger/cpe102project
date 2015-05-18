@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.function.*;
 import processing.core.*;
 
-
 public class WorldModel
 {
    private int num_rows;
@@ -54,11 +53,32 @@ public class WorldModel
       return this.entities;
    }
 
-
-   Function<List<DistPair>, Entity> nearestEntity = (entityDists) ->  
+/*   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
+   entityDists -> 
    {
-      Entity nearest = null;
-      if (entityDists.size() > 0)
+      Entity nearest = none;
+      if (entityDists.length > 0)
+      {
+         DistPair pair = entityDists[0];
+         for (int i = 1; i < entityDists.length; i ++)
+         {
+            DistPair other = entityDists(i);
+            if (other.getDist() < pair.getDist())
+            {
+               pair = other;
+            }
+         }
+         nearest = pair.getEnt();
+      } 
+      return nearest;
+   };
+   // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
+*/
+
+   public Entity nearestEntity(ArrayList<DistPair> entityDists)
+   {
+      Entity nearest = entityDists.get(0).getEnt();
+      if(entityDists.size() > 0)
       {
          DistPair pair = entityDists.get(0);
          for (int i = 1; i < entityDists.size(); i ++)
@@ -72,8 +92,7 @@ public class WorldModel
          nearest = pair.getEnt();
       } 
       return nearest;
-   };
-   // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
+   }
 
    public Entity findNearest(Point pt, Entity t)
    {
@@ -88,7 +107,7 @@ public class WorldModel
             oftype.add(pair);
          }
       }
-      return nearestEntity.apply(oftype);
+      return nearestEntity(oftype);
    }
 
 /*   public Point[] moveEntity(Entity entity, Point pt)
