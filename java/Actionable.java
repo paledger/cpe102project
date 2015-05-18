@@ -17,7 +17,6 @@ public class Actionable
 	
    protected PImage getImage()
    {
-<<<<<<< HEAD
  	 return imgs.get(this.currentImg);
    }
  
@@ -60,9 +59,6 @@ public class Actionable
 		  this.pendingActions = new ArrayList<Object>();
 	  }
   }
-=======
-	   return imgs.get(this.currentImg);
-   }
  
    protected void nextImage()
    {
@@ -71,5 +67,4 @@ public class Actionable
 	 
 	 //missing self.pending_actions[], add_pending_action, get_pending_actions
 	 //remove_pending_actions, clear_pending_actions
->>>>>>> 8f0212ea702583ad119490547cbaf38f4351217d
 }
