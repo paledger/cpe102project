@@ -18,7 +18,10 @@ public class MinerFull
 			animationRate);			
 		this.resourceCount = resourceLimit;			
 	}
-	//missing schedule_entity
+	
+	public void scheduleEntity(WorldModel world, List<String> iStore)
+	{
+	}
 	
 	public Entity tryTransformMinerFull(WorldModel world)
 	{
