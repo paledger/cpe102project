@@ -142,13 +142,12 @@ public class WorldView
 		int abs_x = view_tile_pt.x()*tile_width;
 		int abs_y = view_tile_pt.y()*tile_height;
 
-		int[] pair = {abs_x, abs_y};
-
-		screen.blit(surface, pair);
+		//seems to be a mouse function?????????
+		//image(surface, abs_x, abs_y);
 		return new Rect(abs_x, abs_y, tile_width, tile_height);
 	}
 
-	public PImage getTileImage(Point view_tile_pt)
+/*	public PImage getTileImage(Point view_tile_pt)
 	{
 		Point pt = viewportToWorld(view_tile_pt);
 		PImage bgnd = world.getBackgroundImage(pt);
@@ -165,7 +164,7 @@ public class WorldView
 		{
 			return bgnd;
 		}
-	}
+	}*/
 
 
 /* MOUSE HOVERING STUFF THAT IS UNNECCESSARY BUT WE CAN CHECK TO SEE HOW TO DO THIS

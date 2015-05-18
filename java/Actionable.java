@@ -59,11 +59,6 @@ public class Actionable
 		  this.pendingActions = new ArrayList<Object>();
 	  }
   }
- 
-   protected void nextImage()
-   {
-	   this.currentImg = (this.currentImg+1) % imgs.size();
-   }
 	 
 	 //missing self.pending_actions[], add_pending_action, get_pending_actions
 	 //remove_pending_actions, clear_pending_actions

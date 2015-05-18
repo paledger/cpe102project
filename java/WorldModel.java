@@ -52,8 +52,7 @@ public class WorldModel
    {
       return this.entities;
    }
-
-/*   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
+	/*
    entityDists -> 
    {
       Entity nearest = none;
@@ -72,9 +71,7 @@ public class WorldModel
       } 
       return nearest;
    };
-   // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
 */
-
    public Entity nearestEntity(ArrayList<DistPair> entityDists)
    {
       Entity nearest = entityDists.get(0).getEnt();
@@ -213,7 +210,7 @@ public class WorldModel
          Entity oldEntity = this.occupancy().getCell(pt);
          if(oldEntity != null)
          {
-           	 this.clearPendingActions(oldEntity);					
+           	 this.clearPendingActions((Actionable)oldEntity);					
          }
          this.occupancy().setCell(pt, entity);
          this.entities.addLast(entity);
@@ -250,19 +247,21 @@ public class WorldModel
       }
       entity.clearPendingActions();
    }
-	/*
-   public  createEntityDeathAction(Entity entity)
+
+   public Object createEntityDeathAction(Actionable entity)
    {
-      public List<Point> action(int currentTicks)
+      Function<Integer, List<Point>> action = (currentTicks) ->
       {
-         entity.removePendingActions(action);
+         entity.removePendingAction(action);
          Point pt = entity.getPosition();
          this.removeEntity(entity);
-         return Linkedist<Point>(pt);  // QUESTIONABLE!!!!
-      }
-      return action;   // MIGHT MAKE THIS A LAMBDA EXPRESSION
+			LinkedList<Point> output  = new LinkedList<Point>();
+			output.add(pt);
+         return output;
+      };
+      return action;
    }
-*/
+
    public void scheduleAnimation(Animated entity, int repeatCount)
    {
 		repeatCount = 0;
