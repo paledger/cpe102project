@@ -21,7 +21,7 @@ public class OreBlob
 	
 	public Point blobNextPosition(WorldModel world, Point destPt)
 	{
-		Actions actions = new Actions();
+		Sign actions = new Sign();
 		int horiz = actions.sign(destPt.x()-this.position.x());
 		Point newPt = new Point(this.position.x()+horiz,this.position.y());
 		

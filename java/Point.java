@@ -55,7 +55,7 @@ public class Point
 
 	public Point nextPosition(WorldModel world, Point destination)
 	{
-		Actions actions = new Actions();
+		Sign actions = new Sign();
       int horiz = actions.sign(destination.x() - this.x());
       Point newPt = new Point(this.x() + horiz, this.y);
 

@@ -52,51 +52,6 @@ public class WorldModel
    {
       return this.entities;
    }
-<<<<<<< HEAD
-	/*
-   entityDists -> 
-   {
-      Entity nearest = none;
-      if (entityDists.length > 0)
-      {
-         DistPair pair = entityDists[0];
-         for (int i = 1; i < entityDists.length; i ++)
-         {
-            DistPair other = entityDists(i);
-            if (other.getDist() < pair.getDist())
-            {
-               pair = other;
-            }
-         }
-         nearest = pair.getEnt();
-      } 
-      return nearest;
-   };
-*/
-   public Entity nearestEntity(ArrayList<DistPair> entityDists)
-=======
-
-/*   // LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNTION
-   entityDists -> 
-   {
-      Entity nearest = none;
-      if (entityDists.length > 0)
-      {
-         DistPair pair = entityDists[0];
-         for (int i = 1; i < entityDists.length; i ++)
-         {
-            DistPair other = entityDists(i);
-            if (other.getDist() < pair.getDist())
-            {
-               pair = other;
-            }
-         }
-         nearest = pair.getEnt();
-      } 
-      return nearest;
-   };
-   // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
-*/
 
    Function<List<DistPair>, Entity> nearestEntity = (entityDists) ->  
    {
@@ -115,7 +70,7 @@ public class WorldModel
          nearest = pair.getEnt();
       } 
       return nearest;
-   }
+   };
 
    public Entity findNearest(Point pt, Entity t)
    {
