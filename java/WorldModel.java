@@ -53,31 +53,8 @@ public class WorldModel
    {
       return this.entities;
    }
-<<<<<<< HEAD
-	/*
-   entityDists -> 
-   {
-      Entity nearest = none;
-      if (entityDists.length > 0)
-      {
-         DistPair pair = entityDists[0];
-         for (int i = 1; i < entityDists.length; i ++)
-         {
-            DistPair other = entityDists(i);
-            if (other.getDist() < pair.getDist())
-            {
-               pair = other;
-            }
-         }
-         nearest = pair.getEnt();
-      } 
-      return nearest;
-   };
-*/
-   public Entity nearestEntity(ArrayList<DistPair> entityDists)
-=======
-
-
+  
+   // BEGINNING OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" fUNCTION
    Function<List<DistPair>, Entity> nearestEntity = (entityDists) ->  
    {
       Entity nearest = null;
