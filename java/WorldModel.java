@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.function.*;
 import processing.core.*;
 
+
 public class WorldModel
 {
    private int num_rows;
@@ -52,6 +53,7 @@ public class WorldModel
    {
       return this.entities;
    }
+<<<<<<< HEAD
 	/*
    entityDists -> 
    {
@@ -73,9 +75,14 @@ public class WorldModel
    };
 */
    public Entity nearestEntity(ArrayList<DistPair> entityDists)
+=======
+
+
+   Function<List<DistPair>, Entity> nearestEntity = (entityDists) ->  
+>>>>>>> 04ef4ef6795f9143cfdb309828ff95f88398572c
    {
-      Entity nearest = entityDists.get(0).getEnt();
-      if(entityDists.size() > 0)
+      Entity nearest = null;
+      if (entityDists.size() > 0)
       {
          DistPair pair = entityDists.get(0);
          for (int i = 1; i < entityDists.size(); i ++)
@@ -89,7 +96,8 @@ public class WorldModel
          nearest = pair.getEnt();
       } 
       return nearest;
-   }
+   };
+   // END OF LAMBDA EXPRESSION FOR "NEAREST_ENTITY" FUNCTION
 
    public Entity findNearest(Point pt, Entity t)
    {
@@ -104,7 +112,7 @@ public class WorldModel
             oftype.add(pair);
          }
       }
-      return nearestEntity(oftype);
+      return nearestEntity.apply(oftype);
    }
 
 /*   public Point[] moveEntity(Entity entity, Point pt)
