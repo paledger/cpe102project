@@ -11,8 +11,8 @@ import java.util.Map;
 public class ImageStore
 	extends PApplet
 {
-	private final static String DEFAULT_IMAGE_NAME = "background_default";
-	private final static int[] DEFAULT_IMAGE_COLOR = {128, 128, 128, 0};
+	public final static String DEFAULT_IMAGE_NAME = "background_default";
+	public final static int[] DEFAULT_IMAGE_COLOR = {128, 128, 128, 0};
 
 /*
 	public List<String> readLines() 
@@ -31,9 +31,9 @@ public class ImageStore
 		}
 	}
 */
- 	public static HashMap<String, List<String>> processLines(Scanner in)
+ 	public static HashMap<String, LinkedList<String>> processLines(Scanner in)
  	{
-		HashMap<String, List<String>> iStore = new HashMap<String, List<String>>();
+		HashMap<String, LinkedList<String>> iStore = new HashMap<String, LinkedList<String>>();
 		LinkedList<String>  blacksmith = new LinkedList<String>();
 		LinkedList<String>  blob = new LinkedList<String>();
 		LinkedList<String>  grass = new LinkedList<String>();
@@ -121,6 +121,17 @@ public class ImageStore
 	{
 	}
 
+	public static LinkedList<PImage> makeImageList(LinkedList<String> stringList)
+	{
+		LinkedList<PImage> imageList = new LinkedList<PImage>();
+		for(String string : stringList)
+		{
+			PImage img = loadImage(string);
+			imageList.add(img);
+		}
+		return imageList;
+	}
+
 	public LinkedList<String> getImagesInternal(HashMap<String, LinkedList<String>> images, String key)
 	{
 		if(images.containsKey(key))
@@ -134,7 +145,7 @@ public class ImageStore
 		}
 	}
 
-	public LinkedList<String> getImages(HashMap<String, LinkedList<String>> images, String key)
+	public static LinkedList<String> getImages(HashMap<String, LinkedList<String>> images, String key)
 	{
 		if(images.containsKey(key))
 		{

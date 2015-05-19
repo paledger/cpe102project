@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import processing.core.*;
 import java.util.function.*;
+import java.util.HashMap;
 
 public class Vein
 	extends ResourceDistance
@@ -20,17 +21,17 @@ public class Vein
 		this.resourceDistance = 1;	
 	}
 	
-	public void scheduleEntity(WorldModel world, List<String> iStore)
+	public void scheduleEntity(WorldModel world, HashMap<String, List<String>> iStore)
 	{
 		this.scheduleVein(world,0,iStore);
 	}
 	
-	public void scheduleVein(WorldModel world, int ticks, List<String> iStore)
+	public void scheduleVein(WorldModel world, int ticks, HashMap<String, List<String>> iStore)
 	{
 		world.scheduleAction(this,this.createVeinAction(world,iStore),ticks+this.rate);
 	}
 	
-	public Object createVeinAction(WorldModel world, List<String> iStore)
+	public Object createVeinAction(WorldModel world, HashMap<String, List<String>> iStore)
 	{
 		Function<Integer, List<Point>> action = (currentTicks) ->
 		{
@@ -52,7 +53,7 @@ public class Vein
 		return action;
 	}
 	
-	public Ore createOre(WorldModel world, String name, Point pt, int ticks, List<String> iStore)
+	public Ore createOre(WorldModel world, String name, Point pt, int ticks, HashMap<String, List<String>> iStore)
 	{
 		Ore ore = new Ore(name, pt, ImageStore.getImages(iStore, "ore"),
 			(int)random(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX));

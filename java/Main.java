@@ -2,6 +2,8 @@ import processing.core.*;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.HashMap;
 
 public class Main
     extends PApplet
@@ -22,19 +24,36 @@ public class Main
 	public final static int TILE_WIDTH = 32;
 	public final static int TILE_HEIGHT = 32;
 
-	public Background createDefaultBackground(ArrayList<PImage> img)
+	public WorldView view;
+	public WorldModel world;
+	public HashMap<String, LinkedList<String>> iStore;
+
+
+	public void setup()
 	{
-		Background bg = new Background(DEFAULT_IMAGE_NAME, img);
+		size(SCREEN_WIDTH, SCREEN_HEIGHT);
+		Scanner scanner = new Scanner("imagelist");
+		iStore = ImageStore.processLines(scanner);
+
+		int numCols = SCREEN_WIDTH/TILE_WIDTH*WORLD_WIDTH_SCALE;
+		int numRows = SCREEN_HEIGHT/TILE_HEIGHT*WORLD_HEIGHT_SCALE;
+		Background defaultBackground = createDefaultBackground(ImageStore.getImages(iStore, ImageStore.DEFAULT_IMAGE_NAME));
+		world = new WorldModel(numRows, numCols, defaultBackground);
+		view = new WorldView(SCREEN_WIDTH/TILE_WIDTH, SCREEN_HEIGHT/TILE_HEIGHT, 
+			world, TILE_WIDTH, TILE_HEIGHT);
+	}
+
+	public Background createDefaultBackground(LinkedList<String> img)
+	{
+		LinkedList<PImage> imgs = ImageStore.makeImageList(iStore.get("background_default"));
+		Grid bg = new Background(DEFAULT_IMAGE_NAME, img);
 		return bg;
 	}
-
-	public void loadWorld(WorldModel world, String filename)
-	{
-		open(filename);
-	}
-
 	public void draw()
-	{}
+	{
+		randomSeed();
+		view.updateView();
+	}
 
     public static void main(String[] args)
     {

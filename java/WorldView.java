@@ -12,7 +12,6 @@ public class WorldView extends PApplet
 
    private int view_cols;
    private int view_rows;
-   private PImage screen;
    private WorldModel world;
    private int tile_width;
    private int tile_height;
@@ -24,18 +23,16 @@ public class WorldView extends PApplet
    private Point mousePt;
 
 
-	public WorldView(int view_cols, int view_rows, PImage screen, WorldModel worldModel, 
-		int tile_width, int tile_height, PImage mouseImg)  
+	public WorldView(int view_cols, int view_rows, WorldModel worldModel, 
+		int tile_width, int tile_height)  
 	{ 
 		viewport = new Rect(0, 0, view_cols, view_rows);
 
       this.view_cols = view_cols;
       this.view_rows = view_rows;
-      this.screen = screen;
       this.world = worldModel;
       this.tile_width = tile_width;
       this.tile_height = tile_height;
-      this.mouseImg = mouseImg;
 
       this.numCols = world.num_cols();
       this.numRows = world.num_rows();
