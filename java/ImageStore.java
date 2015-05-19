@@ -1,12 +1,21 @@
 import processing.core.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.*;
 
 public class ImageStore
 	extends PApplet
 {
 	private final static String DEFAULT_IMAGE_NAME = "background_default";
 	private final static int[] DEFAULT_IMAGE_COLOR = {128, 128, 128, 0};
+
+
+
+	private static boolean verifyArgs(String[] args)
+	{
+		return args.length >= 1;
+	}
 
 	public Rect createDefaultImage(int tile_width, int tile_height)
 	{
@@ -24,9 +33,18 @@ public class ImageStore
 
 	}
 
+ 	private static void processLines(Scanner in)
+ 	{
+		String name = "None";
+		while(in.hasNextLine())
+		{
+			String[] words = in.nextLine().split("\\s");
+			int 
+		}
+ 	}
+
 	public void processImageLine(List<String> images, String line)
 	{
-
 	}
 
 	public int getImagesInternal(List<String> images, String key)
@@ -39,7 +57,7 @@ public class ImageStore
 			}
 			else
 			{
-				return null;
+				return 0;
 			}
 		}
 	}
