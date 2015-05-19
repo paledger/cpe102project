@@ -2,10 +2,11 @@ import java.lang.Math;
 import java.lang.Object;
 import processing.core.*;
 import java.util.ArrayList;
+import processing.core.*;
 
 // check types of arguments passed in
 
-public class WorldView
+public class WorldView extends PApplet
 {
    private Rect viewport;
 
@@ -79,7 +80,7 @@ public class WorldView
 	   		Point w_pt = viewportToWorld(new Point(x, y));
 	   		int[] realPos = {x*tile_width, y*tile_height};
 	   		PImage img = world.getBackgroundImage(w_pt);
-	   		screen.blit(img, realPos);
+	   		image(img, realPos[0], realPos[1]);
 	   	}
 	   }
 	}
@@ -96,7 +97,7 @@ public class WorldView
 				Point v_pt = worldToViewport(entity.getPosition());
 				int[] realPos = {v_pt.x()*tile_width, v_pt.y()*tile_height};
 				Actionable newEnt = (Actionable)entity;
-				screen.blit(newEnt.getImage(), realPos);
+				image(newEnt.getImage(), realPos[0],realPos[1]);
 			}
 		}
 	}

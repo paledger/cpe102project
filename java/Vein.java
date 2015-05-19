@@ -55,7 +55,7 @@ public class Vein
 	public Ore createOre(WorldModel world, String name, Point pt, int ticks, List<String> iStore)
 	{
 		Ore ore = new Ore(name, pt, ImageStore.getImages(iStore, "ore"),
-			random(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX));
+			(int)random(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX));
 		ore.scheduleOre(world, ticks, iStore);
 		return ore;
 	}

@@ -80,7 +80,7 @@ public class MinerNotFull
 			this.removePendingAction(funcs[0]);
 			
 			Point entityPt = this.getPosition();
-			Ore o = new Ore("null",null,0,null);
+			Ore o = new Ore("null",null,null,0);
 			Entity ore = world.findNearest(entityPt, o);
 			ListBooleanPair found = this.minerToOre(world, (Ore)ore);
 			
