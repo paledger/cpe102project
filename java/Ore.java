@@ -56,6 +56,6 @@ public class Ore
 	
 	public void scheduleOre(WorldModel world, int ticks, List<String> iStore)
 	{
-		world.scheduleAction(this.createOreTransformAction(world, iStore), ticks+this.rate);
+		world.scheduleAction(this, this.createOreTransformAction(world, iStore), ticks+this.rate);
 	}	
 }
