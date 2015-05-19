@@ -46,7 +46,7 @@ public class Main
 	public Background createDefaultBackground(LinkedList<String> img)
 	{
 		LinkedList<PImage> imgs = ImageStore.makeImageList(iStore.get("background_default"));
-		Grid bg = new Background(DEFAULT_IMAGE_NAME, img);
+		Background bg = new Background(DEFAULT_IMAGE_NAME, img);
 		return bg;
 	}
 	public void draw()

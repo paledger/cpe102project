@@ -11,13 +11,13 @@ public class WorldModel
 {
    private int num_rows;
    private int num_cols;
-   private Grid background;
+   private Background background;
    private Grid occupancy;
    private static LinkedList<Entity> entities;
    private Entity none;
 	private ArrayList<ActionTimePair> actionQueue;
 
-   public WorldModel(int num_rows, int num_cols, Grid background)
+   public WorldModel(int num_rows, int num_cols, Background background)
    {
       this.num_rows = num_rows;
       this.num_cols = num_cols;
@@ -29,7 +29,7 @@ public class WorldModel
 		//hopefully that's correct.
    }
 
-   public Grid background()
+   public Background background()
    {
       return this.background;
    }
