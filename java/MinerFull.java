@@ -18,9 +18,7 @@ public class MinerFull
 			animationRate);			
 		this.resourceCount = resourceLimit;			
 	}
-	public void scheduleEntity(WorldModel world, List<String> iStore)
-	{
-	}
+	//missing schedule_entity
 	
 	public Entity tryTransformMinerFull(WorldModel world)
 	{
@@ -53,8 +51,9 @@ public class MinerFull
 			Point newPt = smithPt.nextPosition(world, smithPt);
 			//Point[] object = world.moveEntity(this,newPt);
 			//See comments in worldmodel under moveEntity.
-			List<Point> object = world.moveEntity(this,newPt);
-			return new ListBooleanPair(object,false);
+			Point object = world.moveEntity(this,newPt);
+			points.add(object);
+			return new ListBooleanPair(points,false);
 			
 		}
 	}
@@ -66,9 +65,8 @@ public class MinerFull
 			this.removePendingAction(action);
 			
 			Point entityPt = this.getPosition();
-			Blacksmith b = new Blacksmith("null", null, 0, 0, null, 0);
-			Entity smith = world.findNearest(entityPt, b);
-			ListBooleanPair found = this.minerToSmith(world, (Blacksmith)smith);
+			Blacksmith smith = world.findNearest(entityPt, Blacksmith);
+			ListBooleanPair found = this.minerToSmith(world, smith);
 			
 			Miner newEntity = this;
 			if (found.getBool())
