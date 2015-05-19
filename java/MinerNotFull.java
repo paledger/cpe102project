@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.function.*;
+import java.util.HashMap;
 
 public class MinerNotFull
 	extends Miner
@@ -12,7 +13,7 @@ public class MinerNotFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-					ArrayList<PImage> imgs,
+					LinkedList<PImage> imgs,
 		         int animationRate)
 	{
 		super(name, resourceLimit, position, rate, imgs,
@@ -20,7 +21,7 @@ public class MinerNotFull
 		this.resourceCount = 0;	
 	}
 	
-	public void scheduleEntity(WorldModel world, List<String> iStore)
+	public void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		this.scheduleMiner(world,0,iStore);
 	}
@@ -66,13 +67,13 @@ public class MinerNotFull
 		}
 	}
 	
-	public void scheduleMiner(WorldModel world, int ticks, List<String> iStore)
+	public void scheduleMiner(WorldModel world, int ticks, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		world.scheduleAction(this, this.createMinerAction(world,iStore), ticks+this.rate);
 		world.scheduleAnimation(this, 0);
 	}
 	
-	public Object createMinerAction(WorldModel world, List<String> iStore)
+	public Object createMinerAction(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		Action[] funcs = { null }; 
 		funcs[0] = (currentTicks) ->

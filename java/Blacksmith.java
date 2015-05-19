@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import processing.core.*;
+import java.util.LinkedList;
 
 public class Blacksmith
 	extends ResourceDistance
@@ -9,7 +10,7 @@ public class Blacksmith
 	protected int resourceCount;
 	
 	public Blacksmith(String name, Point position, 
-		int resourceLimit, int rate, ArrayList<PImage> imgs, 
+		int resourceLimit, int rate, LinkedList<PImage> imgs, 
 			int resourceDistance)
 	{
 		super(name, position, rate, imgs, resourceDistance);

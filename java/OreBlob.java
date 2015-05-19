@@ -3,12 +3,13 @@ import java.util.LinkedList;
 import java.util.List;
 import processing.core.*;
 import java.util.function.*;
+import java.util.HashMap;
 
 public class OreBlob
 	extends Animated
 {
 	
-	public OreBlob(String name, Point position, int rate, ArrayList<PImage> imgs, 
+	public OreBlob(String name, Point position, int rate, LinkedList<PImage> imgs, 
 		int animationRate)
 	{
 		super(name, position, rate, imgs, animationRate);
@@ -36,48 +37,72 @@ public class OreBlob
 		}
 		return newPt;
 	}	
-	public void scheduleEntity(WorldModel world, List<String> iStore){}
+	public void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore){}
 
-	public Object createOreBlobAction(WorldModel world, List<String> iStore)
+	public Object createOreBlobAction(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
-		Function<Integer, Object> action = (currentTicks) ->
-		{
-			this.removePendingAction(action);
-
-			Point entityPt = this.getPosition();
-            Vein generalV = new Vein("stand_in", 0, new Point(0, 0), 
-            	new ArrayList<PImage>(), 0);
-
-			Entity vein = world.findNearest(entityPt, generalV);
-			ListBooleanPair found = this.blobToVein(world, (Vein)vein);
-			List<Point> tiles = found.getEnt();
-
-			int nextTime = currentTicks + this.getRate();
-			if(found.getBool())
+		
+		LongConsumer[] action = {null};
+			action[0] = (long currentTicks)->
 			{
-				Quake quake = createQuake(world, tiles.get(0),
-					currentTicks, iStore);
-				world.addEntity(quake);
-				nextTime = currentTicks + getRate()*2;
-			}
+				this.removePendingAction(action[0]);
+				Point entityPt = this.getPosition();
+	            Vein generalV = new Vein("stand_in", 0, new Point(0, 0), 
+	            	new LinkedList<PImage>(), 0);
 
-			world.scheduleAction(this, this.createOreBlobAction(world, iStore), nextTime);
-			return tiles;
-		};
+				Entity vein = world.findNearest(entityPt, generalV);
+				ListBooleanPair found = this.blobToVein(world, (Vein)vein);
+				List<Point> tiles = found.getEnt();
+
+				int nextTime = (int)currentTicks + this.getRate();
+				if(found.getBool())
+				{
+					Quake quake = createQuake(world, tiles.get(0),
+						(int)currentTicks, iStore);
+					world.addEntity(quake);
+					nextTime = (int)currentTicks + getRate()*2;
+				}
+
+				world.scheduleAction(this, this.createOreBlobAction(world, iStore), nextTime);
+				//return tiles;
+			};
 		return action;
 	}
 
 	public ListBooleanPair blobToVein(WorldModel world, Vein vein)
 	{
-		Point entityPt = getPosition();
+		Point entityPt = this.getPosition();
+      LinkedList<Point> points = new LinkedList<Point>();
+		
 		if(vein==null)
 		{
-			return null;
+			points.add(entityPt);
+			return new ListBooleanPair(points,false);
+		}
+		Point veinPt = vein.getPosition();
+		if(entityPt.adjacent(veinPt))
+		{
+			world.removeEntity(vein);
+			points.clear();
+			return new ListBooleanPair(points,true);
+		}
+		else
+		{
+			Point newPt = this.blobNextPosition(world,veinPt);
+			Entity oldEntity = world.getTileOccupant(newPt);
+			if (oldEntity instanceof Ore)
+			{
+				world.removeEntity((Actionable)oldEntity);
+			}
+			List<Point> object = world.moveEntity(this,newPt);
+			ListBooleanPair output = new ListBooleanPair(object,false);
+			return output;
+			
 		}
 	}
 
     // IS ISTORE A LIST OF IMAGES OR A FILE THAT WE ARE READING??
-	public Quake createQuake(WorldModel world, Point pt, int ticks, List<String> iStore)
+	public Quake createQuake(WorldModel world, Point pt, int ticks, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		int QUAKE_ANIMATION_RATE = 100;
 		Quake quake = new Quake("quake", pt, ImageStore.getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
@@ -86,7 +111,7 @@ public class OreBlob
 		return quake;
 	} 
 
-	public void scheduleBlob(WorldModel world, int ticks, List<String> iStore)
+	public void scheduleBlob(WorldModel world, int ticks, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		world.scheduleAction(this, this.createOreBlobAction(world, 
 			iStore), ticks + this.getRate());

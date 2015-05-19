@@ -4,15 +4,15 @@ public class Grid
 {
     protected int width;
     protected int height;
-    protected Entity occupancy_value;
-    protected Entity[] cells;
+    protected Object occupancy_value;
+    protected Object[] cells;
 
-	public Grid(int width, int height, Entity occupancy_value)
+	public Grid(int width, int height, Object occupancy_value)
 	{
 		this.width = width;
 		this.height = height;
 		this.occupancy_value = occupancy_value;
-        this.cells = new Entity[width*height];
+      this.cells = new Object[width*height];
 	}
 
 	protected void createCells()
@@ -31,7 +31,7 @@ public class Grid
     	this.cells[pt.y()*this.width + pt.x()] = val;
     }
 
-    public Entity getCell(Point pt)
+    public Object getCell(Point pt)
     {
     	return this.cells[pt.y()*this.width + pt.x()];
     }

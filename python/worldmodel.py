@@ -9,7 +9,7 @@ import random
 
 class WorldModel:
     def __init__(self, num_rows, num_cols, background):
-        self.background = occ_grid.Grid(num_cols, num_rows, background)
+        self.background = occ_grid.Grid(num_cols, num_rows, backgroundd)
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.occupancy = occ_grid.Grid(num_cols, num_rows, None)

@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;
 import processing.core.*;
+import java.util.LinkedList;
+import java.util.HashMap;
 
 public abstract class Miner
     extends Animated
@@ -10,13 +12,13 @@ public abstract class Miner
 	protected int resourceLimit;
 	protected int resourceCount;
 	
-	public abstract Object createMinerAction(WorldModel world, List<String> iStore);
+	public abstract Object createMinerAction(WorldModel world, HashMap<String, LinkedList<PImage>> iStore);
 		
 	public Miner(String name, 
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-					ArrayList<PImage> imgs,
+					LinkedList<PImage> imgs,
 		         int animationRate)
 	{
 		super(name, position, rate, imgs, animationRate);

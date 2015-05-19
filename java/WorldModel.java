@@ -11,17 +11,19 @@ public class WorldModel
 {
    private int num_rows;
    private int num_cols;
-   private Background background;
+   private Background backgroundd;
+	private Grid background;
    private Grid occupancy;
    private static LinkedList<Entity> entities;
    private Entity none;
 	private ArrayList<ActionTimePair> actionQueue;
 
-   public WorldModel(int num_rows, int num_cols, Background background)
+   public WorldModel(int num_rows, int num_cols, Background backgroundd)
    {
       this.num_rows = num_rows;
       this.num_cols = num_cols;
-      this.background = background;
+      this.backgroundd = backgroundd;
+		this.background = new Grid(num_cols, num_rows, backgroundd);
       Grid occupancy = new Grid(num_cols, num_rows, null);
       LinkedList<Entity> entities = new LinkedList<Entity>();
 		this.entities = entities;
@@ -29,7 +31,7 @@ public class WorldModel
 		//hopefully that's correct.
    }
 
-   public Background background()
+   public Grid background()
    {
       return this.background;
    }
@@ -117,7 +119,7 @@ public class WorldModel
       return null;
    }
 
-   public Entity getBackground(Point pt)
+   public Object getBackground(Point pt)
    {
       if(pt.withinBounds(this))
       {
@@ -138,7 +140,7 @@ public class WorldModel
    {
       if(pt.withinBounds(this))
       {
-         return this.occupancy().getCell(pt);
+         return (Entity)this.occupancy().getCell(pt);
       }
       return null;
    }
@@ -148,7 +150,7 @@ public class WorldModel
       if(pt.withinBounds(this) && 
          this.occupancy().getCell(pt) != none)
       {
-         Entity entity = this.occupancy().getCell(pt);
+         Entity entity = (Entity)this.occupancy().getCell(pt);
          Point newPos = new Point(-1, -1);
          entity.setPosition(newPos);
          this.entities.remove(entity);
@@ -170,7 +172,7 @@ public class WorldModel
       Point pt = entity.getPosition();
       if(pt.withinBounds(this))
       {
-         Entity oldEntity = this.occupancy().getCell(pt);
+         Entity oldEntity = (Entity)this.occupancy().getCell(pt);
          if(oldEntity != null)
          {
            	 this.clearPendingActions((Actionable)oldEntity);					

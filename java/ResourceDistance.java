@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import processing.core.*;
 
 public class ResourceDistance
@@ -9,7 +10,7 @@ public class ResourceDistance
     public ResourceDistance(String name, 
     	                     Point position, 
     	                     int rate,
-								   ArrayList<PImage> imgs,
+								  	LinkedList<PImage> imgs,
 								   int resourceDistance)
     {
     	super(name, position, rate, imgs);	

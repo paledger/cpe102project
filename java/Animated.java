@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import processing.core.*;
 
 public class Animated
@@ -10,7 +11,7 @@ public class Animated
     	            String name, 
     	            Point position,
     	            int rate,
-						ArrayList<PImage> imgs,
+						LinkedList<PImage> imgs,
 						int animationRate)
     {
       super(name, position, rate, imgs);

@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import processing.core.*;
 
 public class Quake
@@ -8,7 +8,7 @@ public class Quake
 	private static final int QUAKE_DURATION = 1100;
 	private static final int QUAKE_ANIMATION_RATE = 100;
 	
-	public Quake(String name, Point position, ArrayList<PImage> imgs, int animationRate)
+	public Quake(String name, Point position, LinkedList<PImage> imgs, int animationRate)
 	{
 		super(name, position, 0, imgs, animationRate);
 	}

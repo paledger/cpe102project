@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import processing.core.*;
 import java.util.function.*;
+import java.util.HashMap;
 
 
 public class Ore
@@ -14,38 +15,36 @@ public class Ore
 	protected static final int BLOB_ANIMATION_MAX = 3;	
 	private static int rand;
 	
-	public Ore(String name, Point position, ArrayList<PImage> imgs, int rate)
+	public Ore(String name, Point position, LinkedList<PImage> imgs, int rate)
 		
 	{
 		super(name, position, 5000, imgs);
 		this.rate = 5000;
 	}
 	
-	public void scheduleEntity(WorldModel world, List<String> iStore)
+	public void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		this.scheduleOre(world,0,iStore);
 	}
 	
-	public Object createOreTransformAction(WorldModel world, List<String> iStore)
+	public Object createOreTransformAction(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
-		Function<Integer, List<Point>> action = (currentTicks) ->
-		{
-			this.removePendingAction(action);
-			
-			OreBlob blob = this.createBlob(world, this.name+" -- blob",
-				this.position, this.rate/BLOB_RATE_SCALE,currentTicks,iStore);
-			
-			world.removeEntity(this);
-			world.addEntity(blob);
-			LinkedList<Point> output = new LinkedList<Point>();
-			output.add(blob.position);
-			return output;
-		};
+		LongConsumer[] action = {null};
+			action[0] = (long currentTicks)->
+			{
+				this.removePendingAction(action[0]);
+				OreBlob blob = this.createBlob(world, this.name+" -- blob",
+					this.position, this.rate/BLOB_RATE_SCALE,(int)currentTicks,iStore);	
+				world.removeEntity(this);
+				world.addEntity(blob);
+				LinkedList<Point> output = new LinkedList<Point>();
+				output.add(blob.position);	
+			};
 		return action;
 	}
 	
 	public OreBlob createBlob(WorldModel world, String name, Point pt, 
-		int rate, int ticks, List<String> iStore)
+		int rate, int ticks, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		rand = (int)random(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX * BLOB_ANIMATION_RATE_SCALE);
 		OreBlob blob = new OreBlob(name,pt,rate,ImageStore.getImages(iStore,"blob"), rand);
@@ -53,7 +52,7 @@ public class Ore
 		return blob;
 	}
 	
-	public void scheduleOre(WorldModel world, int ticks, List<String> iStore)
+	public void scheduleOre(WorldModel world, int ticks, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		world.scheduleAction(this, this.createOreTransformAction(world, iStore), ticks+this.rate);
 	}	

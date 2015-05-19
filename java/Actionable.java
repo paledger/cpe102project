@@ -8,7 +8,7 @@ public class Actionable
 	protected int currentImg;
 	protected ArrayList<Object> pendingActions;
 	
-   public Actionable(String name, Point position,int rate, ArrayList<PImage> imgs)
+   public Actionable(String name, Point position,int rate, LinkedList<PImage> imgs)
    {
    	super(name, position,rate, imgs);
 		this.currentImg = 0;

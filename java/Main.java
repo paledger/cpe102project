@@ -26,33 +26,32 @@ public class Main
 
 	public WorldView view;
 	public WorldModel world;
-	public HashMap<String, LinkedList<String>> iStore;
-
+	public Scanner in = new Scanner("imagelist");
+	public ImageStore image_store = new ImageStore();
+	public HashMap<String, LinkedList<PImage>> iStore;
 
 	public void setup()
 	{
+		iStore = image_store.processLines(in);
 		size(SCREEN_WIDTH, SCREEN_HEIGHT);
-		Scanner scanner = new Scanner("imagelist");
-		iStore = ImageStore.processLines(scanner);
-
 		int numCols = SCREEN_WIDTH/TILE_WIDTH*WORLD_WIDTH_SCALE;
 		int numRows = SCREEN_HEIGHT/TILE_HEIGHT*WORLD_HEIGHT_SCALE;
-		Background defaultBackground = createDefaultBackground(ImageStore.getImages(iStore, ImageStore.DEFAULT_IMAGE_NAME));
+		Background defaultBackground = createDefaultBackground(image_store.getImages(iStore, ImageStore.DEFAULT_IMAGE_NAME));
 		world = new WorldModel(numRows, numCols, defaultBackground);
 		view = new WorldView(SCREEN_WIDTH/TILE_WIDTH, SCREEN_HEIGHT/TILE_HEIGHT, 
-			world, TILE_WIDTH, TILE_HEIGHT);
+			world, TILE_WIDTH, TILE_HEIGHT); 
 	}
 
-	public Background createDefaultBackground(LinkedList<String> img)
+	public Background createDefaultBackground(LinkedList<PImage> img)
 	{
-		LinkedList<PImage> imgs = ImageStore.makeImageList(iStore.get("background_default"));
 		Background bg = new Background(DEFAULT_IMAGE_NAME, img);
 		return bg;
 	}
 	public void draw()
 	{
-		randomSeed();
-		view.updateView();
+		randomSeed(0);
+		//view.updateView();
+			//has to do with mouse functionality
 	}
 
     public static void main(String[] args)

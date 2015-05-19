@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.*;
 import processing.core.*;
+import java.util.HashMap;
 
 public class MinerFull
 	extends Miner
@@ -11,7 +12,7 @@ public class MinerFull
 		         int resourceLimit, 
 		         Point position,
 		         int rate,
-					ArrayList<PImage> imgs,
+					LinkedList<PImage> imgs,
 		         int animationRate)
 	{
 		super(name, resourceLimit, position, rate, imgs, 
@@ -19,7 +20,7 @@ public class MinerFull
 		this.resourceCount = resourceLimit;			
 	}
 
-	public void scheduleEntity(WorldModel world, List<String> iStore)
+	public void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 	}
 	
@@ -59,7 +60,7 @@ public class MinerFull
 		}
 	}
 	
-	public Object createMinerAction(WorldModel world, List<String> iStore)
+	public Object createMinerAction(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 		Action[] funcs = { null };
 		funcs[0] = (currentTicks) ->
