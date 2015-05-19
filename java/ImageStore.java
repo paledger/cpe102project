@@ -1,3 +1,7 @@
+import processing.core.*;
+import java.util.List;
+import java.util.ArrayList;
+
 public class ImageStore
 {
 	private final static String DEFAULT_IMAGE_NAME = "background_default";
