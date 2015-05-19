@@ -252,37 +252,23 @@ public class WorldModel
 			output.add(entity.getPosition());
 			return output;
 		};
-      /*
-			Allison: Old code is down here. Fixed it best I could!
-			public action(int currentTicks)
-      {
-         entity.removePendingAction(action);
-         entity.nextImage();
-         if (repeatCount != 1)
-         {
-            this.scheduleAction(entity,
-               this.createAnimationAction(entity, max(repeatCount - 1, 0)),
-               currentTicks + entity.getAnimationRate());
-         }
-         return LinkedList<Point>(entity.getPosition()); // MIGHT MAKE THIS A LAMBDA EXPRESSION
-      }*/
       return func[0];
    }
 	/*
-   public List<Point> update_on_time(int ticks)
+   public List<Action> update_on_time(int ticks)
    {
-      List<Point> tiles = new LinkedList<Point>();
+      List<Action> tiles = new LinkedList<Action>();
 
-      Type next = this.actionQueue.head(); // CONFUSED ABOUT WHAT HEAD() DOES
+      Action next = this.actionQueue.head();
       while(next && next.ord < ticks)
       {
          this.actionQueue.pop();
-         tiles.addAll(next.item(ticks)); //confused aboout what next is ??? and item??
-         Type next = this.actionQueue.head();
+         tiles.addAll(next.item(ticks));
+         Action next = this.actionQueue.head();
       }
 
       return tiles;
    }
-   */
+		*/
 
 }
