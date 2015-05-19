@@ -67,7 +67,7 @@ public class OreBlob
 		return action;
 	}
 
-	public ListBooleanPair blobToVein(WorldModel world, Vein v)
+	public ListBooleanPair blobToVein(WorldModel world, Vein vein)
 	{
 		Point entityPt = getPosition();
 		if(vein==null)
