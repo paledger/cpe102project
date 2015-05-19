@@ -7,10 +7,6 @@ import java.util.function.*;
 public class OreBlob
 	extends Animated
 {
-	protected static final int BLOB_RATE_SCALE = 4;
-    protected static final int BLOB_ANIMATION_RATE_SCALE = 50;
-	protected static final int BLOB_ANIMATION_MIN = 1;
-	protected static final int BLOB_ANIMATION_MAX = 3;
 	
 	public OreBlob(String name, Point position, int rate, ArrayList<PImage> imgs, 
 		int animationRate)
@@ -74,7 +70,7 @@ public class OreBlob
 	public ListBooleanPair blobToVein(WorldModel world, Vein v)
 	{
 		Point entityPt = getPosition();
-		if(!v)
+		if(vein==null)
 		{
 			return null;
 		}

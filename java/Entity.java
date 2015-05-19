@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import processing.core.*;
 
-public abstract class Entity
+public abstract class Entity extends PApplet
 {
 	protected String name;
 	protected Point position;
@@ -16,7 +16,7 @@ public abstract class Entity
 		  this.imgs = imgs;
 	}
 
-	protected String getName()
+	public String getName()
 	{
 		return name;
 	}

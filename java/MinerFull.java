@@ -35,7 +35,7 @@ public class MinerFull
 		Point entityPt = this.getPosition();
       LinkedList<Point> points = new LinkedList<Point>();
 		
-		if(!(smith instanceof Blacksmith))
+		if(smith==null)
 		{
 			points.add(entityPt);
 			return new ListBooleanPair(points,false);
@@ -52,33 +52,38 @@ public class MinerFull
 		else
 		{
 			Point newPt = smithPt.nextPosition(world, smithPt);
-			Point object = world.moveEntity(this,newPt);
-			points.add(object);
-			return new ListBooleanPair(points,false);
+			List<Point> object = world.moveEntity(this,newPt);
+			ListBooleanPair output = new ListBooleanPair(object,false);
+			return output;
 			
 		}
 	}
 	
-	public Object createMinerAction(WorldModel world, List<String> imageStore)
+	public Object createMinerAction(WorldModel world, List<String> iStore)
 	{
 		Function<Integer, List<Point>> action = (currentTicks) ->
 		{
 			this.removePendingAction(action);
 			
 			Point entityPt = this.getPosition();
-			Blacksmith smith = world.findNearest(entityPt, Blacksmith);
-			ListBooleanPair found = this.minerToSmith(world, smith);
+			Blacksmith b = new Blacksmith("null",null,0,0,null,0);
+			Entity smith = world.findNearest(entityPt, b);
+			ListBooleanPair found = this.minerToSmith(world, (Blacksmith)smith);
 			
 			Miner newEntity = this;
 			if (found.getBool())
 			{
-				MinerNotFull newEntity = 
-					this.tryTransformMiner(world, this.tryTransformMinerFull());
+				Function<WorldModel, Miner> transform = (worldt) ->
+				{
+					return (MinerNotFull)this.tryTransformMinerFull(worldt);
+				};
 				
-				
-				world.scheduleAction(newEntity, newEntity.createMinerAction(world, iStore),
-					currentTicks + newEntity.getRate());
+				newEntity = 
+					(Miner)this.tryTransformMiner(world, transform);
 			}
+			world.scheduleAction(newEntity, newEntity.createMinerAction(world, iStore),
+				currentTicks + newEntity.getRate());
+			
 			return found.getEnt();
 		};
 		return action;

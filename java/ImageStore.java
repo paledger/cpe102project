@@ -5,6 +5,6 @@ public class ImageStore
 
 	public PImage createDefaultImage(int tile_width, int tile_height)
 	{
-		PImage surf = image()
+		PImage surf = image();
 	}
 }
