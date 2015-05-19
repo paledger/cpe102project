@@ -95,8 +95,8 @@ public class WorldView
 			{
 				Point v_pt = worldToViewport(entity.getPosition());
 				int[] realPos = {v_pt.x()*tile_width, v_pt.y()*tile_height};
-				screen.blit(entity.getImage(), 
-					realPos);
+				Actionable newEnt = (Actionable)entity;
+				screen.blit(newEnt.getImage(), realPos);
 			}
 		}
 	}
