@@ -108,11 +108,13 @@ public class WorldModel
    {
       if(pt.withinBounds(this))
       {
-         return this.background.getCell(pt).getImage();
+         Actionable actionable = (Actionable)this.background.getCell(pt);
+         return actionable.getImage();
 			//The method getImage() requires it to be an Actionable item because
 			//currentImg is only in Actionable. The issue is that
 			//this runs regardless, and therefore returns "cannot find symbol".
       }
+      return null;
    }
 
    public Entity getBackground(Point pt)
@@ -211,16 +213,18 @@ public class WorldModel
 
    public Object createEntityDeathAction(Actionable entity)
    {
-      Function<Integer, List<Point>> action = (currentTicks) ->
+      Action[] func = {null};
+      func[0] = (currentTicks) ->
       {
-         entity.removePendingAction(action);
+         entity.removePendingAction(func[0]);
          Point pt = entity.getPosition();
          this.removeEntity(entity);
+
 			LinkedList<Point> output  = new LinkedList<Point>();
 			output.add(pt);
          return output;
       };
-      return action;
+      return func[0];
    }
 
    public void scheduleAnimation(Animated entity, int repeatCount)
@@ -233,9 +237,10 @@ public class WorldModel
 
    public Object createAnimationAction(Animated entity, int repeatCount)
    {
-		Function<Integer, List<Point>> action = (currentTicks) ->
+		Action[] func = { null };
+      func[0] = (currentTicks) ->
 		{
-			entity.removePendingAction(action);
+			entity.removePendingAction(func[0]);
 			entity.nextImage();
 			if (repeatCount !=1)
 			{
@@ -261,7 +266,7 @@ public class WorldModel
          }
          return LinkedList<Point>(entity.getPosition()); // MIGHT MAKE THIS A LAMBDA EXPRESSION
       }*/
-      return action;
+      return func[0];
    }
 	/*
    public List<Point> update_on_time(int ticks)

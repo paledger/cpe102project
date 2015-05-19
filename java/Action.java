@@ -1,4 +1,7 @@
+import java.util.List;
+
+@FunctionalInterface
 public interface Action
 {
-   //apply();	
+   public List<Point> apply(int o1);	
 }
