@@ -1,3 +1,5 @@
-public class Action
-{	
+@FunctionInterface
+public interface Action
+{
+   apply()	
 }
