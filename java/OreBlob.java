@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import processing.core.*;
 import java.util.function.*;
 
@@ -78,10 +79,10 @@ public class OreBlob
 	}
 
     // IS ISTORE A LIST OF IMAGES OR A FILE THAT WE ARE READING??
-	public Quake createQuake(WorldModel world, Point pt, int ticks, List<PImage> iStore)
+	public Quake createQuake(WorldModel world, Point pt, int ticks, LinkedList<PImage> iStore)
 	{
 		int QUAKE_ANIMATION_RATE = 100;
-		Quake quake = new Quake("quake", pt, getImages(iStore, 'quake'), QUAKE_ANIMATION_RATE);
+		Quake quake = new Quake("quake", pt, getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
 		quake.scheduleQuake(world, ticks);
 
 		return quake;
