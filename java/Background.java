@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import processing.core.*;
 
 public class Background
@@ -23,5 +24,7 @@ public class Background
 	{
 		return imgs.get(this.currentImg);
 	}
-	//schedule_entity
+	protected void scheduleEntity(WorldModel world, List<String> iStore)
+	{
+	}
 }

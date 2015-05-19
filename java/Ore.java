@@ -8,8 +8,6 @@ import java.util.function.*;
 public class Ore
 	extends Actionable
 {	
-	private static final int ORE_CORRUPT_MIN = 20000;
-	private static final int ORE_CORRUPT_MAX = 30000;
 	protected static final int BLOB_RATE_SCALE = 4;
    protected static final int BLOB_ANIMATION_RATE_SCALE = 50;
 	protected static final int BLOB_ANIMATION_MIN = 1;
