@@ -28,7 +28,7 @@ public class ImageStore
 	public ArrayList<PImage> loadImages(String filename, int tile_width, int tile_height)
 	{
 		ArrayList<PImage> list = new ArrayList<PImage>();
-		
+		return list;
 
 	}
 
@@ -74,5 +74,6 @@ public class ImageStore
 				return images.indexOf(DEFAULT_IMAGE_NAME);
 			}
 		}
+		return 0;
 	}
 }
