@@ -59,7 +59,4 @@ public class Vein
 		ore.scheduleOre(world, ticks, iStore);
 		return ore;
 	}
-	//missing schedule_entity, schedule_vein, create_vein_action
-	//missing create_ore--deals with the i_store
-	//missing currentImg
 }
