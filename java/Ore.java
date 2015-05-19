@@ -14,7 +14,7 @@ public class Ore
 	protected static final int BLOB_ANIMATION_MAX = 3;	
 	private static int rand;
 	
-	public Ore(String name, Point position, int rate, ArrayList<PImage> imgs, int rate)
+	public Ore(String name, Point position, ArrayList<PImage> imgs, int rate)
 		
 	{
 		super(name, position, 5000, imgs);
