@@ -116,7 +116,7 @@ public class WorldView
       //mouseMove(mousePt);
 	}
 
-	public void updateViewTiles(Point[] tiles)
+/*	public void updateViewTiles(Point[] tiles)
 	{
 		ArrayList<Rect> rects = new ArrayList<Rect>();
 		for(int i = 0; i < tiles.length; i ++)
@@ -135,7 +135,7 @@ public class WorldView
 			}
 		}
 	   // EQUIVALENT OF PYGAME.DISPLAY.UPDATE()
-	}
+	}*/
 
 	public Rect updateTile(Point view_tile_pt, PImage surface)
 	{

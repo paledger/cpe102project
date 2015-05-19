@@ -37,7 +37,7 @@ public class Ore
 				this.position, this.rate/BLOB_RATE_SCALE,currentTicks,iStore);
 			
 			world.removeEntity(this);
-			this.addEntity(blob);
+			world.addEntity(blob);
 			LinkedList<Point> output = new LinkedList<Point>();
 			output.add(blob.position);
 			return output;
@@ -56,6 +56,6 @@ public class Ore
 	
 	public void scheduleOre(WorldModel world, int ticks, List<String> iStore)
 	{
-		world.scheduleAction(this.createOreTransformAction(world, iStore, ticks+this.rate));
+		world.scheduleAction(this.createOreTransformAction(world, iStore), ticks+this.rate);
 	}	
 }
