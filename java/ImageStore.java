@@ -1,16 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
-import processing.core.*;
-
 public class ImageStore
-	extends PApplet
 {
 	private final static String DEFAULT_IMAGE_NAME = "background_default";
 	private final static int[] DEFAULT_IMAGE_COLOR = {128, 128, 128, 0};
 
 	public Rect createDefaultImage(int tile_width, int tile_height)
 	{
+		PImage surf = image();
 		fill(DEFAULT_IMAGE_COLOR[0], DEFAULT_IMAGE_COLOR[1], 
 			DEFAULT_IMAGE_COLOR[2], DEFAULT_IMAGE_COLOR[3]);
 		Rect rect = new Rect(0, 0, tile_width, tile_height);
@@ -20,7 +15,7 @@ public class ImageStore
 	public ArrayList<PImage> loadImages(String filename, int tile_width, int tile_height)
 	{
 		ArrayList<PImage> list = new ArrayList<PImage>();
-
+		
 
 	}
 
@@ -39,7 +34,7 @@ public class ImageStore
 			}
 			else
 			{
-				return 0;
+				return null;
 			}
 		}
 	}
@@ -57,6 +52,5 @@ public class ImageStore
 				return images.indexOf(DEFAULT_IMAGE_NAME);
 			}
 		}
-		return 0;
 	}
 }
