@@ -39,7 +39,6 @@ public class ImageStore
 		while(in.hasNextLine())
 		{
 			String[] words = in.nextLine().split("\\s");
-			int 
 		}
  	}
 
