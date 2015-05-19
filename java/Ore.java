@@ -46,7 +46,7 @@ public class Ore
 	public OreBlob createBlob(WorldModel world, String name, Point pt, 
 		int rate, int ticks, List<String> iStore)
 	{
-		rand = random(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX * BLOB_ANIMATION_RATE_SCALE);
+		rand = (int)random(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX * BLOB_ANIMATION_RATE_SCALE);
 		OreBlob blob = new OreBlob(name,pt,rate,ImageStore.getImages(iStore,"blob"), rand);
 		blob.scheduleBlob(world,ticks,iStore);
 		return blob;
