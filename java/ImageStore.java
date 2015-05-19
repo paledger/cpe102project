@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ImageStore
+	extends PApplet
 {
 	private final static String DEFAULT_IMAGE_NAME = "background_default";
 	private final static int[] DEFAULT_IMAGE_COLOR = {128, 128, 128, 0};
