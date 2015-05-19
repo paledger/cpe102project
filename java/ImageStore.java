@@ -103,12 +103,6 @@ public class ImageStore
 		return iStore;
  	}
 
-/*
-	private static boolean verifyArgs(String[] args)
-	{
-		return args.length >= 1;
-	}
-
 	public Rect createDefaultImage(int tile_width, int tile_height)
 	{
 		fill(DEFAULT_IMAGE_COLOR[0], DEFAULT_IMAGE_COLOR[1], 
@@ -117,50 +111,38 @@ public class ImageStore
      	return rect;
 	}
 
-
 	public ArrayList<PImage> loadImages(String filename, int tile_width, int tile_height)
 	{
 		ArrayList<PImage> list = new ArrayList<PImage>();
 		return list;
-
 	}
-
-
 
 	public void processImageLine(List<String> images, String line)
 	{
 	}
 
-	public int getImagesInternal(List<String> images, String key)
+	public LinkedList<String> getImagesInternal(HashMap<String, LinkedList<String>> images, String key)
 	{
-		for(int i = 0; i < images.size(); i ++)
+		if(images.containsKey(key))
 		{
-			if(images.get(i) == key)
-			{
-				return images.indexOf(key);
-			}
-			else
-			{
-				return 0;
-			}
+			return images.get(key);
 		}
-		return 0;
+		else
+		{
+			LinkedList<String> output = new LinkedList<String>();
+			return output;
+		}
 	}
 
-	public int getImages(List<String> images, String key)
+	public LinkedList<String> getImages(HashMap<String, LinkedList<String>> images, String key)
 	{
-		for(int i = 0; i < images.size(); i ++)
+		if(images.containsKey(key))
 		{
-			if(images.get(i) == key)
-			{
-				return images.indexOf(key);
-			}
-			else
-			{
-				return images.indexOf(DEFAULT_IMAGE_NAME);
-			}
+			return images.get(key);
 		}
-		return 0;
+		else
+		{
+			return images.get(DEFAULT_IMAGE_NAME);
+		}
 	}
-*/
 }
