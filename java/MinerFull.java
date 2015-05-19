@@ -61,9 +61,10 @@ public class MinerFull
 	
 	public Object createMinerAction(WorldModel world, List<String> iStore)
 	{
-		Function<Integer, List<Point>> action = (currentTicks) ->
+		Action[] funcs = { null };
+		funcs[0] = (currentTicks) ->
 		{
-			this.removePendingAction(action);
+			this.removePendingAction(funcs[0]);
 			
 			Point entityPt = this.getPosition();
 			Blacksmith b = new Blacksmith("null",null,0,0,null,0);
@@ -86,6 +87,6 @@ public class MinerFull
 			
 			return found.getEnt();
 		};
-		return action;
+		return funcs[0];
 	}
 }
