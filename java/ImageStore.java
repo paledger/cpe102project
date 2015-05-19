@@ -19,7 +19,6 @@ public class ImageStore
 
 	public Rect createDefaultImage(int tile_width, int tile_height)
 	{
-		PImage surf = image();
 		fill(DEFAULT_IMAGE_COLOR[0], DEFAULT_IMAGE_COLOR[1], 
 			DEFAULT_IMAGE_COLOR[2], DEFAULT_IMAGE_COLOR[3]);
 		Rect rect = new Rect(0, 0, tile_width, tile_height);
@@ -59,6 +58,7 @@ public class ImageStore
 				return 0;
 			}
 		}
+		return 0;
 	}
 
 	public int getImages(List<String> images, String key)
