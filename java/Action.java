@@ -1,5 +1,5 @@
 @FunctionInterface
 public interface Action
 {
-   apply()	
+   apply();	
 }

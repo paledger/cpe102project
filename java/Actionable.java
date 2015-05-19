@@ -59,7 +59,4 @@ public class Actionable
 		  this.pendingActions = new ArrayList<Object>();
 	  }
   }
-	 
-	 //missing self.pending_actions[], add_pending_action, get_pending_actions
-	 //remove_pending_actions, clear_pending_actions
 }

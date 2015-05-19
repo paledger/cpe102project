@@ -18,7 +18,10 @@ public class MinerFull
 			animationRate);			
 		this.resourceCount = resourceLimit;			
 	}
-	//missing schedule_entity
+
+	public void scheduleEntity(WorldModel world, List<String> iStore)
+	{
+	}
 	
 	public Entity tryTransformMinerFull(WorldModel world)
 	{
@@ -49,8 +52,6 @@ public class MinerFull
 		else
 		{
 			Point newPt = smithPt.nextPosition(world, smithPt);
-			//Point[] object = world.moveEntity(this,newPt);
-			//See comments in worldmodel under moveEntity.
 			Point object = world.moveEntity(this,newPt);
 			points.add(object);
 			return new ListBooleanPair(points,false);
@@ -58,7 +59,7 @@ public class MinerFull
 		}
 	}
 	
-	public Object createMinerFullAction(WorldModel world, List<String> iStore)
+	public Object createMinerAction(WorldModel world, List<String> imageStore)
 	{
 		Function<Integer, List<Point>> action = (currentTicks) ->
 		{
@@ -71,7 +72,9 @@ public class MinerFull
 			Miner newEntity = this;
 			if (found.getBool())
 			{
-				//MinerNotFull newEntity = this.tryTransformMiner(WorldModel world, this.tryTransformMinerFull);
+				MinerNotFull newEntity = 
+					this.tryTransformMiner(world, this.tryTransformMinerFull());
+				
 				
 				world.scheduleAction(newEntity, newEntity.createMinerAction(world, iStore),
 					currentTicks + newEntity.getRate());
@@ -79,10 +82,5 @@ public class MinerFull
 			return found.getEnt();
 		};
 		return action;
-	}
-	
-	public Object createMinerAction(WorldModel world, List<String> imageStore)
-	{
-		return this.createMinerFullAction(world,imageStore);
 	}
 }

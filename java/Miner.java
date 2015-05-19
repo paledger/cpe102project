@@ -1,13 +1,17 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.*;
 import processing.core.*;
 
-public class Miner
+public abstract class Miner
     extends Animated
 	 implements Resource
 {
 	protected int resourceLimit;
 	protected int resourceCount;
 	
+	public abstract Object createMinerAction(WorldModel world, List<String> iStore);
+		
 	public Miner(String name, 
 		         int resourceLimit, 
 		         Point position,
@@ -31,6 +35,17 @@ public class Miner
 	{
 		return this.resourceLimit;
 	}	
-	//try_transform_miner, create_miner_action
-	//missing imgs as well and currentImg
+
+	public Entity tryTransformMiner(WorldModel world, Function<WorldModel, Miner> transform)
+	{
+		Animated newEntity = transform.apply(world);
+		if(this!= newEntity)
+		{
+			world.clearPendingActions(this);
+			world.removeEntityAt(this.position);
+			world.addEntity(newEntity);
+			world.scheduleAnimation(newEntity, 0);
+		}
+		return newEntity;
+	}
 }
