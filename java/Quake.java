@@ -12,5 +12,13 @@ public class Quake
 	{
 		super(name, position, 0, imgs, animationRate);
 	}
-	//missing schedule_entity and schedule_quake
+
+	public void scheduleEntity(){} // in effect, pass
+
+	public void scheduleQuake(WorldModel world, int ticks)
+	{
+		world.scheduleAnimation(this, QUAKE_STEPS);
+		world.scheduleAction(this, world.createEntityDeathAction(this), 
+			ticks + QUAKE_DURATION);
+	}
 }

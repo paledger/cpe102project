@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import processing.core.*;
 import java.util.function.*;
 
@@ -39,19 +40,20 @@ public class OreBlob
 		}
 		return newPt;
 	}	
-	public void scheduleEntity(){}
+	public void scheduleEntity(WorldModel world, List<String> iStore){}
 
-	public Object createOreBlobAction()
+	public Object createOreBlobAction(WorldModel world, List<String> iStore)
 	{
-		Function<Integer, Object> action = (int currentTicks) ->
+		Function<Integer, Object> action = (currentTicks) ->
 		{
 			this.removePendingAction(action);
 
 			Point entityPt = this.getPosition();
             Vein generalV = new Vein("stand_in", 0, new Point(0, 0), 
             	new ArrayList<PImage>(), 0);
-			Entity vein = findNearest(entityPt, generalV);
-			ListBooleanPair found = this.blobToVein(world, vein);
+
+			Entity vein = world.findNearest(entityPt, generalV);
+			ListBooleanPair found = this.blobToVein(world, (Vein)vein);
 			List<Point> tiles = found.getEnt();
 
 			int nextTime = currentTicks + this.getRate();
@@ -63,15 +65,15 @@ public class OreBlob
 				nextTime = currentTicks + getRate()*2;
 			}
 
-			world.scheduleAction(this, this.createOreBlobAction(world, iStore, nextTime));
+			world.scheduleAction(this, this.createOreBlobAction(world, iStore), nextTime);
 			return tiles;
 		};
 		return action;
 	}
 
-	public void blobToVein(WorldModel world, Vein v)
+	public ListBooleanPair blobToVein(WorldModel world, Vein v)
 	{
-		entityPt = getPosition();
+		Point entityPt = getPosition();
 		if(!v)
 		{
 			return null;
@@ -79,21 +81,19 @@ public class OreBlob
 	}
 
     // IS ISTORE A LIST OF IMAGES OR A FILE THAT WE ARE READING??
-	public Quake createQuake(WorldModel world, Point pt, int ticks, LinkedList<PImage> iStore)
+	public Quake createQuake(WorldModel world, Point pt, int ticks, List<String> iStore)
 	{
 		int QUAKE_ANIMATION_RATE = 100;
-		Quake quake = new Quake("quake", pt, getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
+		Quake quake = new Quake("quake", pt, ImageStore.getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
 		quake.scheduleQuake(world, ticks);
 
 		return quake;
 	} 
 
-	public void scheduleBlob(WorldModel world, int ticks, List<Point> iStore)
+	public void scheduleBlob(WorldModel world, int ticks, List<String> iStore)
 	{
 		world.scheduleAction(this, this.createOreBlobAction(world, 
 			iStore), ticks + this.getRate());
-		world.scheduleAnimation(this);
+		world.scheduleAnimation(this, 0);
 	}
-
-
 }

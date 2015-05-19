@@ -13,7 +13,7 @@ public class WorldModel
    private int num_cols;
    private Grid background;
    private Grid occupancy;
-   private LinkedList<Entity> entities;
+   private static LinkedList<Entity> entities;
    private Entity none;
 	private ArrayList<ActionTimePair> actionQueue;
 
@@ -81,7 +81,7 @@ public class WorldModel
 			Class<?> eClass = t.getClass();
          if ((entities.get(i).getClass() == eClass))
          {
-            Entity e = entities.get(i);
+            Entity e = this.entities.get(i);
             DistPair pair = new DistPair(e, pt.distanceSq(e.getPosition()));
             oftype.add(pair);
          }
@@ -95,7 +95,7 @@ public class WorldModel
 		if (pt.withinBounds(this))
 		{
 			Point oldPt = entity.getPosition();
-			this.occupancy.setCell(oldPoint, null);
+			this.occupancy.setCell(oldPt, null);
 			tiles.add(oldPt);
 			this.occupancy.setCell(pt, entity);
 			tiles.add(pt);
