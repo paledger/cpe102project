@@ -26,7 +26,7 @@ public class Grid
 		}
 	}
 
-    public void setCell(Point pt, Entity val)
+    public void setCell(Point pt, Object val)
     {
     	this.cells[pt.y()*this.width + pt.x()] = val;
     }

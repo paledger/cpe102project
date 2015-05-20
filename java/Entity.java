@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import processing.core.*;
 import java.util.LinkedList;
+import java.util.HashMap;
 
 public abstract class Entity extends PApplet
 {
@@ -41,6 +42,9 @@ public abstract class Entity extends PApplet
 	 {
 		 return imgs;
 	 }
+
+	 protected void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
+	 {}
 	 
    // protected abstract String entityString();
 }

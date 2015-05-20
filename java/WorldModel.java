@@ -128,7 +128,7 @@ public class WorldModel
       return null;
    }
 
-   public void setBackground(Point pt, Entity bgnd)
+   public void setBackground(Point pt, Background bgnd)
    {
       if(pt.withinBounds(this))
       {
