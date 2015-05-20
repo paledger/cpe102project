@@ -48,7 +48,7 @@ public abstract class Entity extends PApplet
 
 
 	 protected abstract String entityString()
-	 {}
+	 {};
 
    // protected abstract String entityString();
 	 
