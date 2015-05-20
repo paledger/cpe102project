@@ -110,7 +110,7 @@ public class WorldModel
    {
       if(pt.withinBounds(this))
       {
-         Actionable actionable = (Actionable)this.background.getCell(pt);
+         Object actionable = this.background.getCell(pt);
          return actionable.getImage();
 			//The method getImage() requires it to be an Actionable item because
 			//currentImg is only in Actionable. The issue is that

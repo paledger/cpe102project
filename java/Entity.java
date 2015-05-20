@@ -1,3 +1,4 @@
+import java.util.StringJoiner;
 import java.util.ArrayList;
 import processing.core.*;
 import java.util.LinkedList;
@@ -44,10 +45,33 @@ public abstract class Entity extends PApplet
 	 }
 
 	 protected void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
+<<<<<<< HEAD
 	 {}
 /*
 	 protected abstract String entityString()
 	 {}
 	*/ 
    // protected abstract String entityString();
+=======
+	 {
+	 	
+	 }
+	 
+/*	 protected void entityString(Entity entity)
+	 {
+		 if (entity instanceof MinerNotFull)
+		 {
+			 StringJoiner joiner = new StringJoiner(" ")
+				 .add("miner")
+				 .add(entity.name)
+				 .add(Integer.toString(entity.position.x))
+				 .add(Integer.toString(entity.position.y))
+				 .add(Integer.toString(entity.resourceLimit))
+				 .add(Integer.toString(entity.rate))
+				 .add(Integer.toString(entity.animationRate));				 					 					 
+		   String output = joiner.toString();
+			 return output;
+		 }
+	 }	 	*/
+>>>>>>> 4a7061a4907c29b921987f938bbaf9e794d76160
 }
