@@ -45,12 +45,17 @@ public abstract class Entity extends PApplet
 	 }
 
 	 protected void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
-
-
+<<<<<<< HEAD
+	 {}
+/*
 	 protected abstract String entityString()
 	 {}
-
+	*/ 
    // protected abstract String entityString();
+=======
+	 {
+	 	
+	 }
 	 
 /*	 protected void entityString(Entity entity)
 	 {
@@ -68,4 +73,5 @@ public abstract class Entity extends PApplet
 			 return output;
 		 }
 	 }	 	*/
+>>>>>>> 4a7061a4907c29b921987f938bbaf9e794d76160
 }
