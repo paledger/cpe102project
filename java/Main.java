@@ -4,7 +4,11 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
+<<<<<<< HEAD
 //adding comment to check for github change
+=======
+
+>>>>>>> 3bf840d1ca5fffd6c0832ec493650c6016ebd123
 public class Main
     extends PApplet
 {
