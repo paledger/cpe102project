@@ -19,6 +19,7 @@ public class MinerNotFull
 		super(name, resourceLimit, position, rate, imgs,
 			animationRate);	
 		this.resourceCount = 0;	
+		this.resourceLimit = resourceLimit;
 	}
 	
 	public void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)

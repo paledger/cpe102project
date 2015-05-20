@@ -50,8 +50,7 @@ public class Main
 	public void draw()
 	{
 		randomSeed(0);
-		//view.updateView();
-			//has to do with mouse functionality
+		view.drawViewport();
 	}
 
     public static void main(String[] args)
