@@ -26,6 +26,7 @@ public class Background
 	{
 		return imgs.get(this.currentImg);
 	}
+	
 	protected void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
 	{
 	}

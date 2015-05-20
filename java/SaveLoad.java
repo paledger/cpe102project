@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.lang.Integer.*;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.lang.String.*;
 import java.util.LinkedList;
@@ -64,25 +65,27 @@ public class SaveLoad
 	public void saveWorld(WorldModel world, File file)
 	{
 		saveEntities(world, file);
-		saveBackground(world,file);
+		saveBackground(world, file);
 	}
+
 	public void saveEntities(WorldModel world, File file)
 	{
 		for(Entity entity:world.entities())
 		{
-			//from python:
-			//file.write(entity.entity_string() + '\n')
+			Class<?> eClass = entity.getClass();
+			file.write(entity.entityString() + "\n");
 		}
 	}
 	
 	public void saveBackground(WorldModel world, File file)
 	{
+		FileWriter writer = new FileWriter(file);
 		for(int row = 0; row < world.num_rows(); row ++)
 		{
 			for(int col = 0; col < world.num_cols(); col ++)
 			{
-				//from python:
-				//file.write('background '+ worldmodel.get_background(world, point.Point((col, row))) +\' ' + str(col) + ' ' + str(row) + '\n').get_name())))
+				writer.write("background" + 
+					(world.getBackground(new Point(col, row))));
 			}
 		}
 		
@@ -95,7 +98,7 @@ public class SaveLoad
 		{
 			String[] properties = in.next().split("\\s");
 			String[] empty = {};
-            if(properties.equals(empty))
+            if(!properties.equals(empty))
             {
             	if(properties[PROPERTY_KEY] == BGND_KEY)
             	{
@@ -114,14 +117,14 @@ public class SaveLoad
 		if (properties.length >= BGND_NUM_PROPERTIES)
 		{
 			//figure out these when type of Properties is finalized
-			Point pt = new Point(getInteger(properties[BGND_COL]), getInteger(properties[BGND_ROW]));
+			Point pt = new Point(Integer.getInteger(properties[BGND_COL]), Integer.getInteger(properties[BGND_ROW]));
 			String name = properties[BGND_NAME];
 			Background bg = new Background(name, ImageStore.getImages(iStore, name));
 			world.setBackground(pt, bg);
 		}
 	}
 	
-	public void addEntity(WorldModel world, PropType properties, HashMap<String, LinkedList<PImage>> iStore, boolean run)
+	public void addEntity(WorldModel world, String[] properties, HashMap<String, LinkedList<PImage>> iStore, boolean run)
 	{
 		Entity newEntity = this.createFromProperties(properties, iStore);
 		if(newEntity != null)
@@ -134,39 +137,96 @@ public class SaveLoad
 		}
 	}
 	
-	public void createFromProperties(PropType properties, HashMap<String, LinkedList<PImage>> iStore)
+	public Entity createFromProperties(String[] properties, HashMap<String, LinkedList<PImage>> iStore)
 	{
-		//from python:
-		//what's the type of key?
-		/*   key = properties[PROPERTY_KEY]
-   if properties:
-      if key == MINER_KEY:
-         return create_miner(properties, i_store)
-      elif key == VEIN_KEY:
-         return create_vein(properties, i_store)
-      elif key == ORE_KEY:
-         return create_ore(properties, i_store)
-      elif key == SMITH_KEY:
-         return create_blacksmith(properties, i_store)
-      elif key == OBSTACLE_KEY:
-         return create_obstacle(properties, i_store)
-   return None
-			*/
+		String key = properties[PROPERTY_KEY];
+		String[] empty = {};
+		if(!properties.equals(empty))
+		{
+			if(key == MINER_KEY)
+			{
+				return createMiner(properties, iStore);
+			}
+			else if(key == VEIN_KEY)
+			{
+				return createVein(properties, iStore);
+			}
+			else if(key == ORE_KEY)
+			{
+				return createOre(properties, iStore);
+			}
+			else if(key == SMITH_KEY)
+			{
+				return createBlacksmith(properties, iStore);
+			}
+			else if(key == OBSTACLE_KEY)
+			{
+				return createObstacle(properties, iStore);
+			}
+			return null;
+		}
+
 	}
 	
 	public Miner createMiner(String[] properties, HashMap<String, LinkedList<PImage>> iStore)
 	{
-		/*
-   if len(properties) == MINER_NUM_PROPERTIES:
-      miner = entities.MinerNotFull(properties[MINER_NAME],
-         int(properties[MINER_LIMIT]),
-         point.Point(int(properties[MINER_COL]), int(properties[MINER_ROW])),
-         int(properties[MINER_RATE]),
-         image_store.get_images(i_store, properties[PROPERTY_KEY]),
-         int(properties[MINER_ANIMATION_RATE]))
-      return miner
-   else:
-      return None
-			*/
+		if(properties.length == MINER_NUM_PROPERTIES)
+		{
+			Miner miner = new MinerNotFull(properties[MINER_NAME],
+				Integer.getInteger(properties[MINER_LIMIT]),
+				new Point(Integer.getInteger(properties[MINER_COL]), 
+					Integer.getInteger(properties[MINER_ROW])),
+				Integer.getInteger(properties[MINER_RATE]),
+				ImageStore.getImages(iStore, properties[PROPERTY_KEY]),
+				Integer.getInteger(properties[MINER_ANIMATION_RATE]));
+			return miner;
+		}
+		return null;
 	}
+
+	public Vein createVein(String[] properties, HashMap<String, LinkedList<PImage>> iStore)
+	{
+		if(properties.length == VEIN_NUM_PROPERTIES)
+		{
+			Vein vein = new Vein(properties[VEIN_NAME],
+				Integer.getInteger(properties[VEIN_RATE]),
+				new Point(Integer.getInteger(properties[VEIN_COL]), 
+					Integer.getInteger(properties[VEIN_ROW])),
+				ImageStore.getImages(iStore, properties[PROPERTY_KEY]),
+				Integer.getInteger(properties[VEIN_REACH]));
+			return vein;
+		}
+		return null;
+	}
+
+	public Ore createOre(String[] properties, HashMap<String, LinkedList<PImage>> iStore)
+	{
+		if(properties.length == ORE_NUM_PROPERTIES)
+		{
+			Ore ore = new Ore(properties[ORE_NAME],
+				new Point(Integer.getInteger(properties[ORE_COL]), 
+					Integer.getInteger(properties[ORE_ROW])),
+				ImageStore.getImages(iStore, properties[PROPERTY_KEY]),
+				Integer.getInteger(properties[ORE_RATE]));
+			return ore;
+		}
+		return null;
+	}
+
+	public Blacksmith createBlacksmith(String[] properties, HashMap<String, LinkedList<PImage>> iStore)
+	{
+		if(properties.length == SMITH_NUM_PROPERTIES)
+		{
+			Blacksmith blacksmith = new Blacksmith(properties[SMITH_NAME],
+				new Point(Integer.getInteger(properties[SMITH_COL]), 
+					Integer.getInteger(properties[SMITH_ROW])),
+				ImageStore.getImages(iStore, properties[PROPERTY_KEY]),
+				Integer.getInteger(properties[SMITH_LIMIT]),
+				Integer.getInteger(properties[SMITH_RATE]),
+				Integer.getInteger(properties[SMITH_REACH]));
+			return blacksmith;
+		}
+		return null;
+	}
+
 }
