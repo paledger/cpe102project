@@ -45,7 +45,7 @@ public abstract class Entity extends PApplet
 	 }
 
 	 protected void scheduleEntity(WorldModel world, HashMap<String, LinkedList<PImage>> iStore)
-	 {}
+
 
 	 protected abstract String entityString()
 	 {};
