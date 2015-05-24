@@ -4,19 +4,23 @@ import processing.core.*;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-public abstract class Entity extends PApplet
+public abstract class Entity 
+	extends Actor
 {
 	protected String name;
 	protected Point position;
 	protected int rate;
 	protected LinkedList<PImage> imgs;
+	protected int currentImg;
 
 	protected Entity(String name, Point position, int rate, LinkedList<PImage> imgs)
 	{
+		super();
         this.name = name;
         this.position = position;
         this.rate = rate;
-		  this.imgs = imgs;
+		this.imgs = imgs;
+		this.currentImg = 0;
 	}
 
 	public String getName()
@@ -38,6 +42,11 @@ public abstract class Entity extends PApplet
     {
     	return rate;
     }
+
+   protected PImage getImage()
+   {
+ 	 return imgs.get(this.currentImg);
+   }
 	 
 	 protected LinkedList<PImage> getImages()
 	 {

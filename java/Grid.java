@@ -4,15 +4,15 @@ public class Grid
 {
     protected int width;
     protected int height;
-    protected Object occupancy_value;
-    protected Object[] cells;
+    protected Actor occupancy_value;
+    protected Actor[] cells;
 
-	public Grid(int width, int height, Object occupancy_value)
+	public Grid(int width, int height, Actor occupancy_value)
 	{
 		this.width = width;
 		this.height = height;
 		this.occupancy_value = occupancy_value;
-      this.cells = new Object[width*height];
+      this.cells = new Actor[width*height];
 	}
 
 	protected void createCells()
@@ -26,12 +26,12 @@ public class Grid
 		}
 	}
 
-    public void setCell(Point pt, Object val)
+    public void setCell(Point pt, Actor val)
     {
     	this.cells[pt.y()*this.width + pt.x()] = val;
     }
 
-    public Object getCell(Point pt)
+    public Actor getCell(Point pt)
     {
     	return this.cells[pt.y()*this.width + pt.x()];
     }

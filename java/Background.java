@@ -5,6 +5,7 @@ import processing.core.*;
 import java.util.HashMap;
 
 public class Background
+	extends Actor
 {
 	protected String name;
 	protected LinkedList<PImage> imgs;
@@ -12,6 +13,7 @@ public class Background
 
 	public Background(String name, LinkedList<PImage> imgs)
 	{
+		super();
 		this.name = name;
 		this.imgs = imgs;
 		this.currentImg = 0;

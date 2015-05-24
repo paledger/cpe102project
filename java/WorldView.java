@@ -75,7 +75,7 @@ public class WorldView extends PApplet
 	   	for(int x = 0; x < viewport.width(); x ++)
 	   	{
 	   		Point w_pt = viewportToWorld(new Point(x, y));
-	   		int[] realPos = {x*tile_width, y*tile_height};
+	   		int[] realPos = {(int)x*tile_width, (int)y*tile_height};
 	   		PImage img = world.getBackgroundImage(w_pt);
 	   		image(img, realPos[0], realPos[1]);
 	   	}
