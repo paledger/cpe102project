@@ -12,7 +12,7 @@ public class Astar
 	private double gScore;
 	private double fScore;
 
-	public Astar(T start, T goal)
+	public Astar(Point start, Point goal)
 	{
 		this.openSet.add(start);
 		
