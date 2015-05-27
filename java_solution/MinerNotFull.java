@@ -46,7 +46,7 @@ public class MinerNotFull
       }
       else
       {
-         world.moveEntity(this, nextPosition(world, ore.getPosition()));
+         world.moveEntity(this, nextAssPosition(world, ore.getPosition()));
          return false;
       }
    }

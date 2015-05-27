@@ -1,10 +1,10 @@
 public class Id
 {
 	protected Point pt;
-	protected double f;
-	protected double g;
+	protected int f;
+	protected int g;
 	
-	public Id(Point pt, double f, double g)
+	public Id(Point pt, int f, int g)
 	{
 		this.pt = pt;
 		this.f = f;
@@ -15,11 +15,11 @@ public class Id
 	{
 		return this.pt;
 	}
-	public double getF()
+	public int getF()
 	{
 		return this.f;
 	}
-	public double getG()
+	public int getG()
 	{
 		return this.g;
 	}
@@ -27,11 +27,11 @@ public class Id
 	{
 		pt = newpt;
 	}
-	public void setG(double newg)
+	public void setG(int newg)
 	{
 		g = newg;
 	}
-	public void setF(double newf)
+	public void setF(int newf)
 	{
 		f = newf;
 	}	

@@ -30,7 +30,7 @@ public class OreBlob
       }
       else
       {
-         Point new_pt = nextPosition(world, target.getPosition());
+         Point new_pt = nextAssPosition(world, target.getPosition());
          WorldEntity old_entity = world.getTileOccupant(new_pt);
          if (old_entity != null && old_entity != this)
          {

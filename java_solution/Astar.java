@@ -3,27 +3,30 @@
 import java.util.LinkedList;
 import java.util.List;
 import java.lang.Math.*;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Astar
 {
 	private List<Node<Id>> closedSet = new LinkedList<Node<Id>>();
 	private List<Node<Id>> openSet = new LinkedList<Node<Id>>();
 	
-	private double gScore;
-	private double fScore;
+	private int gScore;
+	private int fScore;
     private int width;
     private int height;
 	
 	private Grid grid;
 	
+	private Point start;
 	private Point goal;
 
 	private WorldModel world;
 
 	public Astar(Point start, Point goal, WorldModel world)
 	{
-		Node<Id> startNode = new Node<Id>(new Id(start, 0, 0), null);
-		this.openSet.add(startNode);
+		this.start = start;
+		//this.openSet.add(startNode);
 		this.grid = new Grid(width, height);
 		this.goal = goal;
 		this.world = world;
@@ -31,10 +34,13 @@ public class Astar
 		this.height = world.getNumCols();
 	}
 
-	public LinkedList<Point> Ass()
-	{
+	public LinkedList<Point> Ass() 
+	{ // *Ass stands for A Star Search*
+		Node<Id> startNode = new Node<Id>(new Id(start, 0, 0), null);
+		this.openSet.add(startNode);
 		while(openSet.size()!=0)
 		{
+			orderNodes(openSet);
 			Node<Id> current = openSet.get(0);
 			Point currentPt = current.getId().getPt();
 			if(currentPt == goal)
@@ -60,7 +66,7 @@ public class Astar
 				Id neighborID = neighbor.getId();
 				Point neighborPt = neighborID.getPt();
 				
-				double tentGScore = current.getId().getG() + hScoreFunc(current, neighborPt);
+				int tentGScore = current.getId().getG() + hScoreFunc(current, neighborPt);
 				
 				for(int i = 0; i < openSet.size(); i ++)
 				{
@@ -87,26 +93,26 @@ public class Astar
 		Point currentPt = (current.getId()).getPt();
 
 		Point top = new Point(currentPt.x(), currentPt.y()-1);
-		if(top.x() > 0 && top.x() < width &&
-			top.y() > 0 && top.y() < height &&
+		if(top.x() > 0 && top.x() < width-1 &&
+			top.y() > 0 && top.y() < height-1 &&
 			!this.seeObstacles(top))
 		{
 			Node<Id> topNode = grid.getCell(top); 
-			double htop = hScoreFunc(topNode, goal);
-			double ftop = fScoreFunc(gScore, htop);
+			int htop = hScoreFunc(topNode, goal);
+			int ftop = fScoreFunc(gScore, htop);
 			Id topId = new Id(top, ftop, htop);
 			topNode.setId(topId);
 			output.add(topNode);
 		}
 		
 		Point left = new Point(currentPt.x()-1, currentPt.y());
-		if(left.x() > 0 && left.x() < width &&
-			left.y() > 0 && left.y() < height &&
+		if(left.x() > 0 && left.x() < width-1 &&
+			left.y() > 0 && left.y() < height-1 &&
 			!this.seeObstacles(left))
 		{
 			Node<Id> leftNode = grid.getCell(left); 
-			double hleft = hScoreFunc(leftNode, goal);
-			double fleft = fScoreFunc(gScore, hleft);
+			int hleft = hScoreFunc(leftNode, goal);
+			int fleft = fScoreFunc(gScore, hleft);
 			Id leftId = new Id(left, fleft, hleft);
 			leftNode.setId(leftId);
 			output.add(leftNode);
@@ -114,13 +120,13 @@ public class Astar
 
 		
 		Point bottom = new Point(currentPt.x(), currentPt.y()+1);
-		if(bottom.x() > 0 && bottom.x() < width &&
-			bottom.y() > 0 && bottom.y() < height &&
+		if(bottom.x() > 0 && bottom.x() < width-1 &&
+			bottom.y() > 0 && bottom.y() < height-1 &&
 			!this.seeObstacles(bottom))
 		{
 			Node<Id> botNode = grid.getCell(bottom); 
-			double hBot = hScoreFunc(botNode, goal);
-			double fBot = fScoreFunc(gScore, hBot);
+			int hBot = hScoreFunc(botNode, goal);
+			int fBot = fScoreFunc(gScore, hBot);
 			Id botId = new Id(top, fBot, hBot);
 			botNode.setId(botId);
 			output.add(botNode);
@@ -128,13 +134,13 @@ public class Astar
 
 		
 		Point right = new Point(currentPt.x()+1, currentPt.y());
-		if(right.x() > 0 && right.x() < width &&
-			right.y() > 0 && right.y() < height &&
+		if(right.x() > 0 && right.x() < width-1 &&
+			right.y() > 0 && right.y() < height-1 &&
 			!this.seeObstacles(right)) 
 		{
 			Node<Id> rightNode = grid.getCell(right); 
-			double hR = hScoreFunc(rightNode, goal);
-			double fR = fScoreFunc(gScore, hR);
+			int hR = hScoreFunc(rightNode, goal);
+			int fR = fScoreFunc(gScore, hR);
 			Id rightId = new Id(top, fR, hR);
 			rightNode.setId(rightId);
 			output.add(rightNode);
@@ -148,42 +154,22 @@ public class Astar
 		return this.world.isOccupied(current);
 	}
 
-	/*
-	public LinkedList<Node<Id>> orderNodes(LinkedList<Node<Id>> list)
-	{
-		/*
-		minNode = list.get(0);
-		for(int i = 0; i < list.size(); i++)
-		{
-			if findMin
-		}
-	   
-		
-			//Comparator<
-	}
-	*/
-		
-	public Node<Id> findMin(Node<Id> one, Node<Id> two)
-	{
-		if(one.getId().getF() < two.getId().getF())
-		{
-			return one;
-		}
-		else
-		{
-			return two;
-		}
-	}
 	
-	
-	public double hScoreFunc(Node<Id> nextOption, Point goal)
+	public List<Node<Id>> orderNodes(List<Node<Id>> list)
+	{
+		Comparator<Node<Id>> comp = new FScoreCompare();
+	    Collections.sort(list, comp);
+		return list;
+	}
+		
+	public int hScoreFunc(Node<Id> nextOption, Point goal)
 	{
 		Point nextPt = (nextOption.getId()).getPt();
-		double output = Math.abs(nextPt.x()-goal.x()) + Math.abs(nextPt.y()-goal.y());
+		int output = Math.abs(nextPt.x()-goal.x()) + Math.abs(nextPt.y()-goal.y());
 		return output;
 	}
 	
-	public double fScoreFunc(double overallG, double hScore)
+	public int fScoreFunc(int overallG, int hScore)
 	{
 		return overallG+hScore;
 	}

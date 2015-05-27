@@ -1,6 +1,7 @@
 import processing.core.PImage;
 import java.util.List;
 import static java.lang.Math.abs;
+import java.util.LinkedList;
 
 public abstract class MobileAnimatedActor
    extends AnimatedActor
@@ -28,6 +29,15 @@ public abstract class MobileAnimatedActor
       }
 
       return new_pt;
+   }
+
+   protected Point nextAssPosition(WorldModel world, Point dest_pt)
+   {
+      Point start = getPosition();
+      Astar assPath = new Astar(start, dest_pt, world);
+      LinkedList<Point> finalPath = assPath.Ass();
+      Point newPt = finalPath.get(0);
+      return newPt;
    }
 
    protected static boolean adjacent(Point p1, Point p2)
