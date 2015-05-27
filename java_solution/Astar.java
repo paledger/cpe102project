@@ -11,20 +11,27 @@ public class Astar
 	
 	private double gScore;
 	private double fScore;
+    private int width;
+    private int height;
 	
 	private Grid grid;
 	
 	private Point goal;
 
-	public Astar(Point start, Point goal, int width, int height)
+	private WorldModel world;
+
+	public Astar(Point start, Point goal, WorldModel world)
 	{
 		Node<Id> startNode = new Node<Id>(new Id(start, 0, 0), null);
 		this.openSet.add(startNode);
 		this.grid = new Grid(width, height);
 		this.goal = goal;
+		this.world = world;
+		this.width = world.getNumRows();
+		this.height = world.getNumCols();
 	}
 
-	public LinkedList<Point> Ass ()
+	public LinkedList<Point> Ass()
 	{
 		while(openSet.size()!=0)
 		{
@@ -72,8 +79,7 @@ public class Astar
 		}
 		
 		return new LinkedList<Point>(); // empty list // Failure
-	}
-		
+	}		
 			
 	public LinkedList<Node<Id>> findNeighbors(Node<Id> current)
 	{
@@ -81,20 +87,67 @@ public class Astar
 		Point currentPt = (current.getId()).getPt();
 
 		Point top = new Point(currentPt.x(), currentPt.y()-1);
-		output.add(grid.getCell(top));
+		if(top.x() > 0 && top.x() < width &&
+			top.y() > 0 && top.y() < height &&
+			!this.seeObstacles(top))
+		{
+			Node<Id> topNode = grid.getCell(top); 
+			double htop = hScoreFunc(topNode, goal);
+			double ftop = fScoreFunc(gScore, htop);
+			Id topId = new Id(top, ftop, htop);
+			topNode.setId(topId);
+			output.add(topNode);
+		}
 		
 		Point left = new Point(currentPt.x()-1, currentPt.y());
-		output.add(grid.getCell(left));
+		if(left.x() > 0 && left.x() < width &&
+			left.y() > 0 && left.y() < height &&
+			!this.seeObstacles(left))
+		{
+			Node<Id> leftNode = grid.getCell(left); 
+			double hleft = hScoreFunc(leftNode, goal);
+			double fleft = fScoreFunc(gScore, hleft);
+			Id leftId = new Id(left, fleft, hleft);
+			leftNode.setId(leftId);
+			output.add(leftNode);
+		}
+
 		
 		Point bottom = new Point(currentPt.x(), currentPt.y()+1);
-		output.add(grid.getCell(bottom));
+		if(bottom.x() > 0 && bottom.x() < width &&
+			bottom.y() > 0 && bottom.y() < height &&
+			!this.seeObstacles(bottom))
+		{
+			Node<Id> botNode = grid.getCell(bottom); 
+			double hBot = hScoreFunc(botNode, goal);
+			double fBot = fScoreFunc(gScore, hBot);
+			Id botId = new Id(top, fBot, hBot);
+			botNode.setId(botId);
+			output.add(botNode);
+		}
+
 		
 		Point right = new Point(currentPt.x()+1, currentPt.y());
-		output.add(grid.getCell(right));
-			
+		if(right.x() > 0 && right.x() < width &&
+			right.y() > 0 && right.y() < height &&
+			!this.seeObstacles(right)) 
+		{
+			Node<Id> rightNode = grid.getCell(right); 
+			double hR = hScoreFunc(rightNode, goal);
+			double fR = fScoreFunc(gScore, hR);
+			Id rightId = new Id(top, fR, hR);
+			rightNode.setId(rightId);
+			output.add(rightNode);
+		}
+	
 		return output;
-		
 	}
+
+	public boolean seeObstacles(Point current)
+	{
+		return this.world.isOccupied(current);
+	}
+
 	/*
 	public LinkedList<Node<Id>> orderNodes(LinkedList<Node<Id>> list)
 	{

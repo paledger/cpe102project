@@ -19,7 +19,7 @@ public class Grid
 		{
             for(int col = 0; col < this.width; col ++)
             {
-            	cells[row*width + col] = new Node<Id>(null,null);
+            	cells[row*width + col] = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
             }
 		}
 	}
