@@ -6,23 +6,29 @@ public class WorldModel
 {
    private Background[][] background;
    private WorldEntity[][] occupancy;
+	public Node[][] nodes;
    private List<WorldEntity> entities;
-   private int numRows;
-   private int numCols;
+   public int numRows;
+   public int numCols;
    private OrderedList<Action> actionQueue;
 
    public WorldModel(int numRows, int numCols, Background background)
    {
-      this.background = new Background[numRows][numCols];
-      this.occupancy = new WorldEntity[numRows][numCols];
       this.numRows = numRows;
       this.numCols = numCols;
+      this.background = new Background[numRows][numCols];
+      this.occupancy = new WorldEntity[numRows][numCols];
+      this.nodes = new Node[numRows][numCols];
       this.entities = new LinkedList<>();
       this.actionQueue = new OrderedList<>();
-
       for (int row = 0; row < numRows; row++)
       {
          Arrays.fill(this.background[row], background);
+			for (int col = 0; col< numCols; col++)
+			{
+				Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
+	         this.nodes[row][col] = empty;
+			}
       }
    }
 
@@ -186,4 +192,8 @@ public class WorldModel
    {
       grid[pt.y][pt.x] = v;
    }
+	public static <Node> Node getNode(Node[][] grid, Point pt)
+	{
+		return grid[pt.y][pt.x];
+	}
 }

@@ -31,6 +31,7 @@ public class Grid
 
     public Node<Id> getCell(Point pt)
     {
+		//System.out.print(cells[0]);
     	return this.cells[pt.y()*this.width + pt.x()];
     }
 

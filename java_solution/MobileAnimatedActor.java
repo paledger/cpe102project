@@ -36,7 +36,9 @@ public abstract class MobileAnimatedActor
       Point start = getPosition();
       Astar assPath = new Astar(start, dest_pt, world);
       LinkedList<Point> finalPath = assPath.Ass();
-      Point newPt = finalPath.get(0);
+      //Point newPt = finalPath.get(0);
+		Point newPt = new Point(0,0);
+		System.out.print(finalPath);
       return newPt;
    }
 
