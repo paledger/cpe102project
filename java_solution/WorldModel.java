@@ -6,10 +6,10 @@ public class WorldModel
 {
    private Background[][] background;
    private WorldEntity[][] occupancy;
-	public Node[][] nodes;
+	private Node<Id>[][] nodes;
    private List<WorldEntity> entities;
-   public int numRows;
-   public int numCols;
+   private int numRows;
+   private int numCols;
    private OrderedList<Action> actionQueue;
 
    public WorldModel(int numRows, int numCols, Background background)
@@ -119,6 +119,11 @@ public class WorldModel
       return withinBounds(pt) ? getCell(background, pt) : null;
    }
 
+   public Node<Id>[][] getNodes()
+   {
+      return this.nodes;
+   }
+
    public void setBackground(Point pt, Background bgnd)
    {
       if (withinBounds(pt))
@@ -183,12 +188,12 @@ public class WorldModel
       return dx * dx + dy * dy;
    }
 
-   private static <T> T getCell(T[][] grid, Point pt)
+   public static <T> T getCell(T[][] grid, Point pt)
    {
       return grid[pt.y][pt.x];
    }
 
-   private static <T> void setCell(T[][] grid, Point pt, T v)
+   public static <T> void setCell(T[][] grid, Point pt, T v)
    {
       grid[pt.y][pt.x] = v;
    }

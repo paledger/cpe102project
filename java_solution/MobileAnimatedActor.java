@@ -2,6 +2,7 @@ import processing.core.PImage;
 import java.util.List;
 import static java.lang.Math.abs;
 import java.util.LinkedList;
+import java.lang.IndexOutOfBoundsException;
 
 public abstract class MobileAnimatedActor
    extends AnimatedActor
@@ -33,12 +34,28 @@ public abstract class MobileAnimatedActor
 
    protected Point nextAssPosition(WorldModel world, Point dest_pt)
    {
+      System.out.print(" Got da ass. "); //DEBUGGING
+
       Point start = getPosition();
+
+      System.out.print(start); //DEBUGGING
+
       Astar assPath = new Astar(start, dest_pt, world);
+
+      System.out.print(assPath); //DEBUGGING
+
       LinkedList<Point> finalPath = assPath.Ass();
-      //Point newPt = finalPath.get(0);
-		Point newPt = new Point(0,0);
+
+      System.out.print(finalPath); //DEBUGGING
+      /*
+      if(finalPath.size() <= 0)
+      {
+         throw new IndexOutOfBoundsException("WHAT ARE YOU DOING?");
+      }
+      */
+      Point newPt = finalPath.get(0);
 		System.out.print(finalPath);
+      System.out.print(finalPath.size());
       return newPt;
    }
 
