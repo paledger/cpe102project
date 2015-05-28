@@ -46,7 +46,8 @@ public abstract class MobileAnimatedActor
 
       LinkedList<Point> finalPath = assPath.Ass();
 
-      System.out.print(finalPath); //DEBUGGING
+      System.out.print( "Final path is: ");
+      System.out finalPath); //DEBUGGING doesn't get to this point.
       /*
       if(finalPath.size() <= 0)
       {

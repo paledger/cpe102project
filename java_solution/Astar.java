@@ -53,45 +53,59 @@ public class Astar
 			}
 
 			LinkedList<Node<Id>> neighbors = this.findNeighbors(current);
-			// System.out.print(neighbors); // DEBUGGING
+			//System.out.print(neighbors); // DEBUGGING
 		    outerloop:
 			for(Node<Id> neighbor:neighbors)
 			{
-				// System.out.print("a neighbor has been found."); // DEBUGGING 
-				for(int i = 0; i < closedSet.size()-1; i ++)
+				//System.out.print("a neighbor has been found."); // DEBUGGING  NOTHING IN CLOSEDSET THAT'S WHY IT DOESN'T RUN
+				for(int i = 0; i < closedSet.size(); i ++)
 				{
-					if(closedSet.get(i) == neighbor)
+					System.out.print(" in closedSet loop. ");
+					Point cPt = closedSet.get(i).getId().getPt();
+					Point nPt = neighbor.getId().getPt();
+					if(cPt.x() == nPt.x() && cPt.y() == nPt.y())
 					{
-						// System.out.print("neighbor is in closedSet"); // DEBUGGING
+						System.out.print("neighbor is in closedSet"); // DEBUGGING
 						continue outerloop;
 					}
-				     
-				    // FOR SOME REASON, THE BELOW PRINT STATEMENTS DON'T PRINT BUT THE ABOVE ONES DO.  
-					Id neighborID = neighbor.getId();
-					Point neighborPt = neighborID.getPt();
-				
-					int tentGScore = current.getId().getG() + hScoreFunc(current.getId().getPt(), neighborPt);
+				} 
+				Id neighborID = neighbor.getId();
+				Point neighborPt = neighborID.getPt();
+			
+				int tentGScore = current.getId().getG() + hScoreFunc(current.getId().getPt(), neighborPt);
+				int neighborG = neighborID.getG();
 
-					// System.out.print(tentGScore); // DEBUGGING
-					// System.out.print(neighborID.getG()); //DEBUGGING
-				
-					for(int j = 0; j < openSet.size()-1; j ++)
+				// System.out.print(tentGScore); // DEBUGGING
+				// System.out.print(neighborID.getG()); //DEBUGGING
+				/*
+				if(openSet.size() == 0)
+				{
+					if (tentGScore < neighborG)
 					{
-						System.out.print(" got to Openset loop. ");
-						if((neighbor != openSet.get(i)) || (tentGScore < (neighborID.getG())))
-						{
-							neighbor.setFrom(current);
-							neighborID.setG(tentGScore);
-							neighborID.setF(fScoreFunc(tentGScore, hScoreFunc(neighbor.getId().getPt(), goal)));
-							System.out.print(" Neightbor not in Openset OR tentGScore < neightbor G");
-							if(neighbor != openSet.get(i))
-							{
-								openSet.add(neighbor);
-								System.out.print(" OpenSet added a neighbor. ");
-							}
-						}	
+						neighbor.setFrom(current);
+						neighborID.setG(tentGScore);
+						neighborID.setF(fScoreFunc(tentGScore, hScoreFunc(neighbor.getId().getPt(), goal)));
+						System.out.print(" tentGScore < neightbor G");
+
 					}
+				}*/
+				for(int j = 0; j < openSet.size(); j ++)
+				{
+					System.out.print(" got to Openset loop. ");
+					if((neighbor != openSet.get(j)) || (tentGScore < (neighborID.getG())))
+					{
+						neighbor.setFrom(current);
+						neighborID.setG(tentGScore);
+						neighborID.setF(fScoreFunc(tentGScore, hScoreFunc(neighbor.getId().getPt(), goal)));
+						//System.out.print(" Neightbor not in Openset OR tentGScore < neightbor G");
+						if(neighbor != openSet.get(j))
+						{
+							openSet.add(neighbor);
+							//System.out.print(" OpenSet added a neighbor. ");
+						}
+					}	
 				}
+				
 			}
 		}
 		return new LinkedList<Point>(); // empty list // Failure
