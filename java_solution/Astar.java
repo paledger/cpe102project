@@ -24,9 +24,8 @@ public class Astar
 	public Astar(Point start, Point goal, WorldModel world)
 	{
 		this.start = start;
-		Node<Id> startNode = new Node<Id>(new Id(start, 0, 0 + this.hScoreFunc(start,goal)), null);
 
-		this.openSet.add(startNode);
+		//this.openSet.add(startNode);
 		this.width = world.getNumRows();
 		this.height = world.getNumCols();
 		this.goal = goal;
@@ -35,28 +34,69 @@ public class Astar
 
 	public LinkedList<Point> Ass() 
 	{ // *Ass stands for A Star Search*
+		// perhaps later add check for if goal is an obstacle
+		LinkedList<Point> path = new LinkedList<Point>();
+		world.fillNodes();
+		System.out.print(world.getNodes());
+		closedSet.clear();
+		openSet.clear();
 
-		while(openSet.size()!=0)
+		Node<Id> startNode = new Node<Id>(new Id(start, 0, 0 + this.hScoreFunc(start,goal)), null);
+
+		openSet.add(startNode);
+		orderNodes(openSet);
+
+		while(openSet.size() != 0)
 		{
-			Node<Id> current = orderNodes(openSet).get(0);
+
+			Node<Id> current = openSet.get(0);
 			Point currentPt = current.getId().getPt();
 			if(currentPt == goal)
 			{
-				LinkedList<Point> path = new LinkedList<Point>();
-				return reconstructPath(current, path);
+				return reconstructPath(current, path);  // RIGHT NOW THIS IS RECURISVE BUT OTHER VERSIONS AREN'T 
 			}
-
+			/*
 			if (currentPt != start)
-			{
-			    openSet.remove(current);
-				closedSet.add(current);
-			}
+			{*/
+		    openSet.remove(current);
+			closedSet.add(current);
 
 			LinkedList<Node<Id>> neighbors = this.findNeighbors(current);
 			//System.out.print(neighbors); // DEBUGGING
-		    outerloop:
+			
+		    //outerloop:
 			for(Node<Id> neighbor:neighbors)
 			{
+				boolean betterOption;
+				if(closedSet.contains(neighbor))
+				{
+					continue;
+				}
+
+				int tentGScore = current.getId().getG() + hScoreFunc(current.getId().getPt(), neighbor.getId().getPt());
+
+				if(!openSet.contains(neighbor))
+				{
+					openSet.add(neighbor);
+					betterOption = true;
+				}
+				else if(tentGScore < neighbor.getId().getG()) 
+				{
+					betterOption = true;
+				}
+				else
+				{
+					betterOption = false;
+				}
+
+				if(betterOption)
+				{
+					neighbor.setFrom(current);
+					neighbor.getId().setG(tentGScore);
+					neighbor.getId().setF(fScoreFunc(tentGScore, hScoreFunc(neighbor.getId().getPt(), goal)));
+
+				}
+				/*
 				//System.out.print("a neighbor has been found."); // DEBUGGING  NOTHING IN CLOSEDSET THAT'S WHY IT DOESN'T RUN
 				for(int i = 0; i < closedSet.size(); i ++)
 				{
@@ -77,7 +117,7 @@ public class Astar
 
 				// System.out.print(tentGScore); // DEBUGGING
 				// System.out.print(neighborID.getG()); //DEBUGGING
-				/*
+				
 				if(openSet.size() == 0)
 				{
 					if (tentGScore < neighborG)
@@ -88,10 +128,10 @@ public class Astar
 						System.out.print(" tentGScore < neightbor G");
 
 					}
-				}*/
+				}
 				for(int j = 0; j < openSet.size(); j ++)
 				{
-					System.out.print(" got to Openset loop. ");
+					//System.out.print(" got to Openset loop. ");
 					if((neighbor != openSet.get(j)) || (tentGScore < (neighborID.getG())))
 					{
 						neighbor.setFrom(current);
@@ -101,25 +141,19 @@ public class Astar
 						if(neighbor != openSet.get(j))
 						{
 							openSet.add(neighbor);
-							//System.out.print(" OpenSet added a neighbor. ");
+							orderNodes(openSet);
+							System.out.print("added to Openset: ");
+							System.out.print(neighbor);
 						}
 					}	
 				}
-				
+				*/
 			}
+
 		}
 		return new LinkedList<Point>(); // empty list // Failure
 	}	
 	
-	public LinkedList<Point> NodetoPoint(List<Node<Id>> list)
-		{
-			LinkedList<Point> output = new LinkedList();
-			for(Node<Id> node: list)
-			{
-				output.add(node.getId().getPt());
-			}
-			return output;
-		}	
 			
 	public LinkedList<Node<Id>> findNeighbors(Node<Id> current)
 	{
@@ -132,7 +166,7 @@ public class Astar
 		if(world.withinBounds(currentPt) &&
 			!this.seeObstacles(top))
 		{
-			Node<Id> topNode = WorldModel.getCell(world.getNodes(), top);
+			Node<Id> topNode = world.getNode(world.getNodes(), top);
 			int htop = hScoreFunc(top, goal);
 			int ftop = fScoreFunc(gScore, htop);
 			Id topId = new Id(top, ftop, htop);
@@ -190,7 +224,7 @@ public class Astar
 	}
 
 	
-	public List<Node<Id>> orderNodes(List<Node<Id>> list)
+	public static List<Node<Id>> orderNodes(List<Node<Id>> list)
 	{
 		Comparator<Node<Id>> comp = new FScoreCompare();
 	    Collections.sort(list, comp);
@@ -213,10 +247,12 @@ public class Astar
 	{
 		Point pt = current.getId().getPt();
 		path.add(0, pt);
+		System.out.print(path);
 		if(current.getFrom() != null)
 		{
 			reconstructPath(current.getFrom(), path);
 		}
+		System.out.print(path);
 		return path;
 	}
 

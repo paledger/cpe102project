@@ -47,17 +47,22 @@ public abstract class MobileAnimatedActor
       LinkedList<Point> finalPath = assPath.Ass();
 
       System.out.print( "Final path is: ");
-      System.out finalPath); //DEBUGGING doesn't get to this point.
+      System.out.print(finalPath); //DEBUGGING doesn't get to this point.
       /*
       if(finalPath.size() <= 0)
       {
          throw new IndexOutOfBoundsException("WHAT ARE YOU DOING?");
       }
       */
-      Point newPt = finalPath.get(0);
-		System.out.print(finalPath);
       System.out.print(finalPath.size());
-      return newPt;
+      if(finalPath.size() != 0)
+      {
+         Point newPt = finalPath.get(0);
+		   System.out.print(finalPath);
+         System.out.print(finalPath.size());
+         return newPt;
+      }
+      return null;
    }
 
    protected static boolean adjacent(Point p1, Point p2)

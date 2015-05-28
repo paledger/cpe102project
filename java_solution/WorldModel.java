@@ -20,16 +20,29 @@ public class WorldModel
       this.occupancy = new WorldEntity[numRows][numCols];
       this.nodes = new Node[numRows][numCols];
       this.entities = new LinkedList<>();
-      this.actionQueue = new OrderedList<>();
+      this.actionQueue = new OrderedList<>();      
       for (int row = 0; row < numRows; row++)
       {
          Arrays.fill(this.background[row], background);
-			for (int col = 0; col< numCols; col++)
-			{
-				Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
-	         this.nodes[row][col] = empty;
-			}
+         for (int col = 0; col < numCols; col++)
+         {
+            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
+            this.nodes[row][col]= empty;
+         }
       }
+   }
+
+   public void fillNodes()
+   {
+      for (int row = 0; row < numRows; row++)
+      {
+         for (int col = 0; col< numCols; col++)
+         {
+            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
+            nodes[row][col] = empty;
+         }
+      }
+
    }
 
    public boolean withinBounds(Point pt)
@@ -119,9 +132,9 @@ public class WorldModel
       return withinBounds(pt) ? getCell(background, pt) : null;
    }
 
-   public Node<Id>[][] getNodes()
+   public Node[][] getNodes()
    {
-      return this.nodes;
+      return nodes;
    }
 
    public void setBackground(Point pt, Background bgnd)
@@ -197,7 +210,7 @@ public class WorldModel
    {
       grid[pt.y][pt.x] = v;
    }
-	public static <Node> Node getNode(Node[][] grid, Point pt)
+	public static <T> Node getNode(Node[][] grid, Point pt)
 	{
 		return grid[pt.y][pt.x];
 	}
