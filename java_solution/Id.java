@@ -9,6 +9,7 @@ public class Id
 		this.pt = pt;
 		this.f = f;
 		this.g = g;
+		g = 1;
 	}
 	
 	public Point getPt()

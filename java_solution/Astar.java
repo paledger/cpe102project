@@ -14,8 +14,8 @@ public class Astar
 	
 	private int gScore;
 	private int fScore;
-    private int width;
-    private int height;
+   private int width;
+   private int height;
 	
 	private Point start;
 	private Point goal;
@@ -36,43 +36,70 @@ public class Astar
 	public LinkedList<Point> Ass() 
 	{ // *Ass stands for A Star Search*
 		// perhaps later add check for if goal is an obstacle
-		LinkedList<Point> path = new LinkedList<Point>();
 		world.fillNodes(goal);
 		//fSystem.out.print(world.getNodes()
 		closedSet.clear();
 		openSet.clear();
 
 		Node<Id> startNode = new Node<Id>(new Id(start, 0, fScoreFunc(0, hScoreFunc(start, goal))), null);
-
+		startNode.getId().setG(0);
 		openSet.add(startNode);
+		closedSet.add(startNode);
+		openSet = orderNodes(openSet);
 	
 		Node<Id> current = openSet.get(0);
 		Point currentPt = current.getId().getPt();
 
-		while(openSet.size() != 0)
+		while(!openSet.isEmpty())//openSet.size() != 0)
 		{
-			System.out.println(openSet.size());
-			orderNodes(openSet);
+			System.out.println(start);
+			System.out.println(goal);
+			//System.out.println(openSet.size());
+			openSet = orderNodes(openSet);
 
 			current = openSet.get(0);
+			openSet.remove(0);
 			currentPt = current.getId().getPt();
 			System.out.println(currentPt);
-
+			
+			//prints: 1: is it the goal, 2: what is the size of openset, 3: how many neighbors are there
+			System.out.println(currentPt.x() == goal.x() && currentPt.y() == goal.y());
+			System.out.println(openSet.size());
 			if(currentPt.x() == goal.x() && currentPt.y() == goal.y())
 			{
 				System.out.println("reached loop");
-				return reconstructPath(current, path); 
+				 
+				return reconstructPath(current);
 				//it's not returning reconstruct path
 			}
 
-		    openSet.remove(current);
+		   openSet.remove(current);
 			closedSet.add(current);
 
-			LinkedList<Node<Id>> neighbors = this.findNeighbors(current);
-			//System.out.print(neighbors.size());
+			LinkedList<Node<Id>> neighbors = findNeighbors(current);
+			//System.out.println(neighbors.size());
 			for(Node<Id> neighbor:neighbors)
 			{
+				boolean option;
 				if(closedSet.contains(neighbor))
+				{
+					continue;
+				}
+				int tentG = (current.getId().getG()+1);
+				if(tentG < neighbor.getId().getG())
+				{
+					openSet.remove(neighbor);
+					closedSet.remove(neighbor);
+				}
+				if(!(openSet.contains(neighbor)&&!closedSet.contains(neighbor)))
+				{
+					neighbor.getId().setG(tentG);
+					neighbor.getId().setF(neighbor.getId().getG()+hScoreFunc(neighbor.getId().getPt(),goal));
+					neighbor.setFrom(current);
+					openSet.add(neighbor);
+				}
+			
+				/*if(closedSet.contains(neighbor))
 				{
 					continue;
 				}
@@ -92,7 +119,11 @@ public class Astar
 						openSet.add(neighbor);
 						orderNodes(openSet);
 					}
-				}
+					if (!closedSet.contains(current))
+					{
+						closedSet.add(current);
+					}
+				}*/
 			}
 		}
 		return new LinkedList<Point>(); // empty list // Failure
@@ -101,6 +132,7 @@ public class Astar
 			
 	public LinkedList<Node<Id>> findNeighbors(Node<Id> current)
 	{
+		LinkedList<Node<Id>> temp = new LinkedList<Node<Id>>();
 		LinkedList<Node<Id>> output = new LinkedList<Node<Id>>();
 		Point currentPt = (current.getId()).getPt();
 		int currX = currentPt.x();
@@ -168,15 +200,14 @@ public class Astar
 	public static List<Node<Id>> orderNodes(List<Node<Id>> list)
 	{
 		Comparator<Node<Id>> comp = new FScoreCompare();
-	    Collections.sort(list, comp);
+	   Collections.sort(list, comp);
 		return list;
 	}
 
-	public int gScoreFunc(Node<Id> curr, Point start)
+	public int gScoreFunc(Node<Id> current, Point start)
 	{
 		LinkedList<Point> currPath = new LinkedList<Point>();
-		LinkedList<Point> currPath2 = reconstructPath(curr, currPath);
-		return currPath.size();
+		return reconstructPath(current).size();
 	}
 		
 	public static int hScoreFunc(Point nextOption, Point goal)
@@ -191,17 +222,25 @@ public class Astar
 		return overallG+hScore;
 	}
 	
-	public static LinkedList<Point> reconstructPath(Node<Id> current, LinkedList<Point> path)
+	public LinkedList<Point> reconstructPath(Node<Id> current)
 	{
+		LinkedList<Point> path = new LinkedList<Point>();
 		Point pt = current.getId().getPt();
-		path.add(0, pt);
+		System.out.print(current.getFrom());
+		while(!(current.getFrom()==null))
+		{
+			System.out.print("inside path while");
+			path.add(0, current.getId().getPt());
+			current = current.getFrom();
+		}
+		return path;
 		//System.out.print(path);
-		if(current.getFrom() != null)
+		/*if(current.getFrom() != null)
 		{
 			reconstructPath(current.getFrom(), path);
-		}
+		}*/
+		
 		//System.out.print(path);
-		return path;
 	}
 
 }
