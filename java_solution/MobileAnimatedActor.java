@@ -43,10 +43,9 @@ public abstract class MobileAnimatedActor
       Astar assPath = new Astar(start, dest_pt, world);
 
       System.out.print(assPath); //DEBUGGING
-
+      System.out.print(assPath.Ass());
       LinkedList<Point> finalPath = assPath.Ass();
-
-      System.out.print(finalPath); //DEBUGGING
+ //DEBUGGING
       /*
       if(finalPath.size() <= 0)
       {
