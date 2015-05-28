@@ -23,22 +23,22 @@ public class WorldModel
       this.actionQueue = new OrderedList<>();      
       for (int row = 0; row < numRows; row++)
       {
-         Arrays.fill(this.background[row], background);
+         //Arrays.fill(this.background[row], background);
          for (int col = 0; col < numCols; col++)
          {
-            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
+            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 1000, 1000), null);
             this.nodes[row][col]= empty;
          }
       }
    }
 
-   public void fillNodes()
+   public void fillNodes(Point start)
    {
       for (int row = 0; row < numRows; row++)
       {
          for (int col = 0; col< numCols; col++)
          {
-            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, 100), null);
+            Node<Id> empty = new Node<Id>(new Id(new Point(row, col), 100, Astar.hScoreFunc(new Point(row, col), start)), null);
             nodes[row][col] = empty;
          }
       }
@@ -210,8 +210,8 @@ public class WorldModel
    {
       grid[pt.y][pt.x] = v;
    }
-	public static <T> Node getNode(Node[][] grid, Point pt)
+	public <T> Node getNode(Point pt)
 	{
-		return grid[pt.y][pt.x];
+		return nodes[pt.y][pt.x];
 	}
 }

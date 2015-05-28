@@ -98,13 +98,13 @@ public class Main extends PApplet
       }
    }
 
-   private static Background createDefaultBackground(ImageStore imageStore)
+   public static Background createDefaultBackground(ImageStore imageStore)
    {
       List<PImage> bgndImgs = imageStore.get(DEFAULT_IMAGE_NAME);
       return new Background(DEFAULT_IMAGE_NAME, bgndImgs);
    }
 
-   private static PImage createImageColored(int width, int height, int color)
+   public static PImage createImageColored(int width, int height, int color)
    {
       PImage img = new PImage(TILE_WIDTH, TILE_HEIGHT, RGB);
       img.loadPixels();
