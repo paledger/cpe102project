@@ -126,7 +126,6 @@ public class Astar
 						neighborID.setG(tentGScore);
 						neighborID.setF(fScoreFunc(tentGScore, hScoreFunc(neighbor.getId().getPt(), goal)));
 						System.out.print(" tentGScore < neightbor G");
-
 					}
 				}
 				for(int j = 0; j < openSet.size(); j ++)
