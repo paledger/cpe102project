@@ -29,6 +29,7 @@ public class Main extends PApplet
    private long next_time;
    private WorldModel world;
    private WorldView view;
+   private Background backgroundHole;
 
 
    public void setup()
@@ -43,6 +44,7 @@ public class Main extends PApplet
 
       // create default background
       Background background = createDefaultBackground(imageStore);
+      backgroundHole = createHoleBackground(imageStore);
 
       // create world model
       world = new WorldModel(num_rows, num_cols, background);
@@ -73,6 +75,19 @@ public class Main extends PApplet
       view.drawViewport();
    }
 
+   public void createHole(WorldModel world, int mouseX, int mouseY)
+   {
+      int ptX = floor(mouseX/32);
+      int ptY = floor(mouseY/32);
+      Point pt = new Point(ptX, ptY);
+      world.setBackground(pt, backgroundHole);
+   }
+
+   public void mousePressed()
+   {
+      createHole(world, mouseX, mouseY);
+   }
+
    public void keyPressed()
    {
       if (key == CODED)
@@ -98,10 +113,17 @@ public class Main extends PApplet
       }
    }
 
+
    private static Background createDefaultBackground(ImageStore imageStore)
    {
       List<PImage> bgndImgs = imageStore.get(DEFAULT_IMAGE_NAME);
       return new Background(DEFAULT_IMAGE_NAME, bgndImgs);
+   }
+
+   private static Background createHoleBackground(ImageStore imageStore)
+   {
+      List<PImage> bgndImgs = imageStore.get('hole');
+      return new Background('hole', bgndImgs);
    }
 
    private static PImage createImageColored(int width, int height, int color)
