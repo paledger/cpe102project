@@ -31,6 +31,10 @@ public class Main extends PApplet
    private WorldView view;
    private Background backgroundHole;
 
+   // Mouse Pressed variables 
+   private int mouseDX;
+   private int mouseDY;
+
 
    public void setup()
    {
@@ -41,6 +45,9 @@ public class Main extends PApplet
 
       int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE;
       int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE;
+
+      mouseDX = 0;
+      mouseDY = 0;
 
       // create default background
       Background background = createDefaultBackground(imageStore);
@@ -81,11 +88,18 @@ public class Main extends PApplet
       int ptY = floor(mouseY/32);
       Point pt = new Point(ptX, ptY);
       world.setBackground(pt, backgroundHole);
+      world.setBackground(new Point(ptX + 1, ptY), backgroundHole);
+      world.setBackground(new Point(ptX, ptY + 1), backgroundHole);
+      world.setBackground(new Point(ptX + 1, ptY + 1), backgroundHole);
    }
 
    public void mousePressed()
    {
-      createHole(world, mouseX, mouseY);
+      mouseDX += mouseX;
+      mouseDY += mouseY;
+      createHole(world, mouseDX, mouseDY);
+      mouseDX -= mouseX;
+      mouseDY -= mouseY;
    }
 
    public void keyPressed()
@@ -98,15 +112,19 @@ public class Main extends PApplet
          {
             case UP:
                dy = -1;
+               mouseDY -= 32;
                break;
             case DOWN:
                dy = 1;
+               mouseDY+= 32;
                break;
             case LEFT:
                dx = -1;
+               mouseDX -= 32;
                break;
             case RIGHT:
                dx = 1;
+               mouseDX += 32;
                break;
          }
          view.updateView(dx, dy);
@@ -122,8 +140,8 @@ public class Main extends PApplet
 
    private static Background createHoleBackground(ImageStore imageStore)
    {
-      List<PImage> bgndImgs = imageStore.get('hole');
-      return new Background('hole', bgndImgs);
+      List<PImage> bgndImgs = imageStore.get("hole");
+      return new Background("hole", bgndImgs);
    }
 
    private static PImage createImageColored(int width, int height, int color)
