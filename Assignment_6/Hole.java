@@ -50,10 +50,10 @@ public class Hole extends PApplet
 	public static void createBunny(WorldModel world, Point pt, ImageStore imageStore)
 	{
 		Point newPt = new Point(pt.x()+4 , pt.y());
-		//WorldEntity bunny = new Bunny("bunny", pt, 5, 5, imageStore.get("bunny1"));
-		Bunny bunny = new Bunny("bunny", newPt, 33, 11, imageStore.get("bunny"));
-		world.addEntity(bunny);
-		bunny.scheduleAction(world, bunny, bunny.createAction(world, imageStore), (long)0);
+		//bunny.scheduleAction(world, bunny, bunny.createAction(world, imageStore), (long)0);
+      Actor entity = new Bunny("bunny",newPt,1,6,imageStore.get("bunny"));
+      world.addEntity(entity);
+      entity.schedule(world, entity.getRate(), imageStore);
 	}
 	
    private static Background createHoleBackground(ImageStore imageStore, String holenum)

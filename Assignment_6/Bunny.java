@@ -9,8 +9,8 @@ public class Bunny
    {
       super(name, position, rate, animation_rate, imgs);
    }
-	
-   protected boolean move(WorldModel world)
+/*	
+   protected boolean move(WorldModel world, WorldEntity target)
    {
 		Point newPt = this.getPosition();
 		float randDirection = random(1,4);
@@ -40,6 +40,32 @@ public class Bunny
 		}
 		return true;
    }
+*/
+	
+   private boolean move(WorldModel world, WorldEntity target)
+   {
+      if (target == null)
+      {
+         return false;
+      }
+
+      if (adjacent(getPosition(), target.getPosition()))
+      {
+         target.remove(world);
+         return true;
+      }
+      else
+      {
+         Point new_pt = nextPosition(world, target.getPosition());
+         WorldEntity old_entity = world.getTileOccupant(new_pt);
+         if (old_entity != null && old_entity != this)
+         {
+            old_entity.remove(world);
+         }
+         world.moveEntity(this, new_pt);
+         return false;
+      }
+   }
 	
    protected boolean canPassThrough(WorldModel world, Point pt)
    {
@@ -52,19 +78,25 @@ public class Bunny
       action[0] = ticks -> {
          removePendingAction(action[0]);
 
-         //WorldEntity target = world.findNearest(getPosition(), seeking);
+         WorldEntity target = world.findNearest(getPosition(), Vein.class);
+         long nextTime = ticks + getRate();
 
-         Actor newEntity = this;
-         if (move(world))
+         if (target != null)
          {
-            newEntity = this;
+            Point tPt = target.getPosition();
+
+            if (move(world, target))
+            {
+               nextTime = nextTime + getRate();
+            }
          }
 
-         scheduleAction(world, newEntity,
-            newEntity.createAction(world, imageStore),
-            ticks + newEntity.getRate());
+         scheduleAction(world, this, createAction(world, imageStore),
+            nextTime);
+         
       };
       return action[0];
    }
+		
 	
 }
