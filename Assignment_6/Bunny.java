@@ -20,17 +20,18 @@ public class Bunny
 		
    private boolean move(WorldModel world, WorldEntity target)
    {
+		//Bunnies will remove all entities--including the water. Might need to be fixed.
+		//Exception: It tries to transform the miners to carrots, something is going wrong
+		//during that process.
       if (target == null)
       {
          return false;
       }
-
       if (adjacent(getPosition(), target.getPosition()))
       {
-			///// THIS IS THE THING THAT IS REMOVING THE MINERS
-			if(target instanceof Miner)
+			if(target.getClass() == Miner.class)
 			{
-         	Miner.toCarrot(world, ********target.getImages(), target);
+         	toCarrot(world, target.getImages(), (Miner)target);
 			} else
 			{
 				target.remove(world);
@@ -42,13 +43,35 @@ public class Bunny
          Point new_pt = nextPosition(world, randomPoint(world));
          WorldEntity old_entity = world.getTileOccupant(new_pt);
          if (old_entity != null && old_entity != this)
-         {
-            old_entity.remove(world);
-         }
+         	{
+					System.out.print(old_entity.getClass());
+					if(old_entity.getClass() == MinerFull.class ||
+						old_entity.getClass() == MinerNotFull.class)
+					{
+						
+            		toCarrot(world, old_entity.getImages(), (Miner)old_entity);
+					} else
+					{
+						old_entity.remove(world);
+					}
+					
+				}
          world.moveEntity(this, new_pt);
          return false;
       }
    }
+	
+	protected Carrot toCarrot(WorldModel world, List<PImage> imageStore, Miner miner)
+	{
+		Carrot carrot = new Carrot("carrot", getPosition(), 0, imageStore);
+		//if(!(this.getClass()!=Carrot.class))
+		//{
+			miner.remove(world);
+			world.addEntity(carrot);
+			//carrot.scheduleAnimation(world);
+			//}
+		return carrot;
+	}
 	
    protected boolean canPassThrough(WorldModel world, Point pt)
    {
