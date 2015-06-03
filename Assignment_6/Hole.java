@@ -52,7 +52,7 @@ public class Hole extends PApplet
 	{
 		Point newPt = new Point(pt.x(), pt.y());
 		//bunny.scheduleAction(world, bunny, bunny.createAction(world, imageStore), (long)0);
-      Actor entity = new Bunny("bunny",newPt,1,6,imageStore.get("bunny"));
+      Actor entity = new Bunny("bunny",newPt,500,1,imageStore.get("bunny"));
       world.addEntity(entity);
       entity.schedule(world, entity.getRate(), imageStore);
 	}

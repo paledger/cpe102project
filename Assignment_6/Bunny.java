@@ -10,6 +10,14 @@ public class Bunny
       super(name, position, rate, animation_rate, imgs);
    }
 	
+	private Point randomPoint(WorldModel world)
+	{
+		float randx = random(0, world.getNumCols());
+		float randy = random(0, world.getNumRows());
+		Point newpt = new Point((int)randx, (int)randy);
+		return newpt;
+	}
+		
    private boolean move(WorldModel world, WorldEntity target)
    {
       if (target == null)
@@ -19,12 +27,19 @@ public class Bunny
 
       if (adjacent(getPosition(), target.getPosition()))
       {
-         target.remove(world);
+			///// THIS IS THE THING THAT IS REMOVING THE MINERS
+			if(target instanceof Miner)
+			{
+         	Miner.toCarrot(world, ********target.getImages(), target);
+			} else
+			{
+				target.remove(world);
+			}
          return true;
       }
       else
       {
-         Point new_pt = nextPosition(world, target.getPosition());
+         Point new_pt = nextPosition(world, randomPoint(world));
          WorldEntity old_entity = world.getTileOccupant(new_pt);
          if (old_entity != null && old_entity != this)
          {
@@ -37,7 +52,19 @@ public class Bunny
 	
    protected boolean canPassThrough(WorldModel world, Point pt)
    {
-		return !world.isOccupied(pt);
+		if(world.isOccupied(pt))
+		{
+			WorldEntity occupant = world.getTileOccupant(pt);
+			if(!(occupant.getClass()==Miner.class))
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return !(world.isOccupied(pt));
+		}
+		return false;
    }
 	
    public Action createAction(WorldModel world, ImageStore imageStore)
@@ -46,13 +73,15 @@ public class Bunny
       action[0] = ticks -> {
          removePendingAction(action[0]);
 
-         WorldEntity target = world.findNearest(getPosition(), Miner.class);
+         //WorldEntity target = world.findNearest(getPosition(), Miner.class);
+			WorldEntity target = world.findNearest(getPosition(), Bunny.class);
          long nextTime = ticks + getRate();
 
          if (target != null)
          {
-            Point tPt = target.getPosition();
-
+           // Point tPt = target.getPosition();
+				//Point tPt = randomPoint(world);
+				
             if (move(world, target))
             {
                nextTime = nextTime + getRate();

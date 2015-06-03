@@ -75,4 +75,16 @@ public abstract class Miner
       }
       return newEntity;
    }
+	
+	protected Carrot toCarrot(WorldModel world, ImageStore imageStore, Miner miner)
+	{
+		Carrot carrot = new Carrot("carrot", getPosition(), 0, imageStore.get("carrot"));
+		//if(!(this.getClass()!=Carrot.class))
+		//{
+			miner.remove(world);
+			world.addEntity(carrot);
+			//carrot.scheduleAnimation(world);
+			//}
+		return carrot;
+	}
 }
