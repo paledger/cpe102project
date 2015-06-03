@@ -6,6 +6,7 @@ public class WorldModel
 {
    private Background[][] background;
    private WorldEntity[][] occupancy;
+	public boolean[][] hole;
    private List<WorldEntity> entities;
    private int numRows;
    private int numCols;
@@ -15,6 +16,7 @@ public class WorldModel
    {
       this.background = new Background[numRows][numCols];
       this.occupancy = new WorldEntity[numRows][numCols];
+		this.hole = new boolean[numRows+1][numCols+1];
       this.numRows = numRows;
       this.numCols = numCols;
       this.entities = new LinkedList<>();
@@ -23,6 +25,7 @@ public class WorldModel
       for (int row = 0; row < numRows; row++)
       {
          Arrays.fill(this.background[row], background);
+			Arrays.fill(this.hole[row], false);
       }
    }
 

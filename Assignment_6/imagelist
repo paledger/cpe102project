@@ -28,4 +28,7 @@ quake images/quake6.bmp 255 255 255 0
 rocks images/rock.bmp
 vein images/vein.bmp
 background_default images/none.bmp
-hole images/hole.bmp 255 255 255 0
+hole1 images/hole1.bmp 255 255 255 0
+hole2 images/hole2.bmp 255 255 255 0
+hole3 images/hole3.bmp 255 255 255 0
+hole4 images/hole4.bmp 255 255 255 0

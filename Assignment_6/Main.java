@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.File;
+import java.util.LinkedList;
 
 public class Main extends PApplet
 {
@@ -51,7 +52,7 @@ public class Main extends PApplet
 
       // create default background
       Background background = createDefaultBackground(imageStore);
-      backgroundHole = createHoleBackground(imageStore);
+      //backgroundHole = createHoleBackground(imageStore);
 
       // create world model
       world = new WorldModel(num_rows, num_cols, background);
@@ -86,20 +87,31 @@ public class Main extends PApplet
    {
       int ptX = floor(mouseX/32);
       int ptY = floor(mouseY/32);
-      Point pt = new Point(ptX, ptY);
-      world.setBackground(pt, backgroundHole);
-      world.setBackground(new Point(ptX + 1, ptY), backgroundHole);
-      world.setBackground(new Point(ptX, ptY + 1), backgroundHole);
-      world.setBackground(new Point(ptX + 1, ptY + 1), backgroundHole);
+		Point pt1 = new Point(ptX, ptY);
+		Point pt2 = new Point(ptX+1, ptY);
+		Point pt3 = new Point(ptX, ptY+1);
+		Point pt4 = new Point(ptX+1, ptY+1);
+		if(ptX<world.getNumCols()+1 && ptX >= 0 && ptY<world.getNumRows()+1 && ptY >= 0)
+		{
+			if(world.hole[ptY][ptX]==false&&world.hole[ptY][ptX+1]==false
+				&&world.hole[ptY+1][ptX]==false&&world.hole[ptY+1][ptX+1]==false)
+			{
+	      world.setBackground(pt1, createHole1Background(imageStore));
+	      world.setBackground(pt2, createHole2Background(imageStore));
+	      world.setBackground(pt3, createHole3Background(imageStore));
+	      world.setBackground(pt4, createHole4Background(imageStore));
+			world.hole[ptY][ptX] = true;
+			world.hole[ptY][ptX+1] = true;
+			world.hole[ptY+1][ptX] = true;
+			world.hole[ptY+1][ptX+1] = true;
+			}
+		}
    }
 
    public void mousePressed()
    {
-      mouseDX += mouseX;
-      mouseDY += mouseY;
-      createHole(world, mouseDX, mouseDY);
-      mouseDX -= mouseX;
-      mouseDY -= mouseY;
+      createHole(world, mouseDX+mouseX, mouseDY+mouseY);
+		//createHole(world, mouseX, mouseY);
    }
 
    public void keyPressed()
@@ -110,21 +122,34 @@ public class Main extends PApplet
          int dy = 0;
          switch (keyCode)
          {
+				//HITTING DOWN MOVES IT LEFT AND DOWN
             case UP:
                dy = -1;
-               mouseDY -= 32;
+					//if(mouseDY>=0&&mouseDY<world.getNumRows()*32)
+					//{
+						mouseDY-=32;
+						//}
                break;
             case DOWN:
-               dy = 1;
-               mouseDY+= 32;
-               break;
+               dy = +1;
+					//if(mouseDY>=0&&mouseDY<world.getNumRows()*32)
+					//{
+						mouseDY+=32;
+						//}
+					break;
             case LEFT:
                dx = -1;
-               mouseDX -= 32;
+					//if(mouseDX>=0&&mouseDX<world.getNumCols()*32)
+					//{
+						mouseDX-=32;
+						//}
                break;
             case RIGHT:
-               dx = 1;
-               mouseDX += 32;
+               dx = +1;
+					//if(mouseDX>=0&&mouseDX<world.getNumCols()*32)
+					//{
+						mouseDX+=32;
+						//}					
                break;
          }
          view.updateView(dx, dy);
@@ -138,10 +163,28 @@ public class Main extends PApplet
       return new Background(DEFAULT_IMAGE_NAME, bgndImgs);
    }
 
-   private static Background createHoleBackground(ImageStore imageStore)
+   private static Background createHole1Background(ImageStore imageStore)
    {
-      List<PImage> bgndImgs = imageStore.get("hole");
-      return new Background("hole", bgndImgs);
+      List<PImage> bgndImgs = imageStore.get("hole1");
+      return new Background("hole1", bgndImgs);
+   }
+	
+   private static Background createHole2Background(ImageStore imageStore)
+   {
+      List<PImage> bgndImgs = imageStore.get("hole2");
+      return new Background("hole2", bgndImgs);
+   }
+	
+   private static Background createHole3Background(ImageStore imageStore)
+   {
+      List<PImage> bgndImgs = imageStore.get("hole3");
+      return new Background("hole3", bgndImgs);
+   }
+	
+   private static Background createHole4Background(ImageStore imageStore)
+   {
+      List<PImage> bgndImgs = imageStore.get("hole4");
+      return new Background("hole4", bgndImgs);
    }
 
    private static PImage createImageColored(int width, int height, int color)
