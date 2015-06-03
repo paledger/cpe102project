@@ -32,10 +32,6 @@ public class Main extends PApplet
    private WorldView view;
    private Background backgroundHole;
 
-   // Mouse Pressed variables 
-   private int mouseDX;
-   private int mouseDY;
-
 
    public void setup()
    {
@@ -46,9 +42,6 @@ public class Main extends PApplet
 
       int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE;
       int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE;
-
-      mouseDX = 0;
-      mouseDY = 0;
 
       // create default background
       Background background = createDefaultBackground(imageStore);
@@ -91,7 +84,7 @@ public class Main extends PApplet
 		Point pt2 = new Point(ptX+1, ptY);
 		Point pt3 = new Point(ptX, ptY+1);
 		Point pt4 = new Point(ptX+1, ptY+1);
-		if(ptX<world.getNumCols()+1 && ptX >= 0 && ptY<world.getNumRows()+1 && ptY >= 0)
+		if(ptX<world.getNumCols() && ptX >= 0 && ptY<world.getNumRows() && ptY >= 0)
 		{
 			if(world.hole[ptY][ptX]==false&&world.hole[ptY][ptX+1]==false
 				&&world.hole[ptY+1][ptX]==false&&world.hole[ptY+1][ptX+1]==false)
@@ -110,7 +103,8 @@ public class Main extends PApplet
 
    public void mousePressed()
    {
-      createHole(world, mouseDX+mouseX, mouseDY+mouseY);
+		System.out.print(view.getViewport().getCol());
+      createHole(world, mouseX+(view.getViewport().getCol())*32, mouseY+(view.getViewport().getRow())*32);
 		//createHole(world, mouseX, mouseY);
    }
 
@@ -125,31 +119,15 @@ public class Main extends PApplet
 				//HITTING DOWN MOVES IT LEFT AND DOWN
             case UP:
                dy = -1;
-					//if(mouseDY>=0&&mouseDY<world.getNumRows()*32)
-					//{
-						mouseDY-=32;
-						//}
                break;
             case DOWN:
                dy = +1;
-					//if(mouseDY>=0&&mouseDY<world.getNumRows()*32)
-					//{
-						mouseDY+=32;
-						//}
 					break;
             case LEFT:
                dx = -1;
-					//if(mouseDX>=0&&mouseDX<world.getNumCols()*32)
-					//{
-						mouseDX-=32;
-						//}
                break;
             case RIGHT:
-               dx = +1;
-					//if(mouseDX>=0&&mouseDX<world.getNumCols()*32)
-					//{
-						mouseDX+=32;
-						//}					
+               dx = +1;					
                break;
          }
          view.updateView(dx, dy);
