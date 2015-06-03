@@ -76,35 +76,10 @@ public class Main extends PApplet
       view.drawViewport();
    }
 
-   public void createHole(WorldModel world, int mouseX, int mouseY)
-   {
-      int ptX = floor(mouseX/32);
-      int ptY = floor(mouseY/32);
-		Point pt1 = new Point(ptX, ptY);
-		Point pt2 = new Point(ptX+1, ptY);
-		Point pt3 = new Point(ptX, ptY+1);
-		Point pt4 = new Point(ptX+1, ptY+1);
-		if(ptX<world.getNumCols() && ptX >= 0 && ptY<world.getNumRows() && ptY >= 0)
-		{
-			if(world.hole[ptY][ptX]==false&&world.hole[ptY][ptX+1]==false
-				&&world.hole[ptY+1][ptX]==false&&world.hole[ptY+1][ptX+1]==false)
-			{
-	      world.setBackground(pt1, createHole1Background(imageStore));
-	      world.setBackground(pt2, createHole2Background(imageStore));
-	      world.setBackground(pt3, createHole3Background(imageStore));
-	      world.setBackground(pt4, createHole4Background(imageStore));
-			world.hole[ptY][ptX] = true;
-			world.hole[ptY][ptX+1] = true;
-			world.hole[ptY+1][ptX] = true;
-			world.hole[ptY+1][ptX+1] = true;
-			}
-		}
-   }
-
    public void mousePressed()
    {
-		System.out.print(view.getViewport().getCol());
-      createHole(world, mouseX+(view.getViewport().getCol())*32, mouseY+(view.getViewport().getRow())*32);
+      Hole.createHole(world, mouseX+(view.getViewport().getCol())*32, mouseY+(view.getViewport().getRow())*32,
+			imageStore);
 		//createHole(world, mouseX, mouseY);
    }
 
@@ -139,30 +114,6 @@ public class Main extends PApplet
    {
       List<PImage> bgndImgs = imageStore.get(DEFAULT_IMAGE_NAME);
       return new Background(DEFAULT_IMAGE_NAME, bgndImgs);
-   }
-
-   private static Background createHole1Background(ImageStore imageStore)
-   {
-      List<PImage> bgndImgs = imageStore.get("hole1");
-      return new Background("hole1", bgndImgs);
-   }
-	
-   private static Background createHole2Background(ImageStore imageStore)
-   {
-      List<PImage> bgndImgs = imageStore.get("hole2");
-      return new Background("hole2", bgndImgs);
-   }
-	
-   private static Background createHole3Background(ImageStore imageStore)
-   {
-      List<PImage> bgndImgs = imageStore.get("hole3");
-      return new Background("hole3", bgndImgs);
-   }
-	
-   private static Background createHole4Background(ImageStore imageStore)
-   {
-      List<PImage> bgndImgs = imageStore.get("hole4");
-      return new Background("hole4", bgndImgs);
    }
 
    private static PImage createImageColored(int width, int height, int color)
