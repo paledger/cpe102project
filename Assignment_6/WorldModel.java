@@ -80,6 +80,7 @@ public class WorldModel
          }
          setCell(occupancy, pt, entity);
          entities.add(entity);
+			ifHole(entity, pt);
       }
    }
 
@@ -87,13 +88,24 @@ public class WorldModel
    {
       if (withinBounds(pt))
       {
+			{
          Point oldPt = entity.getPosition();
          setCell(occupancy, oldPt, null);
          removeEntityAt(pt);
          setCell(occupancy, pt, entity);
          entity.setPosition(pt);
-      }
+			ifHole(entity, pt);
+    	  }
+		}
    }
+	
+	public void ifHole(WorldEntity entity, Point pt)
+	{
+		if(Hole.backgroundAt(this, pt))
+		{
+			removeEntity(entity);
+		}
+	}
 
    public void removeEntity(WorldEntity entity)
    {

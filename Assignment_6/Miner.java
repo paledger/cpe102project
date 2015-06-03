@@ -35,7 +35,9 @@ public abstract class Miner
 
    protected boolean canPassThrough(WorldModel world, Point pt)
    {
-      return !world.isOccupied(pt);
+      //return !world.isOccupied(pt);
+		return !world.isOccupied(pt) && !Hole.backgroundAt(world, pt);
+		//This will make the miners avoid the holes.
    }
 
    protected abstract Miner transform(WorldModel world);

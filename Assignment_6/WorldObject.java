@@ -1,8 +1,9 @@
-import processing.core.PImage;
+import processing.core.*;
 import java.util.List;
 import java.util.Iterator;
 
 public class WorldObject
+	extends PApplet
 {
    private String name;
    private List<PImage> imgs;
