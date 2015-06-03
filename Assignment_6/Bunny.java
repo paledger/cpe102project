@@ -9,38 +9,6 @@ public class Bunny
    {
       super(name, position, rate, animation_rate, imgs);
    }
-/*	
-   protected boolean move(WorldModel world, WorldEntity target)
-   {
-		Point newPt = this.getPosition();
-		float randDirection = random(1,4);
-		if(randDirection==1)
-		{
-			//up
-			newPt = new Point(newPt.x(), newPt.y()+1);
-		}
-		if(randDirection==2)
-		{
-			//down
-			newPt = new Point(newPt.x(), newPt.y()-1);
-		}
-		if(randDirection==3)
-		{
-			//left
-			newPt = new Point(newPt.x()-1, newPt.y());
-		}
-		if(randDirection==4)
-		{
-			//right
-			newPt = new Point(newPt.x()+1, newPt.y());
-		}
-		if(world.withinBounds(newPt))
-		{
-  		 world.moveEntity(this, nextPosition(world, newPt));
-		}
-		return true;
-   }
-*/
 	
    private boolean move(WorldModel world, WorldEntity target)
    {
@@ -78,7 +46,7 @@ public class Bunny
       action[0] = ticks -> {
          removePendingAction(action[0]);
 
-         WorldEntity target = world.findNearest(getPosition(), Vein.class);
+         WorldEntity target = world.findNearest(getPosition(), Miner.class);
          long nextTime = ticks + getRate();
 
          if (target != null)

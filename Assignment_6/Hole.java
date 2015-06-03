@@ -1,5 +1,6 @@
 import processing.core.*;
 import java.util.List;
+import java.lang.ClassCastException;
 
 public class Hole extends PApplet
 {
@@ -49,7 +50,7 @@ public class Hole extends PApplet
 	
 	public static void createBunny(WorldModel world, Point pt, ImageStore imageStore)
 	{
-		Point newPt = new Point(pt.x()+4 , pt.y());
+		Point newPt = new Point(pt.x(), pt.y());
 		//bunny.scheduleAction(world, bunny, bunny.createAction(world, imageStore), (long)0);
       Actor entity = new Bunny("bunny",newPt,1,6,imageStore.get("bunny"));
       world.addEntity(entity);
@@ -76,7 +77,11 @@ public class Hole extends PApplet
 		//if a hole is created somewhere that an entity or obstacle occupies, murder it.
 		if(world.isOccupied(pt))
 		{
-			world.removeEntityAt(pt);
+			WorldEntity occupant = world.getTileOccupant(pt);
+			if(!(occupant.getClass()==Bunny.class))
+			{
+				world.removeEntityAt(pt);
+			}
 		}
 	}
 	

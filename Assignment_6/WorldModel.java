@@ -101,7 +101,9 @@ public class WorldModel
 	
 	public void ifHole(WorldEntity entity, Point pt)
 	{
-		if(Hole.backgroundAt(this, pt))
+		WorldEntity occupant = getTileOccupant(pt);
+
+		if(Hole.backgroundAt(this, pt) && !(occupant.getClass()==Bunny.class))
 		{
 			removeEntity(entity);
 		}
