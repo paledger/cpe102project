@@ -1,0 +1,14 @@
+1) Click the mouse anywhere within the bounds of the world.
+2) A hole will form only if the following conditions are met:
+	> There are no other apocalyptic holes that will overlap the current hole
+	> The hole created will remain within the bounds of the world (will not spawn off screen)
+	
+	A bunny will spawn at the top left corner of the hole. Any entities or obstacles currently at the hole will be sucked into it (deleted). Bunnies can traverse over holes.
+3) When a bunny comes in contact with (adjacent to) a miner, the miner will become a carrot.
+	Carrots are stationary.
+4) Bunnies move randomly. They spawn from the holes and eat all entities except for:
+	> Blacksmiths
+	> Other bunnies
+	> Obstacles
+	> Miners
+		> Bunnies will turn miners into carrots. If they come across a carrot, they'll eat the carrot.
