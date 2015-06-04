@@ -26,7 +26,7 @@ public class Main extends PApplet
 
    private static final String SAVE_FILE_NAME = "gaia.sav";
 
-   private ImageStore imageStore;
+   public static ImageStore imageStore;
    private long next_time;
    private WorldModel world;
    private WorldView view;
@@ -45,7 +45,6 @@ public class Main extends PApplet
 
       // create default background
       Background background = createDefaultBackground(imageStore);
-      //backgroundHole = createHoleBackground(imageStore);
 
       // create world model
       world = new WorldModel(num_rows, num_cols, background);
@@ -80,7 +79,6 @@ public class Main extends PApplet
    {
       Hole.createHole(world, mouseX+(view.getViewport().getCol())*32, mouseY+(view.getViewport().getRow())*32,
 			imageStore);
-		//createHole(world, mouseX, mouseY);
    }
 
    public void keyPressed()

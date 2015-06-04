@@ -29,10 +29,13 @@ public class Bunny
       }
       if (adjacent(getPosition(), target.getPosition()))
       {
-			if(target.getClass() == Miner.class)
+			//if the target is any of these classes
+			if(target.getClass() == MinerFull.class ||
+				target.getClass() == MinerNotFull.class || 
+					target.getClass() == OreBlob.class)
 			{
-         	toCarrot(world, target.getImages(), (Miner)target);
-			} else
+         	toCarrot(world, Main.imageStore, target);
+			}else 
 			{
 				target.remove(world);
 			}
@@ -44,32 +47,32 @@ public class Bunny
          WorldEntity old_entity = world.getTileOccupant(new_pt);
          if (old_entity != null && old_entity != this)
          	{
-					System.out.print(old_entity.getClass());
+					//if the target is any of these classes
 					if(old_entity.getClass() == MinerFull.class ||
-						old_entity.getClass() == MinerNotFull.class)
+						old_entity.getClass() == MinerNotFull.class ||
+							old_entity.getClass() == OreBlob.class)
 					{
 						
-            		toCarrot(world, old_entity.getImages(), (Miner)old_entity);
+            		toCarrot(world, Main.imageStore, old_entity);
 					} else
 					{
 						old_entity.remove(world);
 					}
 					
 				}
-         world.moveEntity(this, new_pt);
-         return false;
+				if(world.withinBounds(new_pt) && canPassThrough(world, new_pt))
+				{
+        	 		world.moveEntity(this, new_pt);
+				}
+        	return false;
       }
    }
 	
-	protected Carrot toCarrot(WorldModel world, List<PImage> imageStore, Miner miner)
+	protected Carrot toCarrot(WorldModel world, ImageStore imageStore, WorldEntity entity)
 	{
-		Carrot carrot = new Carrot("carrot", getPosition(), 0, imageStore);
-		//if(!(this.getClass()!=Carrot.class))
-		//{
-			miner.remove(world);
-			world.addEntity(carrot);
-			//carrot.scheduleAnimation(world);
-			//}
+		Carrot carrot = new Carrot("carrot", entity.getPosition(), 0, imageStore.get("carrot"));
+		entity.remove(world);
+		world.addEntity(carrot);
 		return carrot;
 	}
 	
@@ -78,7 +81,8 @@ public class Bunny
 		if(world.isOccupied(pt))
 		{
 			WorldEntity occupant = world.getTileOccupant(pt);
-			if(!(occupant.getClass()==Miner.class))
+			if(!(occupant.getClass()==Obstacle.class) && !(occupant.getClass()==Blacksmith.class)
+				&& !(occupant.getClass()==Bunny.class))
 			{
 				return true;
 			}
@@ -97,7 +101,7 @@ public class Bunny
          removePendingAction(action[0]);
 
          //WorldEntity target = world.findNearest(getPosition(), Miner.class);
-			WorldEntity target = world.findNearest(getPosition(), Bunny.class);
+			WorldEntity target = world.findNearest(getPosition(), Miner.class);
          long nextTime = ticks + getRate();
 
          if (target != null)
